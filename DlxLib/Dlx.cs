@@ -17,4 +17,19 @@ namespace DlxLib
             return new int[0][];
         }
     }
+
+    public class DataObject
+    {
+        public DataObject l, r, u, d, c;
+    }
+
+    public class ColumnObject : DataObject
+    {
+        public int s;
+
+        /// <summary>
+        /// row index
+        /// </summary>
+        public int n;
+    }
 }
