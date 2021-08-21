@@ -14,8 +14,8 @@ namespace DlxLib
             if (matrix == null) throw new ArgumentNullException(nameof(matrix));
 
             var h = BuildSparseMatrix(matrix);
-            var O = new Dictionary<int, DataObject>();
-            return Search(0, h, O);
+            var o = new Dictionary<int, DataObject>();
+            return Search(0, h, o);
         }
 
         /// <summary>
@@ -23,14 +23,14 @@ namespace DlxLib
         /// </summary>
         /// <param name="k"></param>
         /// <param name="h"></param>
-        /// <param name="O"></param>
+        /// <param name="o"></param>
         /// <returns></returns>
-        private static int[][] Search(int k, ColumnObject h, Dictionary<int, DataObject> O)
+        private static int[][] Search(int k, ColumnObject h, Dictionary<int, DataObject> o)
         {
             // If R[h] = h, print the current solution (see below) and return.
             if (h.R == h)
             {
-                Console.WriteLine("Solution:" + string.Join(",", O.OrderBy(pair => pair.Key).Select(pair => pair.Value).Select(dataObject => dataObject.Row))); // todo
+                Console.WriteLine("Solution:" + string.Join(",", o.OrderBy(pair => pair.Key).Select(pair => pair.Value).Select(dataObject => dataObject.Row))); // todo
                 return null;
             }
 
@@ -45,7 +45,7 @@ namespace DlxLib
             while (r != c)
             {
                 // set Ok ← r;
-                O[k] = r;
+                o[k] = r;
 
                 // for each j ← R[r], RR[r], . . . , while j = r,
                 var j = r.R;
@@ -58,10 +58,10 @@ namespace DlxLib
                 }
 
                 // search(k + 1);
-                Search(k + 1, h, O);
+                Search(k + 1, h, o);
 
                 // set r ← Ok and c ← C[r];
-                r = O[k];
+                r = o[k];
                 c = r.C;
 
                 // for each j ← L[r], L[L[r]], . . . , while j = r,
