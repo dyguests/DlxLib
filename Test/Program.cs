@@ -1,4 +1,5 @@
 ﻿using System;
+using DlxLib;
 
 namespace Test
 {
@@ -6,7 +7,12 @@ namespace Test
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("2333");
+            var matrix = new[,]
+            {
+                {1, 0},
+                {0, 1},
+            };
+            Console.WriteLine(Dlx.Solve(matrix));
         }
     }
 }
