@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,9 +14,32 @@ namespace DlxLib
             if (matrix == null) throw new ArgumentNullException(nameof(matrix));
 
             var h = BuildSparseMatrix(matrix);
+            // Print(h);
             var o = new Dictionary<int, DataObject>();
             return Search(0, h, o);
         }
+
+        // /// <summary>
+        // /// todo deprecated
+        // /// </summary>
+        // /// <param name="h"></param>
+        // private static void Print(ColumnObject h)
+        // {
+        //     var c = h.R;
+        //     while (c != h)
+        //     {
+        //         var r = c.D;
+        //         while (r != c)
+        //         {
+        //             Console.Write(r.TmpName + "  ");
+        //             r = r.D;
+        //         }
+        //
+        //         Console.WriteLine();
+        //
+        //         c = c.R;
+        //     }
+        // }
 
         /// <summary>
         /// Our nondeterministic algorithm to find all exact covers can now be cast in the following explicit, deterministic form as a recursive procedure search(k), which is invoked initially with k = 0
@@ -40,7 +63,7 @@ namespace DlxLib
             // Cover column c (see below).
             CoverColumnC(c);
 
-            // For each r ← D[c], DD[c], . . . , while r = c,
+            // For each r ← D[c], D[D[c]], . . . , while r = c,
             var r = c.D;
             while (r != c)
             {
