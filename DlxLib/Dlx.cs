@@ -75,7 +75,7 @@ namespace DlxLib
                 while (j != r)
                 {
                     // cover column j (see below);
-                    CoverColumnC(j);
+                    CoverColumnC(j.C);
 
                     j = j.R;
                 }
@@ -92,7 +92,7 @@ namespace DlxLib
                 while (j != r)
                 {
                     // uncover column j (see below).
-                    UncoverColumnC(j);
+                    UncoverColumnC(j.C);
 
                     j = j.L;
                 }
@@ -105,6 +105,11 @@ namespace DlxLib
             return null;
         }
 
+        /// <summary>
+        /// 注意稀疏矩阵是一个十字环形链表。（“十字”、“环形”）
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <returns>list header</returns>
         private static ColumnObject BuildSparseMatrix(int[,] matrix)
         {
             var h = new ColumnObject(-1);
@@ -153,7 +158,7 @@ namespace DlxLib
             return c;
         }
 
-        private static void CoverColumnC(DataObject c)
+        private static void CoverColumnC(ColumnObject c)
         {
             c.R.L = c.L;
             c.L.R = c.R;
@@ -175,7 +180,7 @@ namespace DlxLib
             }
         }
 
-        private static void UncoverColumnC(DataObject c)
+        private static void UncoverColumnC(ColumnObject c)
         {
             var i = c.U;
             while (i != c)
@@ -192,6 +197,9 @@ namespace DlxLib
 
                 i = i.U;
             }
+
+            c.R.L = c;
+            c.L.R = c;
         }
     }
 
