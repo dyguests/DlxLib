@@ -7,14 +7,14 @@ namespace DlxLib
     /// <summary>
     /// Dancing links
     /// </summary>
-    public class Dlx
+    public static class Dlx
     {
         public static int[][] Solve(int[,] matrix)
         {
             if (matrix == null) throw new ArgumentNullException(nameof(matrix));
 
             var h = BuildSparseMatrix(matrix);
-            var O = new List<DataObject>();
+            var O = new Dictionary<int, DataObject>();
             return Search(0, h, O);
         }
 
@@ -25,61 +25,60 @@ namespace DlxLib
         /// <param name="h"></param>
         /// <param name="O"></param>
         /// <returns></returns>
-        private static int[][] Search(int k, ColumnObject h, List<DataObject> O)
+        private static int[][] Search(int k, ColumnObject h, Dictionary<int, DataObject> O)
         {
             // If R[h] = h, print the current solution (see below) and return.
             if (h.R == h)
             {
-                Console.WriteLine("Solution:" + string.Join(",", O.Select(dataObject => dataObject.Row))); // todo
+                Console.WriteLine("Solution:" + string.Join(",", O.OrderBy(pair => pair.Key).Select(pair => pair.Value).Select(dataObject => dataObject.Row))); // todo
                 return null;
             }
 
             // Otherwise choose a column object c (see below).
-            var s = int.MaxValue;
-            var jj = h;
-            var c = jj;
-            while (jj != jj.R)
-            {
-                jj = jj.R as ColumnObject;
-
-                if (jj.S < s)
-                {
-                    c = jj;
-                    s = jj.S;
-                }
-            }
+            var c = ChooseColumnC(h);
 
             // Cover column c (see below).
             CoverColumnC(c);
 
-
-            DataObject r = c;
-            while (r != r.D)
+            // For each r ← D[c], DD[c], . . . , while r = c,
+            var r = c.D;
+            while (r != c)
             {
-                r = r.D; // 这行可以合到while中去？
-
+                // set Ok ← r;
                 O[k] = r;
 
-                var j = r;
-                while (j != r.R)
+                // for each j ← R[r], RR[r], . . . , while j = r,
+                var j = r.R;
+                while (j != r)
                 {
-                    // todo cover j
+                    // cover column j (see below);
+                    CoverColumnC(j);
+
+                    j = j.R;
                 }
 
+                // search(k + 1);
                 Search(k + 1, h, O);
 
+                // set r ← Ok and c ← C[r];
                 r = O[k];
                 c = r.C;
 
-                j = r;
-                while (j != r.L)
+                // for each j ← L[r], L[L[r]], . . . , while j = r,
+                j = r.L;
+                while (j != r)
                 {
+                    // uncover column j (see below).
+                    UncoverColumnC(j);
+
                     j = j.L;
-                    // todo un cover j
                 }
+
+                r = r.D; // 这行可以合到while中去？
             }
 
-            // todo un cover c
+            // Uncover column c (see below)
+            UncoverColumnC(c);
             return null;
         }
 
@@ -98,7 +97,7 @@ namespace DlxLib
                     }
 
                     c = c.R as ColumnObject;
-                    if (matrix[col, row] == 1)
+                    if (matrix[row, col] == 1)
                     {
                         c.AppendToCol(new DataObject(c, row));
                         r?.AppendToRow(c.U);
@@ -110,25 +109,65 @@ namespace DlxLib
             return h;
         }
 
-        private static void CoverColumnC(ColumnObject c)
+        private static ColumnObject ChooseColumnC(ColumnObject h)
+        {
+            // return h.R as ColumnObject;
+
+            var s = int.MaxValue;
+            var j = h.R as ColumnObject;
+            var c = j;
+            while (j != h)
+            {
+                if (j.S < s)
+                {
+                    c = j;
+                    s = j.S;
+                }
+
+                j = j.R as ColumnObject;
+            }
+
+            return c;
+        }
+
+        private static void CoverColumnC(DataObject c)
         {
             c.R.L = c.L;
             c.L.R = c.R;
 
-            DataObject i = c;
-            while (i != i.D)
+            var i = c.D;
+            while (i != c)
             {
-                i = i.D;
-
-                var j = i;
-                while (j != j.R)
+                var j = i.R;
+                while (j != i)
                 {
-                    j = i.R;
-
                     j.D.U = j.U;
                     j.U.D = j.D;
                     j.C.S--;
+
+                    j = j.R;
                 }
+
+                i = i.D;
+            }
+        }
+
+        private static void UncoverColumnC(DataObject c)
+        {
+            var i = c.U;
+            while (i != c)
+            {
+                var j = i.L;
+                while (j != i)
+                {
+                    j.C.S++;
+                    j.D.U = j;
+                    j.U.D = j;
+
+                    j = i.L;
+                }
+
+                i = i.U;
             }
         }
     }
