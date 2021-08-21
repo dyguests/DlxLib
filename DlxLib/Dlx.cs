@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DlxLib
 {
@@ -29,7 +30,7 @@ namespace DlxLib
             // If R[h] = h, print the current solution (see below) and return.
             if (h.R == h)
             {
-                Console.WriteLine("result!?"); // todo
+                Console.WriteLine("Solution:" + string.Join(",", O.Select(dataObject => dataObject.Row))); // todo
                 return null;
             }
 
@@ -47,7 +48,6 @@ namespace DlxLib
                     s = jj.S;
                 }
             }
-
 
             // Cover column c (see below).
             CoverColumnC(c);
@@ -86,29 +86,23 @@ namespace DlxLib
         private static ColumnObject BuildSparseMatrix(int[,] matrix)
         {
             var h = new ColumnObject();
-            for (var row = -1; row < matrix.GetLength(0); row++)
+            for (var row = 0; row < matrix.GetLength(0); row++)
             {
                 var c = h;
-                DataObject d = null;
+                DataObject r = null;
                 for (var col = 0; col < matrix.GetLength(1); col++)
                 {
-                    if (row == -1)
+                    if (row == 0)
                     {
-                        c.LinkRight(new ColumnObject());
-                        c = c.R as ColumnObject;
+                        h.AppendToRow(new ColumnObject());
                     }
-                    else
+
+                    c = c.R as ColumnObject;
+                    if (matrix[col, row] == 1)
                     {
-                        c = c.R as ColumnObject;
-                        if (matrix[col, row] == 1)
-                        {
-                            c.U.LinkDown(new DataObject(c, row));
-                            // 这里更新c所在列有多少个DataObject
-                            c.S++;
-                            c.U = c.U.D;
-                            d?.LinkRight(c.U);
-                            d = c.U;
-                        }
+                        c.AppendToCol(new DataObject(c, row));
+                        r?.AppendToRow(c.U);
+                        r = c.U;
                     }
                 }
             }
@@ -163,18 +157,16 @@ namespace DlxLib
             this.Row = row;
         }
 
-        public void LinkRight(DataObject another)
+        /// <summary>
+        /// 在行尾添加dataObject
+        /// </summary>
+        /// <param name="dataObject"></param>
+        public void AppendToRow(DataObject dataObject)
         {
-            this.R = another;
-            another.L = this;
-            another.R = this.L;
-            this.L.R = another;
-        }
-
-        public void LinkDown(DataObject another)
-        {
-            this.D = another;
-            another.U = this;
+            L.R = dataObject;
+            dataObject.R = this;
+            dataObject.L = L;
+            L = dataObject;
         }
     }
 
@@ -193,6 +185,20 @@ namespace DlxLib
         public ColumnObject()
         {
             C = this;
+        }
+
+        /// <summary>
+        /// 在列尾添加dataObject
+        /// </summary>
+        /// <param name="dataObject"></param>
+        public void AppendToCol(DataObject dataObject)
+        {
+            U.D = dataObject;
+            dataObject.D = this;
+            dataObject.U = U;
+            U = dataObject;
+
+            S++;
         }
     }
 }
