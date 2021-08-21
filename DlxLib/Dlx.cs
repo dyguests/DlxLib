@@ -84,7 +84,7 @@ namespace DlxLib
 
         private static ColumnObject BuildSparseMatrix(int[,] matrix)
         {
-            var h = new ColumnObject();
+            var h = new ColumnObject(-1);
             for (var row = 0; row < matrix.GetLength(0); row++)
             {
                 var c = h;
@@ -93,7 +93,7 @@ namespace DlxLib
                 {
                     if (row == 0)
                     {
-                        h.AppendToRow(new ColumnObject());
+                        h.AppendToRow(new ColumnObject(col));
                     }
 
                     c = c.R as ColumnObject;
@@ -216,14 +216,21 @@ namespace DlxLib
         /// </summary>
         public int S { get; set; }
 
+        /// <summary>
+        /// name
+        /// </summary>
+        public int N { get; set; }
+
         // /// <summary>
         // /// name
         // /// </summary>
         // public int n;
 
-        public ColumnObject()
+        public ColumnObject(int name)
         {
             C = this;
+
+            N = name;
         }
 
         /// <summary>
