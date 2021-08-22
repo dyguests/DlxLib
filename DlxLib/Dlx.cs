@@ -20,7 +20,7 @@ namespace DlxLib
 
             var h = BuildSparseMatrix(matrix, numPrimaryColumns);
             var o = new Stack<DataObject>();
-            return Search(0, h, o, instrumentations);
+            return Search(h, o, instrumentations);
         }
 
         /// <summary>
@@ -62,12 +62,11 @@ namespace DlxLib
         /// <summary>
         /// Our nondeterministic algorithm to find all exact covers can now be cast in the following explicit, deterministic form as a recursive procedure search(k), which is invoked initially with k = 0
         /// </summary>
-        /// <param name="k"></param>
         /// <param name="h"></param>
         /// <param name="o"></param>
         /// <param name="instrumentations"></param>
         /// <returns></returns>
-        private static IEnumerable<int[]> Search(int k, ColumnObject h, Stack<DataObject> o, Instrumentation[] instrumentations)
+        private static IEnumerable<int[]> Search(ColumnObject h, Stack<DataObject> o, Instrumentation[] instrumentations)
         {
             if (instrumentations?.Any(instrumentation => instrumentation.IsCancelled()) == true)
             {
@@ -113,7 +112,7 @@ namespace DlxLib
                     }
 
                     // search(k + 1);
-                    var solutions = Search(k + 1, h, o, instrumentations);
+                    var solutions = Search(h, o, instrumentations);
                     foreach (var solution in solutions)
                     {
                         yield return solution;
