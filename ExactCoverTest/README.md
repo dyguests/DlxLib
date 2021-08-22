@@ -1,3 +1,3 @@
 # ExactCoverTest
 
-验证精确匹配。
+验证精确匹配

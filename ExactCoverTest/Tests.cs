@@ -1,38 +1,37 @@
 ﻿using System;
 using DlxLib;
+using NUnit.Framework;
 using TestUtil;
 
 namespace ExactCoverTest
 {
-    internal static class Program
+    [TestFixture]
+    public class Tests
     {
-        public static void Main(string[] args)
-        {
-            Test1ColsHasSolutions();
-            Test1ColsHasNotSolutions();
-            Test2Cols();
-            TestSample();
-        }
-
-        private static void Test1ColsHasSolutions()
+        [Test]
+        public void Test1ColsHasSolutions()
         {
             var matrix = new[,]
             {
                 {1},
             };
             Print(matrix);
+            Assert.True(true);
         }
 
-        private static void Test1ColsHasNotSolutions()
+        [Test]
+        public void Test1ColsHasNotSolutions()
         {
             var matrix = new[,]
             {
                 {0},
             };
             Print(matrix);
+            Assert.True(true);
         }
 
-        private static void Test2Cols()
+        [Test]
+        public void Test2Cols()
         {
             var matrix = new[,]
             {
@@ -42,9 +41,11 @@ namespace ExactCoverTest
                 {0, 0},
             };
             Print(matrix);
+            Assert.True(true);
         }
 
-        private static void TestSample()
+        [Test]
+        public void TestSample()
         {
             var matrix = new[,]
             {
@@ -56,6 +57,7 @@ namespace ExactCoverTest
                 {0, 1, 0, 0, 0, 0, 1},
             };
             Print(matrix);
+            Assert.True(true);
         }
 
         private static void Print(int[,] matrix)
