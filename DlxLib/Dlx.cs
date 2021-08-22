@@ -217,6 +217,11 @@ namespace DlxLib
             dataObject.L = L;
             L = dataObject;
         }
+
+        public override string ToString()
+        {
+            return "(" + C.N + "," + Row + ")";
+        }
     }
 
     public class ColumnObject : DataObject
@@ -250,6 +255,11 @@ namespace DlxLib
             U = dataObject;
 
             S++;
+        }
+
+        public override string ToString()
+        {
+            return "(" + N + ",C)";
         }
     }
 }
