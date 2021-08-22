@@ -4,11 +4,11 @@
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-        <ProjectGuid>{86CEBF0D-96BD-4683-B9A6-225A04C3F982}</ProjectGuid>
-        <OutputType>Exe</OutputType>
+        <ProjectGuid>{1C32A664-F59F-40FD-B94E-AF875D61769E}</ProjectGuid>
+        <OutputType>Library</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>ExactCoverTest</RootNamespace>
-        <AssemblyName>ExactCoverTest</AssemblyName>
+        <RootNamespace>TestUtil</RootNamespace>
+        <AssemblyName>TestUtil</AssemblyName>
         <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
     </PropertyGroup>
@@ -38,21 +38,8 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Program.cs" />
+        <Compile Include="Util.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-    </ItemGroup>
-    <ItemGroup>
-      <ProjectReference Include="..\DlxLib\DlxLib.csproj">
-        <Project>{4b56859e-f1b7-45f7-b8a8-e1c65d315414}</Project>
-        <Name>DlxLib</Name>
-      </ProjectReference>
-      <ProjectReference Include="..\TestUtil\TestUtil.csproj">
-        <Project>{1c32a664-f59f-40fd-b94e-af875d61769e}</Project>
-        <Name>TestUtil</Name>
-      </ProjectReference>
-    </ItemGroup>
-    <ItemGroup>
-      <Content Include="README.md" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
