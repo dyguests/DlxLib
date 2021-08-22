@@ -62,7 +62,11 @@ namespace Test
         {
             Console.WriteLine("-------- begin --------");
             Console.WriteLine(matrix.MatrixToString());
-            Dlx.Solve(matrix);
+            foreach (var result in Dlx.Solve(matrix))
+            {
+                Console.WriteLine("Solution:" + String.Join(",", result));
+            }
+
             Console.WriteLine("-------- end --------");
         }
 

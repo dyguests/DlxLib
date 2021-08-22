@@ -9,37 +9,14 @@ namespace DlxLib
     /// </summary>
     public static class Dlx
     {
-        public static int[][] Solve(int[,] matrix)
+        public static IEnumerable<int[]> Solve(int[,] matrix)
         {
             if (matrix == null) throw new ArgumentNullException(nameof(matrix));
 
             var h = BuildSparseMatrix(matrix);
-            // Print(h);
             var o = new Dictionary<int, DataObject>();
             return Search(0, h, o);
         }
-
-        // /// <summary>
-        // /// todo deprecated
-        // /// </summary>
-        // /// <param name="h"></param>
-        // private static void Print(ColumnObject h)
-        // {
-        //     var c = h.R;
-        //     while (c != h)
-        //     {
-        //         var r = c.D;
-        //         while (r != c)
-        //         {
-        //             Console.Write(r.TmpName + "  ");
-        //             r = r.D;
-        //         }
-        //
-        //         Console.WriteLine();
-        //
-        //         c = c.R;
-        //     }
-        // }
 
         /// <summary>
         /// Our nondeterministic algorithm to find all exact covers can now be cast in the following explicit, deterministic form as a recursive procedure search(k), which is invoked initially with k = 0
@@ -48,13 +25,14 @@ namespace DlxLib
         /// <param name="h"></param>
         /// <param name="o"></param>
         /// <returns></returns>
-        private static int[][] Search(int k, ColumnObject h, Dictionary<int, DataObject> o)
+        private static IEnumerable<int[]> Search(int k, ColumnObject h, Dictionary<int, DataObject> o)
         {
             // If R[h] = h, print the current solution (see below) and return.
             if (h.R == h)
             {
-                Console.WriteLine("Solution:" + string.Join(",", o.OrderBy(pair => pair.Key).Select(pair => pair.Value).Select(dataObject => dataObject.Row))); // todo
-                return null;
+                // Console.WriteLine("Solution:" + string.Join(",", o.OrderBy(pair => pair.Key).Select(pair => pair.Value).Select(dataObject => dataObject.Row))); // todo
+                yield return o.OrderBy(pair => pair.Key).Select(pair => pair.Value).Select(dataObject => dataObject.Row).ToArray();
+                yield break;
             }
 
             // Otherwise choose a column object c (see below).
@@ -77,7 +55,11 @@ namespace DlxLib
                 }
 
                 // search(k + 1);
-                Search(k + 1, h, o);
+                var solutions = Search(k + 1, h, o);
+                foreach (var solution in solutions)
+                {
+                    yield return solution;
+                }
 
                 // set r ← Ok and c ← C[r];
                 // r = o[k];
@@ -94,7 +76,6 @@ namespace DlxLib
 
             // Uncover column c (see below)
             UncoverColumnC(c);
-            return null;
         }
 
         /// <summary>
