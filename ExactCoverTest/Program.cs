@@ -2,7 +2,7 @@
 using System.Linq;
 using DlxLib;
 
-namespace Test
+namespace ExactCoverTest
 {
     internal static class Program
     {
