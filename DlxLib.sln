@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExactCoverTest", "ExactCove
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniqueTest", "UniqueTest\UniqueTest.csproj", "{56D7B55A-86C6-4569-991D-C38267BC5F86}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuTest", "SudokuTest\SudokuTest.csproj", "{AEA14FC2-FB94-4251-BC1B-6E0DCC7028DE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{56D7B55A-86C6-4569-991D-C38267BC5F86}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56D7B55A-86C6-4569-991D-C38267BC5F86}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56D7B55A-86C6-4569-991D-C38267BC5F86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEA14FC2-FB94-4251-BC1B-6E0DCC7028DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEA14FC2-FB94-4251-BC1B-6E0DCC7028DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEA14FC2-FB94-4251-BC1B-6E0DCC7028DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEA14FC2-FB94-4251-BC1B-6E0DCC7028DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
