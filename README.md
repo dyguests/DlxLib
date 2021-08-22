@@ -6,8 +6,14 @@
 
 - 注意稀疏矩阵是一个十字环形链表。（“十字”、“环形”）
 
+## Todo List
+
+-[ ] 可选约束
+-[ ] o dict -> stack
+
 ## Reference
 
 - [用DLX解sudoku(数独)](http://blog.gssxgss.me/use-dlx-to-solve-sudoku-1/)
 - [taylorjg/DlxLib](https://github.com/taylorjg/DlxLib)
 - [Knuth's Algorithm X](https://en.wikipedia.org/wiki/Knuth%27s_Algorithm_X)
+- [Wiki Dancing Links](https://en.wikipedia.org/wiki/Dancing_Links)

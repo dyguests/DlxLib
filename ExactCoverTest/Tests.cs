@@ -9,6 +9,14 @@ namespace ExactCoverTest
     public class Tests
     {
         [Test]
+        public void TestEmpty()
+        {
+            var matrix = new int[0, 0];
+            Validate(matrix);
+            Assert.True(true);
+        }
+
+        [Test]
         public void Test1ColsHasSolutions()
         {
             var matrix = new[,]

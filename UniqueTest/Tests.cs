@@ -55,6 +55,7 @@ namespace UniqueTest
         {
             Console.WriteLine("-------- begin --------");
             Console.WriteLine(matrix.MatrixToString());
+            // var solutions = Dlx.Solve(matrix, new Dlx.UpToTwoInstrumentation());
             var solutions = Dlx.Solve(matrix);
             foreach (var solution in solutions)
             {

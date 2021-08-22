@@ -9,13 +9,13 @@ namespace DlxLib
     /// </summary>
     public static class Dlx
     {
-        public static IEnumerable<int[]> Solve(int[,] matrix)
+        public static IEnumerable<int[]> Solve(int[,] matrix, params Instrumentation[] instrumentations)
         {
             if (matrix == null) throw new ArgumentNullException(nameof(matrix));
 
             var h = BuildSparseMatrix(matrix);
             var o = new Dictionary<int, DataObject>();
-            return Search(0, h, o);
+            return Search(0, h, o, instrumentations);
         }
 
         /// <summary>
@@ -24,12 +24,23 @@ namespace DlxLib
         /// <param name="k"></param>
         /// <param name="h"></param>
         /// <param name="o"></param>
+        /// <param name="instrumentations"></param>
         /// <returns></returns>
-        private static IEnumerable<int[]> Search(int k, ColumnObject h, Dictionary<int, DataObject> o)
+        private static IEnumerable<int[]> Search(int k, ColumnObject h, Dictionary<int, DataObject> o, Instrumentation[] instrumentations)
         {
+            if (instrumentations?.Any(instrumentation => instrumentation.IsCancelled()) == true)
+            {
+                yield break;
+            }
+
             // If R[h] = h, print the current solution (see below) and return.
             if (h.R == h)
             {
+                foreach (var instrumentation in instrumentations)
+                {
+                    instrumentation.NotifySolutionIncrease();
+                }
+
                 // Console.WriteLine("Solution:" + string.Join(",", o.OrderBy(pair => pair.Key).Select(pair => pair.Value).Select(dataObject => dataObject.Row))); // todo
                 yield return o.OrderBy(pair => pair.Key).Select(pair => pair.Value).Select(dataObject => dataObject.Row).ToArray();
                 yield break;
@@ -38,44 +49,54 @@ namespace DlxLib
             // Otherwise choose a column object c (see below).
             var c = ChooseColumnC(h);
 
-            // Cover column c (see below).
-            CoverColumnC(c);
-
-            // For each r ← D[c], D[D[c]], . . . , while r = c,
-            for (var r = c.D; r != c; r = r.D)
+            try
             {
-                // set Ok ← r;
-                o[k] = r;
+                // Cover column c (see below).
+                CoverColumnC(c);
 
-                // for each j ← R[r], RR[r], . . . , while j = r,
-                for (var j = r.R; j != r; j = j.R)
+                // For each r ← D[c], D[D[c]], . . . , while r = c,
+                for (var r = c.D; r != c; r = r.D)
                 {
-                    // cover column j (see below);
-                    CoverColumnC(j.C);
-                }
+                    if (instrumentations?.Any(instrumentation => instrumentation.IsCancelled()) == true)
+                    {
+                        yield break;
+                    }
 
-                // search(k + 1);
-                var solutions = Search(k + 1, h, o);
-                foreach (var solution in solutions)
-                {
-                    yield return solution;
-                }
+                    // set Ok ← r;
+                    o[k] = r;
 
-                // set r ← Ok and c ← C[r];
-                // r = o[k];
-                o.Remove(k);
-                // c = r.C;
+                    // for each j ← R[r], RR[r], . . . , while j = r,
+                    for (var j = r.R; j != r; j = j.R)
+                    {
+                        // cover column j (see below);
+                        CoverColumnC(j.C);
+                    }
 
-                // for each j ← L[r], L[L[r]], . . . , while j = r,
-                for (var j = r.L; j != r; j = j.L)
-                {
-                    // uncover column j (see below).
-                    UncoverColumnC(j.C);
+                    // search(k + 1);
+                    var solutions = Search(k + 1, h, o, instrumentations);
+                    foreach (var solution in solutions)
+                    {
+                        yield return solution;
+                    }
+
+                    // set r ← Ok and c ← C[r];
+                    // r = o[k];
+                    o.Remove(k);
+                    // c = r.C;
+
+                    // for each j ← L[r], L[L[r]], . . . , while j = r,
+                    for (var j = r.L; j != r; j = j.L)
+                    {
+                        // uncover column j (see below).
+                        UncoverColumnC(j.C);
+                    }
                 }
             }
-
-            // Uncover column c (see below)
-            UncoverColumnC(c);
+            finally
+            {
+                // Uncover column c (see below)
+                UncoverColumnC(c);
+            }
         }
 
         /// <summary>
@@ -161,6 +182,52 @@ namespace DlxLib
 
             c.R.L = c;
             c.L.R = c;
+        }
+
+        /// <summary>
+        /// 插桩逻辑
+        ///
+        /// 如手动取消、超过两个结果不再检查
+        /// </summary>
+        public abstract class Instrumentation
+        {
+            private bool isCancelled;
+
+            public void Cancel()
+            {
+                isCancelled = true;
+            }
+
+            public bool IsCancelled()
+            {
+                return isCancelled;
+            }
+
+            public virtual void NotifySolutionIncrease()
+            {
+            }
+        }
+
+        public class DefaultInstrumentation : Instrumentation
+        {
+        }
+
+        /// <summary>
+        /// 对于求解是否具有唯一解，只取得两个解的情况下，后续就不会再求解也可以确定不具有唯一解了
+        /// </summary>
+        public class UpToTwoInstrumentation : Instrumentation
+        {
+            private int numberOfSolutions;
+
+            public override void NotifySolutionIncrease()
+            {
+                base.NotifySolutionIncrease();
+                numberOfSolutions++;
+                if (numberOfSolutions >= 2)
+                {
+                    Cancel();
+                }
+            }
         }
     }
 
