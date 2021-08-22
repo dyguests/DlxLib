@@ -1,6 +1,8 @@
+using System.Collections.Generic;
+using Rules;
 using SudokuTest.Base;
 
-namespace SudokuTest.Entities
+namespace Entities
 {
     public class Puzzle
     {
@@ -10,5 +12,10 @@ namespace SudokuTest.Entities
         /// number.z 期望数字
         /// </summary>
         public Vector3Int[] numbers;
+
+        /// <summary>
+        /// 额外规则
+        /// </summary>
+        public List<Rule> rules;
     }
 }

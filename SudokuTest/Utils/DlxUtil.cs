@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Entities;
 using SudokuTest.Base;
-using SudokuTest.Entities;
 
 namespace SudokuTest.Utils
 {
@@ -17,8 +17,9 @@ namespace SudokuTest.Utils
         {
             var numbers = puzzle.numbers.Select(number => number.x).ToArray();
 
-            var rowIEnumerable = GenerateMatrixRows(numbers);
-            var rowArray = rowIEnumerable.ToArray();
+            var baseRows = GenerateBaseRows(puzzle);
+
+            var rowArray = baseRows.ToArray();
             if (rowArray.Length == 0)
             {
                 return new int[0, 0];
@@ -37,11 +38,11 @@ namespace SudokuTest.Utils
             return matrix;
         }
 
-        private static IEnumerable<int[]> GenerateMatrixRows(int[] numbers)
+        private static IEnumerable<int[]> GenerateBaseRows(Puzzle puzzle)
         {
-            for (var i = 0; i < numbers.Length; i++)
+            for (var i = 0; i < puzzle.numbers.Length; i++)
             {
-                var possibleNumbers = FindPossibleNumbersAtIndex(numbers, i);
+                var possibleNumbers = FindPossibleNumbersAtIndex(puzzle, i);
                 foreach (var possibleNumber in possibleNumbers)
                 {
                     var row = new int[tileCount + rowCount + colCount + boxCount];
@@ -55,9 +56,9 @@ namespace SudokuTest.Utils
         }
 
 
-        private static int[] FindPossibleNumbersAtIndex(int[] numbers, int index)
+        private static int[] FindPossibleNumbersAtIndex(Puzzle puzzle, int index)
         {
-            var number = numbers[index];
+            var number = puzzle.numbers[index].x;
             if (number > 0)
             {
                 return new[] {number};
@@ -65,12 +66,18 @@ namespace SudokuTest.Utils
 
             var possibleNumbers = Enumerable.Range(1, 9)
                 .Except(
-                    numbers.Where((_number, _index) =>
-                        _index % 9 == index % 9
-                        || _index / 9 == index / 9
-                        || (_index % 9 / 3 == index % 9 / 3 && _index / 9 / 3 == index / 9 / 3)
-                    )
+                    puzzle.numbers.Select(_number => _number.x)
+                        .Where((_number, _index) =>
+                            _index % 9 == index % 9
+                            || _index / 9 == index / 9
+                            || (_index % 9 / 3 == index % 9 / 3 && _index / 9 / 3 == index / 9 / 3)
+                        )
                 );
+
+            if (puzzle.rules != null)
+            {
+                // todo 
+            }
 
             return possibleNumbers.ToArray();
         }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using DlxLib;
+using Entities;
 using NUnit.Framework;
 using SudokuTest.Datas;
-using SudokuTest.Entities;
 using SudokuTest.Utils;
 
 namespace SudokuTest
@@ -12,9 +12,25 @@ namespace SudokuTest
     public class Tests
     {
         [Test]
-        public void TestSimpleSudoku()
+        public void TestSimpleBaseSudoku()
         {
-            var puzzle = BaseLevelDatas.simpleDatas[0];
+            var puzzle = PuzzleDatas.BaseDatas[0];
+            var solutions = Validate(puzzle);
+            Assert.AreEqual(1, solutions.Length);
+        }
+
+        [Test]
+        public void TestExtremelyBaseSudoku()
+        {
+            var puzzle = PuzzleDatas.BaseDatas[1];
+            var solutions = Validate(puzzle);
+            Assert.AreEqual(1, solutions.Length);
+        }
+
+        [Test]
+        public void TestKillerSudoku()
+        {
+            var puzzle = PuzzleDatas.KillerDatas[0];
             var solutions = Validate(puzzle);
             Assert.AreEqual(1, solutions.Length);
         }
