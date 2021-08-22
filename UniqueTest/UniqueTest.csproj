@@ -4,8 +4,9 @@
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-        <ProjectGuid>{DDFA7869-9F71-4A0A-A5DE-7B1A3E76F5A7}</ProjectGuid>
-        <OutputType>Exe</OutputType>
+        <ProjectGuid>{56D7B55A-86C6-4569-991D-C38267BC5F86}</ProjectGuid>
+        <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+        <OutputType>Library</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
         <RootNamespace>UniqueTest</RootNamespace>
         <AssemblyName>UniqueTest</AssemblyName>
@@ -36,13 +37,26 @@
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />
         <Reference Include="System.Xml" />
+        <Reference Include="nunit.framework, Version=3.5.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb">
+            <HintPath>..\packages\NUnit.3.5.0\lib\net45\nunit.framework.dll</HintPath>
+        </Reference>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Program.cs" />
+        <Compile Include="Tests.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>
       <Content Include="README.md" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\DlxLib\DlxLib.csproj">
+        <Project>{4b56859e-f1b7-45f7-b8a8-e1c65d315414}</Project>
+        <Name>DlxLib</Name>
+      </ProjectReference>
+      <ProjectReference Include="..\TestUtil\TestUtil.csproj">
+        <Project>{1c32a664-f59f-40fd-b94e-af875d61769e}</Project>
+        <Name>TestUtil</Name>
+      </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

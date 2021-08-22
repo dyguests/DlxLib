@@ -15,7 +15,7 @@ namespace ExactCoverTest
             {
                 {1},
             };
-            Print(matrix);
+            Validate(matrix);
             Assert.True(true);
         }
 
@@ -26,7 +26,7 @@ namespace ExactCoverTest
             {
                 {0},
             };
-            Print(matrix);
+            Validate(matrix);
             Assert.True(true);
         }
 
@@ -40,7 +40,7 @@ namespace ExactCoverTest
                 {1, 1},
                 {0, 0},
             };
-            Print(matrix);
+            Validate(matrix);
             Assert.True(true);
         }
 
@@ -56,11 +56,11 @@ namespace ExactCoverTest
                 {0, 1, 1, 0, 0, 1, 1},
                 {0, 1, 0, 0, 0, 0, 1},
             };
-            Print(matrix);
+            Validate(matrix);
             Assert.True(true);
         }
 
-        private static void Print(int[,] matrix)
+        private static void Validate(int[,] matrix)
         {
             Console.WriteLine("-------- begin --------");
             Console.WriteLine(matrix.MatrixToString());
