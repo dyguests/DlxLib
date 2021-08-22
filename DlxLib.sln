@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DlxLib", "DlxLib\DlxLib.csproj", "{4B56859E-F1B7-45F7-B8A8-E1C65D315414}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{86CEBF0D-96BD-4683-B9A6-225A04C3F982}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExactCoverTest", "ExactCoverTest\ExactCoverTest.csproj", "{86CEBF0D-96BD-4683-B9A6-225A04C3F982}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
