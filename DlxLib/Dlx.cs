@@ -70,13 +70,10 @@ namespace DlxLib
                 o[k] = r;
 
                 // for each j ← R[r], RR[r], . . . , while j = r,
-                var j = r.R;
-                while (j != r)
+                for (var j = r.R; j != r; j = j.R)
                 {
                     // cover column j (see below);
                     CoverColumnC(j.C);
-
-                    j = j.R;
                 }
 
                 // search(k + 1);
@@ -87,13 +84,10 @@ namespace DlxLib
                 c = r.C;
 
                 // for each j ← L[r], L[L[r]], . . . , while j = r,
-                j = r.L;
-                while (j != r)
+                for (var j = r.L; j != r; j = j.L)
                 {
                     // uncover column j (see below).
                     UncoverColumnC(j.C);
-
-                    j = j.L;
                 }
             }
 
