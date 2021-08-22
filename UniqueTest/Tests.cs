@@ -60,6 +60,7 @@ namespace UniqueTest
                 Console.WriteLine("Solution:" + String.Join(",", solution));
             }
 
+            Console.WriteLine("Unique:" + (solutions.Length == 1));
             Console.WriteLine("-------- end --------");
             return solutions;
         }

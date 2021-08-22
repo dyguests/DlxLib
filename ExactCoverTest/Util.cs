@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace DlxLib
+namespace ExactCoverTest
 {
     public static class Util
     {

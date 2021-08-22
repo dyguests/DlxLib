@@ -81,7 +81,7 @@ namespace DlxLib
                     instrumentation.NotifySolutionIncrease();
                 }
 
-                yield return o.Select(dataObject => dataObject.Row).ToArray();
+                yield return o.Select(dataObject => dataObject.Row).Reverse().ToArray();
                 yield break;
             }
 

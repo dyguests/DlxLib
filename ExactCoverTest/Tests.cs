@@ -84,7 +84,13 @@ namespace ExactCoverTest
         private static void Validate(int[,] matrix, int numPrimaryColumns = int.MaxValue)
         {
             Console.WriteLine("-------- begin --------");
-            Console.WriteLine(matrix.MatrixToString());
+            Console.WriteLine("matrix:\n" + matrix.MatrixToString());
+            if (numPrimaryColumns != int.MaxValue)
+            {
+                Console.WriteLine("numPrimaryColumns:" + numPrimaryColumns);
+            }
+
+            Console.WriteLine("Solutions:");
             foreach (var result in Dlx.Solve(matrix, numPrimaryColumns, new Dlx.Instrumentation[0]))
             {
                 Console.WriteLine("Solution:" + String.Join(",", result));
