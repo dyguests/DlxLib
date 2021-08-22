@@ -64,8 +64,7 @@ namespace DlxLib
             CoverColumnC(c);
 
             // For each r ← D[c], D[D[c]], . . . , while r = c,
-            var r = c.D;
-            while (r != c)
+            for (var r = c.D; r != c; r = r.D)
             {
                 // set Ok ← r;
                 o[k] = r;
@@ -96,8 +95,6 @@ namespace DlxLib
 
                     j = j.L;
                 }
-
-                r = r.D; // 这行可以合到while中去？
             }
 
             // Uncover column c (see below)
@@ -163,39 +160,27 @@ namespace DlxLib
             c.R.L = c.L;
             c.L.R = c.R;
 
-            var i = c.D;
-            while (i != c)
+            for (var i = c.D; i != c; i = i.D)
             {
-                var j = i.R;
-                while (j != i)
+                for (var j = i.R; j != i; j = j.R)
                 {
                     j.D.U = j.U;
                     j.U.D = j.D;
                     j.C.S--;
-
-                    j = j.R;
                 }
-
-                i = i.D;
             }
         }
 
         private static void UncoverColumnC(ColumnObject c)
         {
-            var i = c.U;
-            while (i != c)
+            for (var i = c.U; i != c; i = i.U)
             {
-                var j = i.L;
-                while (j != i)
+                for (var j = i.L; j != i; j = i.L)
                 {
                     j.C.S++;
                     j.D.U = j;
                     j.U.D = j;
-
-                    j = i.L;
                 }
-
-                i = i.U;
             }
 
             c.R.L = c;
