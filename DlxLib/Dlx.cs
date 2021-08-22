@@ -169,7 +169,7 @@ namespace DlxLib
         {
             for (var i = c.U; i != c; i = i.U)
             {
-                for (var j = i.L; j != i; j = i.L)
+                for (var j = i.L; j != i; j = j.L)
                 {
                     j.C.S++;
                     j.D.U = j;
