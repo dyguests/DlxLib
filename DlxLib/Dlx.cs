@@ -9,6 +9,11 @@ namespace DlxLib
     /// </summary>
     public static class Dlx
     {
+        public static IEnumerable<int[]> Solve(int[,] matrix)
+        {
+            return Solve(matrix, new UpToTwoInstrumentation());
+        }
+
         public static IEnumerable<int[]> Solve(int[,] matrix, params Instrumentation[] instrumentations)
         {
             if (matrix == null) throw new ArgumentNullException(nameof(matrix));
