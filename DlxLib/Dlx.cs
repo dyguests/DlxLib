@@ -80,8 +80,9 @@ namespace DlxLib
                 Search(k + 1, h, o);
 
                 // set r ← Ok and c ← C[r];
-                r = o[k];
-                c = r.C;
+                // r = o[k];
+                o.Remove(k);
+                // c = r.C;
 
                 // for each j ← L[r], L[L[r]], . . . , while j = r,
                 for (var j = r.L; j != r; j = j.L)
