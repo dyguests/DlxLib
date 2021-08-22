@@ -237,11 +237,6 @@ namespace DlxLib
         /// </summary>
         public int N { get; set; }
 
-        // /// <summary>
-        // /// name
-        // /// </summary>
-        // public int n;
-
         public ColumnObject(int name)
         {
             C = this;
