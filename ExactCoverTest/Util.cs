@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace TestUtil
+namespace DlxLib
 {
     public static class Util
     {

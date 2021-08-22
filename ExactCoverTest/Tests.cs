@@ -1,7 +1,6 @@
 ﻿using System;
 using DlxLib;
 using NUnit.Framework;
-using TestUtil;
 
 namespace ExactCoverTest
 {

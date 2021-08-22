@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using DlxLib;
 using NUnit.Framework;
-using TestUtil;
 
 namespace UniqueTest
 {
