@@ -19,7 +19,7 @@ namespace DlxLib
             if (matrix == null) throw new ArgumentNullException(nameof(matrix));
 
             var h = BuildSparseMatrix(matrix, numPrimaryColumns);
-            var o = new Dictionary<int, DataObject>();
+            var o = new Stack<DataObject>();
             return Search(0, h, o, instrumentations);
         }
 
@@ -67,7 +67,7 @@ namespace DlxLib
         /// <param name="o"></param>
         /// <param name="instrumentations"></param>
         /// <returns></returns>
-        private static IEnumerable<int[]> Search(int k, ColumnObject h, Dictionary<int, DataObject> o, Instrumentation[] instrumentations)
+        private static IEnumerable<int[]> Search(int k, ColumnObject h, Stack<DataObject> o, Instrumentation[] instrumentations)
         {
             if (instrumentations?.Any(instrumentation => instrumentation.IsCancelled()) == true)
             {
@@ -82,8 +82,7 @@ namespace DlxLib
                     instrumentation.NotifySolutionIncrease();
                 }
 
-                // Console.WriteLine("Solution:" + string.Join(",", o.OrderBy(pair => pair.Key).Select(pair => pair.Value).Select(dataObject => dataObject.Row))); // todo
-                yield return o.OrderBy(pair => pair.Key).Select(pair => pair.Value).Select(dataObject => dataObject.Row).ToArray();
+                yield return o.Select(dataObject => dataObject.Row).ToArray();
                 yield break;
             }
 
@@ -104,7 +103,7 @@ namespace DlxLib
                     }
 
                     // set Ok ← r;
-                    o[k] = r;
+                    o.Push(r);
 
                     // for each j ← R[r], RR[r], . . . , while j = r,
                     for (var j = r.R; j != r; j = j.R)
@@ -121,9 +120,7 @@ namespace DlxLib
                     }
 
                     // set r ← Ok and c ← C[r];
-                    // r = o[k];
-                    o.Remove(k);
-                    // c = r.C;
+                    o.Pop();
 
                     // for each j ← L[r], L[L[r]], . . . , while j = r,
                     for (var j = r.L; j != r; j = j.L)

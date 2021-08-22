@@ -8,7 +8,7 @@
 
 ## Todo List
 
--[ ] 可选约束
+-[x] 可选约束
 -[ ] o dict -> stack
 
 ## Reference
