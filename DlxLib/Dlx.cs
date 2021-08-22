@@ -9,18 +9,54 @@ namespace DlxLib
     /// </summary>
     public static class Dlx
     {
-        public static IEnumerable<int[]> Solve(int[,] matrix)
+        public static IEnumerable<int[]> Solve(int[,] matrix, int numPrimaryColumns = int.MaxValue)
         {
-            return Solve(matrix, new UpToTwoInstrumentation());
+            return Solve(matrix, numPrimaryColumns, new UpToTwoInstrumentation());
         }
 
-        public static IEnumerable<int[]> Solve(int[,] matrix, params Instrumentation[] instrumentations)
+        public static IEnumerable<int[]> Solve(int[,] matrix, int numPrimaryColumns, params Instrumentation[] instrumentations)
         {
             if (matrix == null) throw new ArgumentNullException(nameof(matrix));
 
-            var h = BuildSparseMatrix(matrix);
+            var h = BuildSparseMatrix(matrix, numPrimaryColumns);
             var o = new Dictionary<int, DataObject>();
             return Search(0, h, o, instrumentations);
+        }
+
+        /// <summary>
+        /// 注意稀疏矩阵是一个十字环形链表。（“十字”、“环形”）
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <param name="numPrimaryColumns"></param>
+        /// <returns>list header</returns>
+        private static ColumnObject BuildSparseMatrix(int[,] matrix, int numPrimaryColumns)
+        {
+            var h = new ColumnObject(-1);
+            var listHeaders = new Dictionary<int, ColumnObject>();
+            for (var row = 0; row < matrix.GetLength(0); row++)
+            {
+                // var c = h;
+                DataObject r = null;
+                for (var col = 0; col < matrix.GetLength(1); col++)
+                {
+                    if (row == 0)
+                    {
+                        var listHeader = new ColumnObject(col);
+                        if (col < numPrimaryColumns) h.AppendToRow(listHeader);
+                        listHeaders[col] = listHeader;
+                    }
+
+                    var c = listHeaders[col];
+                    if (matrix[row, col] == 1)
+                    {
+                        c.AppendToCol(new DataObject(c, row));
+                        r?.AppendToRow(c.U);
+                        r = c.U;
+                    }
+                }
+            }
+
+            return h;
         }
 
         /// <summary>
@@ -102,38 +138,6 @@ namespace DlxLib
                 // Uncover column c (see below)
                 UncoverColumnC(c);
             }
-        }
-
-        /// <summary>
-        /// 注意稀疏矩阵是一个十字环形链表。（“十字”、“环形”）
-        /// </summary>
-        /// <param name="matrix"></param>
-        /// <returns>list header</returns>
-        private static ColumnObject BuildSparseMatrix(int[,] matrix)
-        {
-            var h = new ColumnObject(-1);
-            for (var row = 0; row < matrix.GetLength(0); row++)
-            {
-                var c = h;
-                DataObject r = null;
-                for (var col = 0; col < matrix.GetLength(1); col++)
-                {
-                    if (row == 0)
-                    {
-                        h.AppendToRow(new ColumnObject(col));
-                    }
-
-                    c = c.R as ColumnObject;
-                    if (matrix[row, col] == 1)
-                    {
-                        c.AppendToCol(new DataObject(c, row));
-                        r?.AppendToRow(c.U);
-                        r = c.U;
-                    }
-                }
-            }
-
-            return h;
         }
 
         private static ColumnObject ChooseColumnC(ColumnObject h)
