@@ -38,13 +38,14 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Generators\RuleMatrixGenerators.cs" />
         <Compile Include="SudokuDlxUtil.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\Sudoku\Sudoku.csproj">
+      <ProjectReference Include="..\SudokuLib\SudokuLib.csproj">
         <Project>{e29c7b9d-a117-4a12-acfd-f48746063f6c}</Project>
-        <Name>Sudoku</Name>
+        <Name>SudokuLib</Name>
       </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

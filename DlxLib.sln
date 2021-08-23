@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniqueTest", "UniqueTest\Un
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuTest", "SudokuTest\SudokuTest.csproj", "{AEA14FC2-FB94-4251-BC1B-6E0DCC7028DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sudoku", "Sudoku\Sudoku.csproj", "{E29C7B9D-A117-4A12-ACFD-F48746063F6C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuLib", "SudokuLib\SudokuLib.csproj", "{E29C7B9D-A117-4A12-ACFD-F48746063F6C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuDlxLib", "SudokuDlxLib\SudokuDlxLib.csproj", "{EAE23E5D-E57D-4077-9801-9E78EFA34420}"
 EndProject
