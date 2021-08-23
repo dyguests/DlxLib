@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SudokuTest")]
+[assembly: AssemblyTitle("SudokuTestTmp")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SudokuTest")]
+[assembly: AssemblyProduct("SudokuTestTmp")]
 [assembly: AssemblyCopyright("Copyright ©  2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("E548B15E-BE31-4166-A744-B2AAEE9946AC")]
+[assembly: Guid("AEA14FC2-FB94-4251-BC1B-6E0DCC7028DE")]
 
 // Version information for an assembly consists of the following four values:
 //

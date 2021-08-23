@@ -10,7 +10,7 @@ namespace SudokuDlxLib
         {
             var ruleMatrixs = sudoku.rules.Select(rule => RuleRouter.GetRuleMatrixGenerator(rule.type).RuleToMatrix(sudoku, rule));
 
-            return new int[0, 0];
+            return ruleMatrixs.First().matrix;
         }
     }
 

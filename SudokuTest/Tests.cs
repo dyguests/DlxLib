@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Linq;
 using DlxLib;
-using Entities;
 using NUnit.Framework;
-using SudokuTest.Datas;
-using SudokuTest.Utils;
+using SudokuDlxLib;
+using SudokuLib;
 
 namespace SudokuTest
 {
@@ -12,55 +11,24 @@ namespace SudokuTest
     public class Tests
     {
         [Test]
-        public void TestSimpleBaseSudoku()
+        public void Test1()
         {
-            var puzzle = PuzzleDatas.BaseDatas[0];
-            var solutions = Validate(puzzle);
-            Assert.AreEqual(1, solutions.Length);
-        }
-
-        [Test]
-        public void TestExtremelyBaseSudoku()
-        {
-            var puzzle = PuzzleDatas.BaseDatas[1];
-            var solutions = Validate(puzzle);
-            Assert.AreEqual(1, solutions.Length);
-        }
-
-        [Test]
-        public void TestKillerSudoku()
-        {
-            var puzzle = PuzzleDatas.KillerDatas[0];
-            var solutions = Validate(puzzle);
-            Assert.AreEqual(1, solutions.Length);
-        }
-
-        private static int[][] Validate(Puzzle puzzle)
-        {
-            Console.WriteLine("-------- begin --------");
-            Console.WriteLine("Puzzle:\n" + puzzle.PuzzleToString());
-            var matrix = DlxUtil.ToMatrix(puzzle);
-            // Console.WriteLine(matrix.MatrixToString());
+            var sudoku = new Sudoku
+            {
+                initNumbers = new[] {0, 0, 0, 0, 0, 8, 3, 0, 0, 0, 6, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 8, 5, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 1, 0, 2, 4, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 5, 0, 0},
+                rules = new Rule[]
+                {
+                    new NormalRule(),
+                }
+            };
+            var matrix = SudokuDlxUtil.SudokuToMatrix(sudoku);
             var solutions = Dlx.Solve(matrix).ToArray();
-            foreach (var solution in solutions)
+            foreach (var result in solutions)
             {
-                Console.WriteLine("Solution:" + String.Join(",", solution));
+                Console.WriteLine("Solution:" + String.Join(",", result));
             }
 
-            foreach (var solution in solutions)
-            {
-                var answer = DlxUtil.ToNumbers(matrix, solution);
-                Console.WriteLine("Answer:\n" + string.Join(
-                                      "\n",
-                                      answer
-                                          .Select((value, index) => new {value, index})
-                                          .GroupBy(x => x.index / 9)
-                                          .Select(x => string.Join("", x.Select(y => y.value))))
-                );
-            }
-
-            Console.WriteLine("-------- end --------");
-            return solutions;
+            Assert.True(solutions.Length == 1);
         }
     }
 }

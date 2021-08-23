@@ -4,12 +4,12 @@
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-        <ProjectGuid>{E548B15E-BE31-4166-A744-B2AAEE9946AC}</ProjectGuid>
+        <ProjectGuid>{AEA14FC2-FB94-4251-BC1B-6E0DCC7028DE}</ProjectGuid>
         <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
         <OutputType>Library</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
         <RootNamespace>SudokuTest</RootNamespace>
-        <AssemblyName>SudokuTest</AssemblyName>
+        <AssemblyName>SudokuTestTmp</AssemblyName>
         <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
     </PropertyGroup>
@@ -42,21 +42,22 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Base\Vector2Int.cs" />
+        <Compile Include="Base\Vector3Int.cs" />
+        <Compile Include="Datas\PuzzleDatas.cs" />
+        <Compile Include="Entities\CageRule.cs" />
+        <Compile Include="Entities\Puzzle.cs" />
+        <Compile Include="Entities\Rule.cs" />
         <Compile Include="Tests.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="Utils\ArrayEx.cs" />
+        <Compile Include="Utils\ArrayUtil.cs" />
+        <Compile Include="Utils\DlxUtil.cs" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\DlxLib\DlxLib.csproj">
         <Project>{4b56859e-f1b7-45f7-b8a8-e1c65d315414}</Project>
         <Name>DlxLib</Name>
-      </ProjectReference>
-      <ProjectReference Include="..\SudokuDlxLib\SudokuDlxLib.csproj">
-        <Project>{eae23e5d-e57d-4077-9801-9e78efa34420}</Project>
-        <Name>SudokuDlxLib</Name>
-      </ProjectReference>
-      <ProjectReference Include="..\SudokuLib\SudokuLib.csproj">
-        <Project>{e29c7b9d-a117-4a12-acfd-f48746063f6c}</Project>
-        <Name>SudokuLib</Name>
       </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

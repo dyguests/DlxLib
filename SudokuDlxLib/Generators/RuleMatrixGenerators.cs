@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using SudokuDlxLib.Utils;
 using SudokuLib;
 
 namespace SudokuDlxLib.Generators
@@ -50,7 +51,7 @@ namespace SudokuDlxLib.Generators
             var rows = numbers.Select((number, index) => GetPossibleNumbers(numbers, index))
                 .Select(GenerateRow)
                 .SelectMany(rows1 => rows1);
-            return new int[0, 0];
+            return ArrayUtil.To2DArray(rows);
         }
 
         private IEnumerable<int> GetPossibleNumbers(int[] numbers, int index)
@@ -64,10 +65,10 @@ namespace SudokuDlxLib.Generators
             }
 
             var possibleNumbers = Enumerable.Range(1, 9).Except(
-                numbers.Where((number, _index) =>
-                    _index % 9 == index % 9
-                    || _index / 9 == index / 9
-                    || (_index % 9 / 3 == index % 9 / 3 && _index / 9 / 3 == index / 9 / 3)
+                numbers.Where((number, index1) =>
+                    index1 % 9 == index % 9
+                    || index1 / 9 == index / 9
+                    || (index1 % 9 / 3 == index % 9 / 3 && index1 / 9 / 3 == index / 9 / 3)
                 )
             );
 
