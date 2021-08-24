@@ -12,7 +12,7 @@ namespace SudokuTest
     public class Tests
     {
         [Test]
-        public void Test1()
+        public void TestNormalSudoku()
         {
             var sudoku = new Sudoku
             {
@@ -25,7 +25,7 @@ namespace SudokuTest
             Console.WriteLine("Solution:\n" + sudoku.initNumbers.NumbersToString());
 
             var (matrix, secondaryColumns) = SudokuDlxUtil.SudokuToMatrix(sudoku);
-            var solutions = Dlx.Solve(matrix).ToArray();
+            var solutions = Dlx.Solve(matrix, secondaryColumns).ToArray();
             foreach (var result in solutions)
             {
                 Console.WriteLine("Solution:" + String.Join(",", result));
