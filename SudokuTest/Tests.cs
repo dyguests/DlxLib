@@ -24,7 +24,7 @@ namespace SudokuTest
             };
             Console.WriteLine("Solution:\n" + sudoku.initNumbers.NumbersToString());
 
-            var matrix = SudokuDlxUtil.SudokuToMatrix(sudoku);
+            var (matrix, secondaryColumns) = SudokuDlxUtil.SudokuToMatrix(sudoku);
             var solutions = Dlx.Solve(matrix).ToArray();
             foreach (var result in solutions)
             {

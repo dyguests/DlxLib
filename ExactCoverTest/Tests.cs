@@ -81,6 +81,34 @@ namespace ExactCoverTest
             Assert.True(true);
         }
 
+        [Test]
+        public void TestSecondaryColumns()
+        {
+            var matrix = new[,]
+            {
+                {1, 0, 1, 0},
+                {0, 1, 1, 0},
+                {0, 1, 0, 1},
+                {0, 1, 0, 0},
+            };
+            Validate(matrix, new[] {2, 3});
+            Assert.True(true);
+        }
+
+        [Test]
+        public void TestSecondaryColumns2()
+        {
+            var matrix = new[,]
+            {
+                {1, 0, 1, 1, 0},
+                {0, 1, 1, 0, 0},
+                {0, 1, 0, 1, 1},
+                {0, 1, 0, 0, 0},
+            };
+            Validate(matrix, new[] {2, 4});
+            Assert.True(true);
+        }
+
         private static void Validate(int[,] matrix, int numPrimaryColumns = int.MaxValue)
         {
             Console.WriteLine("-------- begin --------");
@@ -91,7 +119,22 @@ namespace ExactCoverTest
             }
 
             Console.WriteLine("Solutions:");
-            foreach (var result in Dlx.Solve(matrix, numPrimaryColumns, new Dlx.Instrumentation[0]))
+            foreach (var result in Dlx.Solve(matrix, numPrimaryColumns))
+            {
+                Console.WriteLine("Solution:" + String.Join(",", result));
+            }
+
+            Console.WriteLine("-------- end --------");
+        }
+
+        private static void Validate(int[,] matrix, int[] secondaryColumns)
+        {
+            Console.WriteLine("-------- begin --------");
+            Console.WriteLine("matrix:\n" + matrix.MatrixToString());
+            Console.WriteLine("secondaryColumns:" + string.Join(",", secondaryColumns));
+
+            Console.WriteLine("Solutions:");
+            foreach (var result in Dlx.Solve(matrix, secondaryColumns))
             {
                 Console.WriteLine("Solution:" + String.Join(",", result));
             }

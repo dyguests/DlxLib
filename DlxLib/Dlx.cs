@@ -9,16 +9,38 @@ namespace DlxLib
     /// </summary>
     public static class Dlx
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <param name="numPrimaryColumns">It means 0~numPrimaryColumns are primary columns</param>
+        /// <returns></returns>
         public static IEnumerable<int[]> Solve(int[,] matrix, int numPrimaryColumns = int.MaxValue)
         {
-            return Solve(matrix, numPrimaryColumns, new UpToTwoInstrumentation());
+            return Solve(matrix, new NumPrimaryColumnsPredicate(numPrimaryColumns));
         }
 
-        public static IEnumerable<int[]> Solve(int[,] matrix, int numPrimaryColumns, params Instrumentation[] instrumentations)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <param name="secondaryColumns">It means any col not in secondaryColumns is primary columns</param>
+        /// <returns></returns>
+        public static IEnumerable<int[]> Solve(int[,] matrix, int[] secondaryColumns)
+        {
+            return Solve(matrix, new SecondaryColumnsPredicate(secondaryColumns));
+        }
+
+        public static IEnumerable<int[]> Solve(int[,] matrix, ISecondaryColumnPredicate secondaryColumnPredicate)
+        {
+            return Solve(matrix, secondaryColumnPredicate, new UpToTwoInstrumentation());
+        }
+
+        public static IEnumerable<int[]> Solve(int[,] matrix, ISecondaryColumnPredicate secondaryColumnPredicate, params Instrumentation[] instrumentations)
         {
             if (matrix == null) throw new ArgumentNullException(nameof(matrix));
 
-            var h = BuildSparseMatrix(matrix, numPrimaryColumns);
+            var h = BuildSparseMatrix(matrix, secondaryColumnPredicate);
             var o = new Stack<DataObject>();
             return Search(h, o, instrumentations);
         }
@@ -27,9 +49,9 @@ namespace DlxLib
         /// 注意稀疏矩阵是一个十字环形链表。（“十字”、“环形”）
         /// </summary>
         /// <param name="matrix"></param>
-        /// <param name="numPrimaryColumns"></param>
+        /// <param name="secondaryColumnPredicate"></param>
         /// <returns>list header</returns>
-        private static ColumnObject BuildSparseMatrix(int[,] matrix, int numPrimaryColumns)
+        private static ColumnObject BuildSparseMatrix(int[,] matrix, ISecondaryColumnPredicate secondaryColumnPredicate)
         {
             var h = new ColumnObject(-1);
             var listHeaders = new Dictionary<int, ColumnObject>();
@@ -42,7 +64,7 @@ namespace DlxLib
                     if (row == 0)
                     {
                         var listHeader = new ColumnObject(col);
-                        if (col < numPrimaryColumns) h.AppendToRow(listHeader);
+                        if (!secondaryColumnPredicate.IsSecondaryColumn(col)) h.AppendToRow(listHeader);
                         listHeaders[col] = listHeader;
                     }
 
@@ -233,6 +255,35 @@ namespace DlxLib
                     Cancel();
                 }
             }
+        }
+
+        public interface ISecondaryColumnPredicate
+        {
+            bool IsSecondaryColumn(int column);
+        }
+
+        public class SecondaryColumnsPredicate : ISecondaryColumnPredicate
+        {
+            private readonly int[] secondaryColumns;
+
+            public SecondaryColumnsPredicate(int[] secondaryColumns)
+            {
+                this.secondaryColumns = secondaryColumns;
+            }
+
+            public bool IsSecondaryColumn(int column) => secondaryColumns?.Contains(column) == true;
+        }
+
+        public class NumPrimaryColumnsPredicate : ISecondaryColumnPredicate
+        {
+            private readonly int numPrimaryColumns;
+
+            public NumPrimaryColumnsPredicate(int numPrimaryColumns)
+            {
+                this.numPrimaryColumns = numPrimaryColumns;
+            }
+
+            public bool IsSecondaryColumn(int column) => column > numPrimaryColumns;
         }
     }
 
