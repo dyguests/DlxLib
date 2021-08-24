@@ -84,9 +84,7 @@ namespace SudokuTest.Utils
 
         public static int[] ToNumbers(int[,] matrix, int[] solution)
         {
-            return solution.Select(index =>
-                    matrix.GetRow(index).ParseToNumberAndIndex()
-                )
+            return solution.Select(index => matrix.GetRow(index).ParseToNumberAndIndex())
                 .OrderBy(numberAndIndex => numberAndIndex.y)
                 .Select(numberAndIndex => numberAndIndex.x)
                 .ToArray();

@@ -29,6 +29,13 @@ namespace SudokuTest
             }
 
             Assert.True(solutions.Length == 1);
+
+            if (solutions.Length == 1)
+            {
+                var solutionNumbers = SudokuDlxUtil.SolutionToNumbers(sudoku, matrix, solutions[0]);
+
+                Console.WriteLine("Solution:\n" + String.Join("", solutionNumbers));
+            }
         }
     }
 }

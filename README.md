@@ -141,6 +141,7 @@ Answer:
 
 -[x] 可选约束
 -[ ] o dict -> stack
+-[ ] GetRuleDlxProcessor Singleton
 
 ## Reference
 
