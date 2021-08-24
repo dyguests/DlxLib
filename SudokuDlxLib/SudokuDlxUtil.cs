@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using SudokuDlxLib.Generators;
+using SudokuDlxLib.Processors;
 using SudokuDlxLib.Utils;
 using SudokuLib;
 

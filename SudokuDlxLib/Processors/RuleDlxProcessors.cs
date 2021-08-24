@@ -6,7 +6,7 @@ using SudokuDlxLib.Utils;
 using SudokuLib;
 using SudokuTest.Utils;
 
-namespace SudokuDlxLib.Generators
+namespace SudokuDlxLib.Processors
 {
     public static class RuleRouter
     {

@@ -3,6 +3,7 @@ using System.Linq;
 using DlxLib;
 using NUnit.Framework;
 using SudokuDlxLib;
+using SudokuDlxLib.Utils;
 using SudokuLib;
 
 namespace SudokuTest
@@ -21,6 +22,8 @@ namespace SudokuTest
                     new NormalRule(),
                 }
             };
+            Console.WriteLine("Solution:\n" + sudoku.initNumbers.NumbersToString());
+
             var matrix = SudokuDlxUtil.SudokuToMatrix(sudoku);
             var solutions = Dlx.Solve(matrix).ToArray();
             foreach (var result in solutions)
@@ -34,7 +37,7 @@ namespace SudokuTest
             {
                 var solutionNumbers = SudokuDlxUtil.SolutionToNumbers(sudoku, matrix, solutions[0]);
 
-                Console.WriteLine("Solution:\n" + String.Join("", solutionNumbers));
+                Console.WriteLine("Solution:\n" + solutionNumbers.NumbersToString());
             }
         }
     }
