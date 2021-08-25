@@ -109,6 +109,21 @@ namespace ExactCoverTest
             Assert.True(true);
         }
 
+        [Test]
+        public void TestHintColumns()
+        {
+            var matrix = new[,]
+            {
+                //P  P     S  P  S
+                {1, 0, 1, 1, 1, 0},
+                {0, 1, 1, 1, 0, 0},
+                {0, 1, 1, 0, 1, 1},
+                {0, 1, 1, 0, 0, 0},
+            };
+            Validate(matrix, new[] {0, 1, 4}, new[] {3, 5});
+            Assert.True(true);
+        }
+
         private static void Validate(int[,] matrix, int numPrimaryColumns = int.MaxValue)
         {
             Console.WriteLine("-------- begin --------");
@@ -135,6 +150,21 @@ namespace ExactCoverTest
 
             Console.WriteLine("Solutions:");
             foreach (var result in Dlx.Solve(matrix, secondaryColumns))
+            {
+                Console.WriteLine("Solution:" + String.Join(",", result));
+            }
+
+            Console.WriteLine("-------- end --------");
+        }
+
+        private static void Validate(int[,] matrix, int[] primaryColumns, int[] secondaryColumns)
+        {
+            Console.WriteLine("-------- begin --------");
+            Console.WriteLine("matrix:\n" + matrix.MatrixToString());
+            Console.WriteLine("secondaryColumns:" + string.Join(",", secondaryColumns));
+
+            Console.WriteLine("Solutions:");
+            foreach (var result in Dlx.Solve(matrix, primaryColumns, secondaryColumns))
             {
                 Console.WriteLine("Solution:" + String.Join(",", result));
             }
