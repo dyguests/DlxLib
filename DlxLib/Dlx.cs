@@ -77,16 +77,26 @@ namespace DlxLib
                     if (row == 0)
                     {
                         var listHeader = new ColumnObject(col);
-                        if (columnPredicate.IsPrimaryColumn(col)) h.AppendToRow(listHeader);
-                        listHeaders[col] = listHeader;
+                        if (columnPredicate.IsPrimaryColumn(col))
+                        {
+                            h.AppendToRow(listHeader);
+                        }
+
+                        if (columnPredicate.IsPrimaryColumn(col) || columnPredicate.IsSecondaryColumn(col))
+                        {
+                            listHeaders[col] = listHeader;
+                        }
                     }
 
-                    var c = listHeaders[col];
-                    if (matrix[row, col] == 1)
+                    if (columnPredicate.IsPrimaryColumn(col) || columnPredicate.IsSecondaryColumn(col))
                     {
-                        c.AppendToCol(new DataObject(c, row));
-                        r?.AppendToRow(c.U);
-                        r = c.U;
+                        var c = listHeaders[col];
+                        if (matrix[row, col] == 1)
+                        {
+                            c.AppendToCol(new DataObject(c, row));
+                            r?.AppendToRow(c.U);
+                            r = c.U;
+                        }
                     }
                 }
             }
@@ -321,7 +331,7 @@ namespace DlxLib
 
             public bool IsPrimaryColumn(int column) => primaryColumns.Contains(column);
 
-            public bool IsSecondaryColumn(int column) => secondaryColumns.Contains(column) == true;
+            public bool IsSecondaryColumn(int column) => secondaryColumns.Contains(column);
         }
     }
 

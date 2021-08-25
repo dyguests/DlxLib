@@ -115,9 +115,9 @@ namespace SudokuDlxLib.Processors
 
         private IEnumerable<int[]> GenerateRow(IEnumerable<int> possibleNumbers, int index) => possibleNumbers.Select(possibleNumber =>
         {
-            var row = new int[TileCount + RowCount + ColCount + BoxCount];
+            var row = new int[TileCount + NumberCount + RowCount + ColCount + BoxCount];
             row[index] = 1; //index
-            row[TileCount + possibleNumber - 1] = 1; //index
+            row[TileCount + possibleNumber - 1] = 1; //number
             row[TileCount + NumberCount + index / 9 * 9 + possibleNumber - 1] = 1; //row
             row[TileCount + NumberCount + RowCount + index % 9 * 9 + possibleNumber - 1] = 1; //col
             row[TileCount + NumberCount + RowCount + ColCount + (index % 9 / 3 + index / 9 / 3 * 3) * 9 + possibleNumber - 1] = 1; //box

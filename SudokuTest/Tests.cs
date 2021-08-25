@@ -22,7 +22,7 @@ namespace SudokuTest
                     new NormalRule(),
                 }
             };
-            Console.WriteLine("Solution:\n" + sudoku.initNumbers.NumbersToString());
+            Console.WriteLine("Sudoku:\n" + sudoku.initNumbers.NumbersToString());
 
             var (matrix, primaryColumns, secondaryColumns) = SudokuDlxUtil.SudokuToMatrix(sudoku);
             var solutions = Dlx.Solve(matrix, primaryColumns, secondaryColumns).ToArray();
@@ -37,7 +37,7 @@ namespace SudokuTest
             {
                 var solutionNumbers = SudokuDlxUtil.SolutionToNumbers(sudoku, matrix, solutions[0]);
 
-                Console.WriteLine("Solution:\n" + solutionNumbers.NumbersToString());
+                Console.WriteLine("Sudoku Solution:\n" + solutionNumbers.NumbersToString());
             }
         }
     }
