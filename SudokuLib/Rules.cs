@@ -12,8 +12,20 @@ namespace SudokuLib
     {
     }
 
+    public class CageRule : Rule
+    {
+        public Cage[] cages;
+
+        public struct Cage
+        {
+            public int sum;
+            public int[] indexs;
+        }
+    }
+
     public enum RuleType
     {
         Normal,
+        Cage,
     }
 }
