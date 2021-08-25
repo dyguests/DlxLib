@@ -31,6 +31,19 @@ namespace DlxLib
             return Solve(matrix, new SecondaryColumnsPredicate(secondaryColumns));
         }
 
+        /// <summary>
+        /// 一般用于除了主列、副列还有提示列的情况
+        /// 提示列：不参与DLX算法，参与matrix join。
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <param name="primaryColumns">主列</param>
+        /// <param name="secondaryColumns">副列</param>
+        /// <returns></returns>
+        public static IEnumerable<int[]> Solve(int[,] matrix, int[] primaryColumns, int[] secondaryColumns)
+        {
+            return Solve(matrix, new ColumnsPredicate(primaryColumns, secondaryColumns));
+        }
+
         public static IEnumerable<int[]> Solve(int[,] matrix, ISecondaryColumnPredicate secondaryColumnPredicate)
         {
             return Solve(matrix, secondaryColumnPredicate, new UpToTwoInstrumentation());
@@ -262,6 +275,18 @@ namespace DlxLib
             bool IsSecondaryColumn(int column);
         }
 
+        public class NumPrimaryColumnsPredicate : ISecondaryColumnPredicate
+        {
+            private readonly int numPrimaryColumns;
+
+            public NumPrimaryColumnsPredicate(int numPrimaryColumns)
+            {
+                this.numPrimaryColumns = numPrimaryColumns;
+            }
+
+            public bool IsSecondaryColumn(int column) => column > numPrimaryColumns;
+        }
+
         public class SecondaryColumnsPredicate : ISecondaryColumnPredicate
         {
             private readonly int[] secondaryColumns;
@@ -274,16 +299,18 @@ namespace DlxLib
             public bool IsSecondaryColumn(int column) => secondaryColumns?.Contains(column) == true;
         }
 
-        public class NumPrimaryColumnsPredicate : ISecondaryColumnPredicate
+        public class ColumnsPredicate : ISecondaryColumnPredicate
         {
-            private readonly int numPrimaryColumns;
+            private readonly int[] primaryColumns;
+            private readonly int[] secondaryColumns;
 
-            public NumPrimaryColumnsPredicate(int numPrimaryColumns)
+            public ColumnsPredicate(int[] primaryColumns, int[] secondaryColumns)
             {
-                this.numPrimaryColumns = numPrimaryColumns;
+                this.primaryColumns = primaryColumns;
+                this.secondaryColumns = secondaryColumns;
             }
 
-            public bool IsSecondaryColumn(int column) => column > numPrimaryColumns;
+            public bool IsSecondaryColumn(int column) => secondaryColumns?.Contains(column) == true;
         }
     }
 

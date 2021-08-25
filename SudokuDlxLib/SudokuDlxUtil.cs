@@ -11,12 +11,13 @@ namespace SudokuDlxLib
         /// 
         /// </summary>
         /// <param name="sudoku"></param>
-        /// <returns>(matrix, secondaryColumns)</returns>
-        public static (int[,] matrix, int[] secondaryColumns) SudokuToMatrix(Sudoku sudoku)
+        /// <returns>(matrix, primaryColumns, secondaryColumns)</returns>
+        public static (int[,] matrix, int[] primaryColumns, int[] secondaryColumns) SudokuToMatrix(Sudoku sudoku)
         {
             var ruleMatrixs = sudoku.rules.Select(rule => RuleRouter.GetRuleDlxProcessor(rule.type).RuleToMatrix(sudoku, rule));
 
-            return (ruleMatrixs.First().matrix, new int[0]);
+            var sudokuMatrix = ruleMatrixs.First();
+            return (sudokuMatrix.matrix, sudokuMatrix.primaryColumns, sudokuMatrix.secondaryColumns);
         }
 
         public static int[] SolutionToNumbers(Sudoku sudoku, int[,] matrix, int[] solution)
