@@ -44,27 +44,27 @@ namespace DlxLib
             return Solve(matrix, new ColumnsPredicate(primaryColumns, secondaryColumns));
         }
 
-        public static IEnumerable<int[]> Solve(int[,] matrix, ISecondaryColumnPredicate secondaryColumnPredicate)
+        public static IEnumerable<int[]> Solve(int[,] matrix, IColumnPredicate columnPredicate)
         {
-            return Solve(matrix, secondaryColumnPredicate, new UpToTwoInstrumentation());
+            return Solve(matrix, columnPredicate, new UpToTwoInstrumentation());
         }
 
-        public static IEnumerable<int[]> Solve(int[,] matrix, ISecondaryColumnPredicate secondaryColumnPredicate, params Instrumentation[] instrumentations)
+        public static IEnumerable<int[]> Solve(int[,] matrix, IColumnPredicate columnPredicate, params Instrumentation[] instrumentations)
         {
             if (matrix == null) throw new ArgumentNullException(nameof(matrix));
 
-            var h = BuildSparseMatrix(matrix, secondaryColumnPredicate);
+            var h = BuildSparseMatrix(matrix, columnPredicate);
             var o = new Stack<DataObject>();
-            return Search(h, o, instrumentations);
+            return Search(0, h, o, instrumentations);
         }
 
         /// <summary>
         /// 注意稀疏矩阵是一个十字环形链表。（“十字”、“环形”）
         /// </summary>
         /// <param name="matrix"></param>
-        /// <param name="secondaryColumnPredicate"></param>
+        /// <param name="columnPredicate"></param>
         /// <returns>list header</returns>
-        private static ColumnObject BuildSparseMatrix(int[,] matrix, ISecondaryColumnPredicate secondaryColumnPredicate)
+        private static ColumnObject BuildSparseMatrix(int[,] matrix, IColumnPredicate columnPredicate)
         {
             var h = new ColumnObject(-1);
             var listHeaders = new Dictionary<int, ColumnObject>();
@@ -77,7 +77,7 @@ namespace DlxLib
                     if (row == 0)
                     {
                         var listHeader = new ColumnObject(col);
-                        if (!secondaryColumnPredicate.IsSecondaryColumn(col)) h.AppendToRow(listHeader);
+                        if (columnPredicate.IsPrimaryColumn(col)) h.AppendToRow(listHeader);
                         listHeaders[col] = listHeader;
                     }
 
@@ -97,11 +97,12 @@ namespace DlxLib
         /// <summary>
         /// Our nondeterministic algorithm to find all exact covers can now be cast in the following explicit, deterministic form as a recursive procedure search(k), which is invoked initially with k = 0
         /// </summary>
+        /// <param name="k">递归层次</param>
         /// <param name="h"></param>
         /// <param name="o"></param>
         /// <param name="instrumentations"></param>
         /// <returns></returns>
-        private static IEnumerable<int[]> Search(ColumnObject h, Stack<DataObject> o, Instrumentation[] instrumentations)
+        private static IEnumerable<int[]> Search(int k, ColumnObject h, Stack<DataObject> o, Instrumentation[] instrumentations)
         {
             if (instrumentations?.Any(instrumentation => instrumentation.IsCancelled()) == true)
             {
@@ -147,7 +148,7 @@ namespace DlxLib
                     }
 
                     // search(k + 1);
-                    var solutions = Search(h, o, instrumentations);
+                    var solutions = Search(k + 1, h, o, instrumentations);
                     foreach (var solution in solutions)
                     {
                         yield return solution;
@@ -270,12 +271,16 @@ namespace DlxLib
             }
         }
 
-        public interface ISecondaryColumnPredicate
+        /// <summary>
+        /// 判断 主列、副列、提示列
+        /// </summary>
+        public interface IColumnPredicate
         {
+            bool IsPrimaryColumn(int column);
             bool IsSecondaryColumn(int column);
         }
 
-        public class NumPrimaryColumnsPredicate : ISecondaryColumnPredicate
+        public class NumPrimaryColumnsPredicate : IColumnPredicate
         {
             private readonly int numPrimaryColumns;
 
@@ -284,10 +289,12 @@ namespace DlxLib
                 this.numPrimaryColumns = numPrimaryColumns;
             }
 
+            public bool IsPrimaryColumn(int column) => column <= numPrimaryColumns;
+
             public bool IsSecondaryColumn(int column) => column > numPrimaryColumns;
         }
 
-        public class SecondaryColumnsPredicate : ISecondaryColumnPredicate
+        public class SecondaryColumnsPredicate : IColumnPredicate
         {
             private readonly int[] secondaryColumns;
 
@@ -296,10 +303,12 @@ namespace DlxLib
                 this.secondaryColumns = secondaryColumns;
             }
 
-            public bool IsSecondaryColumn(int column) => secondaryColumns?.Contains(column) == true;
+            public bool IsPrimaryColumn(int column) => !secondaryColumns.Contains(column);
+
+            public bool IsSecondaryColumn(int column) => secondaryColumns.Contains(column);
         }
 
-        public class ColumnsPredicate : ISecondaryColumnPredicate
+        public class ColumnsPredicate : IColumnPredicate
         {
             private readonly int[] primaryColumns;
             private readonly int[] secondaryColumns;
@@ -310,7 +319,9 @@ namespace DlxLib
                 this.secondaryColumns = secondaryColumns;
             }
 
-            public bool IsSecondaryColumn(int column) => secondaryColumns?.Contains(column) == true;
+            public bool IsPrimaryColumn(int column) => primaryColumns.Contains(column);
+
+            public bool IsSecondaryColumn(int column) => secondaryColumns.Contains(column) == true;
         }
     }
 
