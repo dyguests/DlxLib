@@ -31,17 +31,38 @@ namespace SudokuDlxLib.Processors
 
     public class NormalRuleDlxProcessor : RuleDlxProcessor
     {
-        private const int tileCount = 9 * 9;
-        private const int rowCount = 9 * 9;
-        private const int colCount = 9 * 9;
-        private const int boxCount = 9 * 9;
+        private const int TileCount = 9 * 9;
+        private const int NumberCount = 9;
+        private const int RowCount = 9 * 9;
+        private const int ColCount = 9 * 9;
+        private const int BoxCount = 9 * 9;
+
+        private static readonly int[] PrimaryColumns = new int[TileCount + RowCount + ColCount + BoxCount];
+
+        static NormalRuleDlxProcessor()
+        {
+            for (var i = 0; i < PrimaryColumns.Length; i++)
+            {
+                if (i < TileCount)
+                {
+                    PrimaryColumns[i] = i;
+                }
+                else
+                {
+                    PrimaryColumns[i] = NumberCount + i;
+                }
+            }
+        }
 
         public override RuleMatrix RuleToMatrix(Sudoku sudoku, Rule rule)
         {
+            (int[,] matrix, int[] primaryColumns, int[] secondaryColumns) = ToMatrix(sudoku.initNumbers);
             return new RuleMatrix
             {
                 type = RuleType.Normal,
-                matrix = ToMatrix(sudoku.initNumbers),
+                matrix = matrix,
+                primaryColumns = primaryColumns,
+                secondaryColumns = secondaryColumns,
             };
         }
 
@@ -58,13 +79,17 @@ namespace SudokuDlxLib.Processors
         /// 
         /// </summary>
         /// <param name="numbers">init numbers</param>
-        /// <returns></returns>
-        private int[,] ToMatrix(int[] numbers)
+        /// <returns>
+        /// matrix 矩阵
+        /// primaryColumns 主列
+        /// secondaryColumns 副列
+        /// </returns>
+        private (int[,] matrix, int[] primaryColumns, int[] secondaryColumns) ToMatrix(int[] numbers)
         {
             var rows = numbers.Select((number, index) => GetPossibleNumbers(numbers, index))
                 .Select(GenerateRow)
                 .SelectMany(rows1 => rows1);
-            return ArrayUtil.To2DArray(rows);
+            return (ArrayUtil.To2DArray(rows), PrimaryColumns, new int[0]);
         }
 
         private IEnumerable<int> GetPossibleNumbers(int[] numbers, int index)
@@ -90,18 +115,19 @@ namespace SudokuDlxLib.Processors
 
         private IEnumerable<int[]> GenerateRow(IEnumerable<int> possibleNumbers, int index) => possibleNumbers.Select(possibleNumber =>
         {
-            var row = new int[tileCount + rowCount + colCount + boxCount];
-            row[index] = 1;
-            row[tileCount + index / 9 * 9 + possibleNumber - 1] = 1;
-            row[tileCount + rowCount + index % 9 * 9 + possibleNumber - 1] = 1;
-            row[tileCount + rowCount + colCount + (index % 9 / 3 + index / 9 / 3 * 3) * 9 + possibleNumber - 1] = 1;
+            var row = new int[TileCount + RowCount + ColCount + BoxCount];
+            row[index] = 1; //index
+            row[TileCount + possibleNumber - 1] = 1; //index
+            row[TileCount + NumberCount + index / 9 * 9 + possibleNumber - 1] = 1; //row
+            row[TileCount + NumberCount + RowCount + index % 9 * 9 + possibleNumber - 1] = 1; //col
+            row[TileCount + NumberCount + RowCount + ColCount + (index % 9 / 3 + index / 9 / 3 * 3) * 9 + possibleNumber - 1] = 1; //box
             return row;
         });
 
         private static Tuple<int, int> ParseToNumberAndIndex(int[] row)
         {
-            var index = Array.IndexOf(row, 1, 0, tileCount);
-            int number = Array.IndexOf(row, 1, tileCount, rowCount) % 9 + 1;
+            var index = Array.IndexOf(row, 1, 0, TileCount);
+            int number = Array.IndexOf(row, 1, TileCount, RowCount) % 9 + 1;
             return new Tuple<int, int>(number, index);
         }
     }
