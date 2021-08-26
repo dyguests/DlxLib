@@ -24,8 +24,8 @@ namespace SudokuDlxLib.Processors
 
     public abstract class RuleDlxProcessor
     {
-        public abstract RuleMatrix RuleToMatrix(Sudoku sudoku, Rule rule);
-
+        public abstract void ReducePossibleNumbers(Sudoku sudoku, int[][] possibleNumbersIndexes);
+        public abstract RuleMatrix RuleToMatrix(Sudoku sudoku, int[][] possibleNumbersIndexes);
         public abstract int[] SolutionToNumbers(int[,] matrix, int[] solution);
     }
 
@@ -54,9 +54,17 @@ namespace SudokuDlxLib.Processors
             }
         }
 
-        public override RuleMatrix RuleToMatrix(Sudoku sudoku, Rule rule)
+        public override void ReducePossibleNumbers(Sudoku sudoku, int[][] possibleNumbersIndexes)
         {
-            (int[,] matrix, int[] primaryColumns, int[] secondaryColumns) = ToMatrix(sudoku.initNumbers);
+            for (var i = 0; i < possibleNumbersIndexes.Length; i++)
+            {
+                possibleNumbersIndexes[i] = GetPossibleNumbers(sudoku.initNumbers, possibleNumbersIndexes[i], i);
+            }
+        }
+
+        public override RuleMatrix RuleToMatrix(Sudoku sudoku, int[][] possibleNumbersIndexes)
+        {
+            (int[,] matrix, int[] primaryColumns, int[] secondaryColumns) = ToMatrix(possibleNumbersIndexes);
             return new RuleMatrix
             {
                 type = RuleType.Normal,
@@ -78,21 +86,19 @@ namespace SudokuDlxLib.Processors
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="numbers">init numbers</param>
+        /// <param name="possibleNumbersIndexes">init numbers</param>
         /// <returns>
         /// matrix 矩阵
         /// primaryColumns 主列
         /// secondaryColumns 副列
         /// </returns>
-        private (int[,] matrix, int[] primaryColumns, int[] secondaryColumns) ToMatrix(int[] numbers)
+        private (int[,] matrix, int[] primaryColumns, int[] secondaryColumns) ToMatrix(int[][] possibleNumbersIndexes)
         {
-            var rows = numbers.Select((number, index) => GetPossibleNumbers(numbers, index))
-                .Select(GenerateRow)
-                .SelectMany(rows1 => rows1);
+            var rows = possibleNumbersIndexes.Select(GenerateRow).SelectMany(rows1 => rows1);
             return (ArrayUtil.To2DArray(rows), PrimaryColumns, new int[0]);
         }
 
-        private IEnumerable<int> GetPossibleNumbers(int[] numbers, int index)
+        private int[] GetPossibleNumbers(int[] numbers, int[] possibleNumbers, int index)
         {
             {
                 var number = numbers[index];
@@ -102,15 +108,13 @@ namespace SudokuDlxLib.Processors
                 }
             }
 
-            var possibleNumbers = Enumerable.Range(1, 9).Except(
+            return possibleNumbers.Except(
                 numbers.Where((number, index1) =>
                     index1 % 9 == index % 9
                     || index1 / 9 == index / 9
                     || (index1 % 9 / 3 == index % 9 / 3 && index1 / 9 / 3 == index / 9 / 3)
                 )
-            );
-
-            return possibleNumbers;
+            ).ToArray();
         }
 
         private IEnumerable<int[]> GenerateRow(IEnumerable<int> possibleNumbers, int index) => possibleNumbers.Select(possibleNumber =>

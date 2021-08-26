@@ -14,9 +14,13 @@ namespace SudokuDlxLib
         /// <returns>(matrix, primaryColumns, secondaryColumns)</returns>
         public static (int[,] matrix, int[] primaryColumns, int[] secondaryColumns) SudokuToMatrix(Sudoku sudoku)
         {
-            var ruleMatrixs = sudoku.rules.Select(rule => RuleRouter.GetRuleDlxProcessor(rule.type).RuleToMatrix(sudoku, rule));
+            // 取得所有处理器
+            var ruleDlxProcessors = sudoku.rules.Select(rule => RuleRouter.GetRuleDlxProcessor(rule.type)).ToList();
+            var possibleNumbersIndexes = Enumerable.Range(0, 81).Select(index => new[] {1, 2, 3, 4, 5, 6, 7, 8, 9}).ToArray();
+            ruleDlxProcessors.ForEach(processor => processor.ReducePossibleNumbers(sudoku, possibleNumbersIndexes));
+            var ruleMatrices = ruleDlxProcessors.Select(processor => processor.RuleToMatrix(sudoku, possibleNumbersIndexes));
 
-            var sudokuMatrix = ruleMatrixs.First();
+            var sudokuMatrix = ruleMatrices.First();
             return (sudokuMatrix.matrix, sudokuMatrix.primaryColumns, sudokuMatrix.secondaryColumns);
         }
 
