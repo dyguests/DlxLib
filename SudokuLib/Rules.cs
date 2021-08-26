@@ -19,7 +19,7 @@ namespace SudokuLib
         public struct Cage
         {
             public int sum;
-            public int[] indexs;
+            public int[] indexes;
         }
     }
 

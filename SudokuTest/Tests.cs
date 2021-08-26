@@ -54,7 +54,7 @@ namespace SudokuTest
                     {
                         cages = new[]
                         {
-                            new CageRule.Cage {sum = 12, indexs = new[] {0, 1}},
+                            new CageRule.Cage {sum = 12, indexes = new[] {0, 1}},
                         },
                     },
                 }

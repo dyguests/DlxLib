@@ -152,7 +152,7 @@ namespace SudokuDlxLib.Processors
         private void ReduceCagePossibleNumbers(int[][] possibleNumbersIndexes, CageRule.Cage cage)
         {
             //Possible combination
-            var cageIndexes = cage.indexs;
+            var cageIndexes = cage.indexes;
             for (var cageIndex = 0; cageIndex < cageIndexes.Length; cageIndex++)
             {
                 var numberIndex = cageIndexes[cageIndex];
@@ -161,11 +161,47 @@ namespace SudokuDlxLib.Processors
 
             // key:numberIndex, value:possibleNumbers
             var cagePossibleNumbersIndexes = new Dictionary<int, int[]>();
-            FindCagePossibleNumbers(possibleNumbersIndexes, cage, cagePossibleNumbersIndexes, 0);
+            FindCagePossibleNumbers(possibleNumbersIndexes, cage, cagePossibleNumbersIndexes, 0, new Dictionary<int, int>());
         }
 
-        private void FindCagePossibleNumbers(int[][] possibleNumbersIndexes, CageRule.Cage cage, Dictionary<int, int[]> cagePossibleNumbersIndexes, int cageIndex, int[] currentNumbers = new int[0])
+        private void FindCagePossibleNumbers(int[][] possibleNumbersIndexes, CageRule.Cage cage, Dictionary<int, int[]> cagePossibleNumbersIndexes, int cageIndex, Dictionary<int, int> currentNumbers)
         {
+            if (cageIndex >= cage.indexes.Length)
+            {
+                // 如果 笼子 有求和且不匹配，则不满足条件
+                if (cage.sum > 0 && cage.sum != currentNumbers.Sum(pair => pair.Value))
+                {
+                    return;
+                }
+
+                for (var _cageIndex = 0; _cageIndex < cage.indexes.Length; _cageIndex++)
+                {
+                    var numberIndex = cage.indexes[_cageIndex];
+                    var cagePossibleNumbers = cagePossibleNumbersIndexes[numberIndex];
+                    if (cagePossibleNumbers == null)
+                    {
+                        cagePossibleNumbers = new int[0];
+                        cagePossibleNumbersIndexes[numberIndex] = cagePossibleNumbers;
+                    }
+
+                    Array.Resize(ref cagePossibleNumbers, cagePossibleNumbers.Length + 1);
+                    cagePossibleNumbers[cagePossibleNumbers.GetUpperBound(0)] = currentNumbers[_cageIndex];
+                }
+
+                return;
+            }
+
+            {
+                var numberIndex = cage.indexes[cageIndex];
+                var possibleNumbers = possibleNumbersIndexes[numberIndex];
+                foreach (var possibleNumber in possibleNumbers)
+                {
+                    if (currentNumbers.Any(pair => pair.Value == possibleNumber)) continue;
+
+                    currentNumbers[cageIndex] = possibleNumber;
+                    FindCagePossibleNumbers(possibleNumbersIndexes, cage, cagePossibleNumbersIndexes, cageIndex + 1, currentNumbers);
+                }
+            }
         }
 
         public override RuleMatrix RuleToMatrix(Sudoku sudoku, int[][] possibleNumbersIndexes)
