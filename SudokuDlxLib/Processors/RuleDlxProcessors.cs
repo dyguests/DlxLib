@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using SudokuDlxLib.Utils;
 using SudokuLib;
-using SudokuTest.Utils;
 
 namespace SudokuDlxLib.Processors
 {
@@ -16,6 +15,8 @@ namespace SudokuDlxLib.Processors
             {
                 case RuleType.Normal:
                     return new NormalRuleDlxProcessor();
+                case RuleType.Cage:
+                    return new CageRuleDlxProcessor();
                 default:
                     throw new InvalidDataException();
             }
@@ -151,17 +152,14 @@ namespace SudokuDlxLib.Processors
 
         private void ReduceCagePossibleNumbers(int[][] possibleNumbersIndexes, CageRule.Cage cage)
         {
-            //Possible combination
-            var cageIndexes = cage.indexes;
-            for (var cageIndex = 0; cageIndex < cageIndexes.Length; cageIndex++)
-            {
-                var numberIndex = cageIndexes[cageIndex];
-                var possibleNumbers = possibleNumbersIndexes[numberIndex];
-            }
-
             // key:numberIndex, value:possibleNumbers
             var cagePossibleNumbersIndexes = new Dictionary<int, int[]>();
             FindCagePossibleNumbers(possibleNumbersIndexes, cage, cagePossibleNumbersIndexes, 0, new Dictionary<int, int>());
+
+            foreach (var pair in cagePossibleNumbersIndexes)
+            {
+                possibleNumbersIndexes[pair.Key] = possibleNumbersIndexes[pair.Key].Intersect(pair.Value).ToArray();
+            }
         }
 
         private void FindCagePossibleNumbers(int[][] possibleNumbersIndexes, CageRule.Cage cage, Dictionary<int, int[]> cagePossibleNumbersIndexes, int cageIndex, Dictionary<int, int> currentNumbers)
@@ -184,8 +182,7 @@ namespace SudokuDlxLib.Processors
                         cagePossibleNumbersIndexes[numberIndex] = cagePossibleNumbers;
                     }
 
-                    Array.Resize(ref cagePossibleNumbers, cagePossibleNumbers.Length + 1);
-                    cagePossibleNumbers[cagePossibleNumbers.GetUpperBound(0)] = currentNumbers[_cageIndex];
+                    cagePossibleNumbers.AddUnique(currentNumbers[_cageIndex]);
                 }
 
                 return;
@@ -206,12 +203,12 @@ namespace SudokuDlxLib.Processors
 
         public override RuleMatrix RuleToMatrix(Sudoku sudoku, int[][] possibleNumbersIndexes)
         {
-            throw new NotImplementedException();
+            return new RuleMatrix();
         }
 
         public override int[] SolutionToNumbers(int[,] matrix, int[] solution)
         {
-            throw new NotImplementedException();
+            return new int[0];
         }
     }
 }

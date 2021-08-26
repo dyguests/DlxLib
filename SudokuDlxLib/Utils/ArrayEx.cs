@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SudokuTest.Utils
+namespace SudokuDlxLib.Utils
 {
     public static class ArrayEx
     {
@@ -36,6 +36,20 @@ namespace SudokuTest.Utils
             T[] result = new T[length];
             Array.Copy(array, offset, result, 0, length);
             return result;
+        }
+
+        public static void Add(this int[] array, int item)
+        {
+            Array.Resize(ref array, array.Length + 1);
+            array[array.GetUpperBound(0)] = item;
+        }
+
+        public static void AddUnique(this int[] array, int item)
+        {
+            if (array.Contains(item)) return;
+
+            Array.Resize(ref array, array.Length + 1);
+            array[array.GetUpperBound(0)] = item;
         }
     }
 }
