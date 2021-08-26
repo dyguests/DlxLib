@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace SudokuLib
 {
     /// <summary>
@@ -13,5 +15,7 @@ namespace SudokuLib
         public int[] solutionNumbers;
 
         public Rule[] rules;
+
+        public T GetRule<T>() where T : Rule => rules.FirstOrDefault(rule => rule is T) as T;
     }
 }

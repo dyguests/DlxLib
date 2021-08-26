@@ -24,7 +24,13 @@ namespace SudokuDlxLib.Processors
 
     public abstract class RuleDlxProcessor
     {
+        /// <summary>
+        /// 消减可能的数字
+        /// </summary>
+        /// <param name="sudoku"></param>
+        /// <param name="possibleNumbersIndexes"></param>
         public abstract void ReducePossibleNumbers(Sudoku sudoku, int[][] possibleNumbersIndexes);
+
         public abstract RuleMatrix RuleToMatrix(Sudoku sudoku, int[][] possibleNumbersIndexes);
         public abstract int[] SolutionToNumbers(int[,] matrix, int[] solution);
     }
@@ -133,6 +139,43 @@ namespace SudokuDlxLib.Processors
             var index = Array.IndexOf(row, 1, 0, TileCount);
             int number = Array.IndexOf(row, 1, TileCount, RowCount) % 9 + 1;
             return new Tuple<int, int>(number, index);
+        }
+    }
+
+    public class CageRuleDlxProcessor : RuleDlxProcessor
+    {
+        public override void ReducePossibleNumbers(Sudoku sudoku, int[][] possibleNumbersIndexes)
+        {
+            sudoku.GetRule<CageRule>().cages.ForEach(cage => ReduceCagePossibleNumbers(possibleNumbersIndexes, cage));
+        }
+
+        private void ReduceCagePossibleNumbers(int[][] possibleNumbersIndexes, CageRule.Cage cage)
+        {
+            //Possible combination
+            var cageIndexes = cage.indexs;
+            for (var cageIndex = 0; cageIndex < cageIndexes.Length; cageIndex++)
+            {
+                var numberIndex = cageIndexes[cageIndex];
+                var possibleNumbers = possibleNumbersIndexes[numberIndex];
+            }
+
+            // key:numberIndex, value:possibleNumbers
+            var cagePossibleNumbersIndexes = new Dictionary<int, int[]>();
+            FindCagePossibleNumbers(possibleNumbersIndexes, cage, cagePossibleNumbersIndexes, 0);
+        }
+
+        private void FindCagePossibleNumbers(int[][] possibleNumbersIndexes, CageRule.Cage cage, Dictionary<int, int[]> cagePossibleNumbersIndexes, int cageIndex, int[] currentNumbers = new int[0])
+        {
+        }
+
+        public override RuleMatrix RuleToMatrix(Sudoku sudoku, int[][] possibleNumbersIndexes)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override int[] SolutionToNumbers(int[,] matrix, int[] solution)
+        {
+            throw new NotImplementedException();
         }
     }
 }

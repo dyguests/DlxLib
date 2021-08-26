@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SudokuTest.Utils
@@ -18,13 +19,18 @@ namespace SudokuTest.Utils
                 .Select(x => matrix[rowNumber, x])
                 .ToArray();
         }
-    }
-}
 
-namespace Utils
-{
-    public static class ArrayUtil
-    {
+        public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            if (action == null) throw new ArgumentNullException("action");
+
+            foreach (T item in source)
+            {
+                action(item);
+            }
+        }
+
         public static T[] SubArray<T>(this T[] array, int offset, int length)
         {
             T[] result = new T[length];
