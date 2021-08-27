@@ -67,6 +67,22 @@ namespace SudokuDlxLib.Processors
             {
                 possibleNumbersIndexes[i] = GetPossibleNumbers(sudoku.initNumbers, possibleNumbersIndexes[i], i);
             }
+
+            // todo
+            // todo
+            // todo
+            // todo
+            // todo
+            // todo
+            // todo
+            // todo
+            // todo
+            // todo
+            // todo
+            // todo
+            // todo
+            // todo
+            // todo
         }
 
         public override RuleMatrix RuleToMatrix(Sudoku sudoku, int[][] possibleNumbersIndexes)
@@ -150,6 +166,17 @@ namespace SudokuDlxLib.Processors
             sudoku.GetRule<CageRule>().cages.ForEach(cage => ReduceCagePossibleNumbers(possibleNumbersIndexes, cage));
         }
 
+        public override RuleMatrix RuleToMatrix(Sudoku sudoku, int[][] possibleNumbersIndexes)
+        {
+            return new RuleMatrix
+            {
+                type = RuleType.Cage,
+                // matrix = matrix,
+                // primaryColumns = primaryColumns,
+                // secondaryColumns = secondaryColumns,
+            };
+        }
+
         private void ReduceCagePossibleNumbers(int[][] possibleNumbersIndexes, CageRule.Cage cage)
         {
             // key:numberIndex, value:possibleNumbers
@@ -199,11 +226,6 @@ namespace SudokuDlxLib.Processors
                     FindCagePossibleNumbers(possibleNumbersIndexes, cage, cagePossibleNumbersIndexes, cageIndex + 1, currentNumbers);
                 }
             }
-        }
-
-        public override RuleMatrix RuleToMatrix(Sudoku sudoku, int[][] possibleNumbersIndexes)
-        {
-            return new RuleMatrix();
         }
 
         public override int[] SolutionToNumbers(int[,] matrix, int[] solution)

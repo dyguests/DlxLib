@@ -15,7 +15,7 @@ namespace SudokuDlxLib
         public static (int[,] matrix, int[] primaryColumns, int[] secondaryColumns) SudokuToMatrix(Sudoku sudoku)
         {
             // 取得所有处理器
-            var ruleDlxProcessors = sudoku.rules.Select(rule => RuleRouter.GetRuleDlxProcessor(rule.type)).ToList();
+            var ruleDlxProcessors = sudoku.rules.Select(rule => RuleRouter.GetRuleDlxProcessor(rule.Type)).ToList();
             var possibleNumbersIndexes = Enumerable.Range(0, 81).Select(index => new[] {1, 2, 3, 4, 5, 6, 7, 8, 9}).ToArray();
             ruleDlxProcessors.ForEach(processor => processor.ReducePossibleNumbers(sudoku, possibleNumbersIndexes));
             var ruleMatrices = ruleDlxProcessors.Select(processor => processor.RuleToMatrix(sudoku, possibleNumbersIndexes));
@@ -26,7 +26,7 @@ namespace SudokuDlxLib
 
         public static int[] SolutionToNumbers(Sudoku sudoku, int[,] matrix, int[] solution)
         {
-            return sudoku.rules.First().Let(rule => RuleRouter.GetRuleDlxProcessor(rule.type)).SolutionToNumbers(matrix, solution);
+            return sudoku.rules.First().Let(rule => RuleRouter.GetRuleDlxProcessor(rule.Type)).SolutionToNumbers(matrix, solution);
         }
     }
 

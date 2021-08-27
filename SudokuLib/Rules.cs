@@ -2,7 +2,7 @@ namespace SudokuLib
 {
     public abstract class Rule
     {
-        public RuleType type;
+        public abstract RuleType Type { get; }
     }
 
     /// <summary>
@@ -10,6 +10,7 @@ namespace SudokuLib
     /// </summary>
     public class NormalRule : Rule
     {
+        public override RuleType Type => RuleType.Normal;
     }
 
     public class CageRule : Rule
@@ -21,6 +22,8 @@ namespace SudokuLib
             public int sum;
             public int[] indexes;
         }
+
+        public override RuleType Type => RuleType.Cage;
     }
 
     public enum RuleType
