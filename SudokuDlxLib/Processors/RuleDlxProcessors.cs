@@ -65,24 +65,8 @@ namespace SudokuDlxLib.Processors
         {
             for (var i = 0; i < possibleNumbersIndexes.Length; i++)
             {
-                possibleNumbersIndexes[i] = GetPossibleNumbers(sudoku.initNumbers, possibleNumbersIndexes[i], i);
+                possibleNumbersIndexes[i] = possibleNumbersIndexes[i].Intersect(GetPossibleNumbers(sudoku.initNumbers, possibleNumbersIndexes[i], i)).ToArray();
             }
-
-            // todo
-            // todo
-            // todo
-            // todo
-            // todo
-            // todo
-            // todo
-            // todo
-            // todo
-            // todo
-            // todo
-            // todo
-            // todo
-            // todo
-            // todo
         }
 
         public override RuleMatrix RuleToMatrix(Sudoku sudoku, int[][] possibleNumbersIndexes)
@@ -180,7 +164,7 @@ namespace SudokuDlxLib.Processors
         private void ReduceCagePossibleNumbers(int[][] possibleNumbersIndexes, CageRule.Cage cage)
         {
             // key:numberIndex, value:possibleNumbers
-            var cagePossibleNumbersIndexes = new Dictionary<int, int[]>();
+            var cagePossibleNumbersIndexes = new Dictionary<int, HashSet<int>>();
             FindCagePossibleNumbers(possibleNumbersIndexes, cage, cagePossibleNumbersIndexes, 0, new Dictionary<int, int>());
 
             foreach (var pair in cagePossibleNumbersIndexes)
@@ -189,7 +173,7 @@ namespace SudokuDlxLib.Processors
             }
         }
 
-        private void FindCagePossibleNumbers(int[][] possibleNumbersIndexes, CageRule.Cage cage, Dictionary<int, int[]> cagePossibleNumbersIndexes, int cageIndex, Dictionary<int, int> currentNumbers)
+        private void FindCagePossibleNumbers(int[][] possibleNumbersIndexes, CageRule.Cage cage, Dictionary<int, HashSet<int>> cagePossibleNumbersIndexes, int cageIndex, Dictionary<int, int> currentNumbers)
         {
             if (cageIndex >= cage.indexes.Length)
             {
@@ -202,14 +186,14 @@ namespace SudokuDlxLib.Processors
                 for (var _cageIndex = 0; _cageIndex < cage.indexes.Length; _cageIndex++)
                 {
                     var numberIndex = cage.indexes[_cageIndex];
-                    var cagePossibleNumbers = cagePossibleNumbersIndexes[numberIndex];
-                    if (cagePossibleNumbers == null)
+
+                    if (!cagePossibleNumbersIndexes.TryGetValue(numberIndex, out var cagePossibleNumbers))
                     {
-                        cagePossibleNumbers = new int[0];
+                        cagePossibleNumbers = new HashSet<int>();
                         cagePossibleNumbersIndexes[numberIndex] = cagePossibleNumbers;
                     }
 
-                    cagePossibleNumbers.AddUnique(currentNumbers[_cageIndex]);
+                    cagePossibleNumbers.Add(currentNumbers[_cageIndex]);
                 }
 
                 return;
