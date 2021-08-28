@@ -87,28 +87,62 @@ namespace SudokuDlxLib.Processors
 
         private (int[,] matrix, int[] primaryColumns, int[] secondaryColumns) ToMatrix(CageRule rule, int[][] possibleNumbersIndexes)
         {
-            // var cageMatrix = rule.cages.Select(cage => GenerateNumberCombinations(cage, possibleNumbersIndexes));
+            var cageMatrixs = rule.cages.Select(cage =>
+            {
+                if (cage.sum > 0)
+                {
+                    return GetSumMatrix(cage, possibleNumbersIndexes, 0, new int[0]);
+                }
+                else
+                {
+                    return GetUniqueMatrix(cage, possibleNumbersIndexes);
+                }
+            });
             return (null, null, null);
         }
 
-        private IEnumerable<int[]> GenerateNumberCombinations(CageRule.Cage cage, int[][] possibleNumbersIndexes)
+        /// <summary>
+        /// 存在数字和
+        /// 
+        /// 杀手数独->matrix
+        /// </summary>
+        /// <param name="cage"></param>
+        /// <param name="possibleNumbersIndexes"></param>
+        /// <param name="cageIndex"></param>
+        /// <param name="combination"></param>
+        /// <returns></returns>
+        private IEnumerable<int[]> GetSumMatrix(CageRule.Cage cage, int[][] possibleNumbersIndexes, int cageIndex, int[] combination)
         {
-            if (cage.sum > 0)
+            var numberIndex = cage.indexes[cageIndex];
+            var possibleNumbers = possibleNumbersIndexes[numberIndex];
+            foreach (var possibleNumber in possibleNumbers)
             {
-                return GenerateSumNumberCombinations(cage, possibleNumbersIndexes);
-            }
-            else
-            {
-                return GenerateNoSumNumberCombinations(cage, possibleNumbersIndexes);
+                if (combination.Contains(possibleNumber)) continue;
+
+                combination.Add(possibleNumber);
+                if (cageIndex == cage.indexes.Length - 1)
+                {
+                    if (combination.Sum() == cage.sum)
+                    {
+                        yield return combination;
+                    }
+                }
+                else
+                {
+                    foreach (var numberCombination in GetSumMatrix(cage, possibleNumbersIndexes, cageIndex + 1, combination)) yield return numberCombination;
+                }
             }
         }
 
-        private IEnumerable<int[]> GenerateSumNumberCombinations(CageRule.Cage cage, int[][] possibleNumbersIndexes)
-        {
-            throw new NotImplementedException();
-        }
-
-        private IEnumerable<int[]> GenerateNoSumNumberCombinations(CageRule.Cage cage, int[][] possibleNumbersIndexes)
+        /// <summary>
+        /// 不存在数字和
+        ///
+        /// 副列->matrix
+        /// </summary>
+        /// <param name="cage"></param>
+        /// <param name="possibleNumbersIndexes"></param>
+        /// <returns></returns>
+        private IEnumerable<int[]> GetUniqueMatrix(CageRule.Cage cage, int[][] possibleNumbersIndexes)
         {
             throw new NotImplementedException();
         }
