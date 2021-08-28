@@ -78,5 +78,15 @@ namespace SudokuTest
                 Console.WriteLine("Sudoku Solution:\n" + solutionNumbers.NumbersToString());
             }
         }
+
+        [Test]
+        public void TestArray()
+        {
+            var array = new int[0];
+            Console.WriteLine("array:" + string.Join(",", array));
+            array = array.Add(1);
+            Console.WriteLine("array:" + string.Join(",", array));
+            Assert.True(true);
+        }
     }
 }

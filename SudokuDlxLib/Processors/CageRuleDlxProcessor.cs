@@ -91,7 +91,7 @@ namespace SudokuDlxLib.Processors
             {
                 if (cage.sum > 0)
                 {
-                    return GetSumMatrix(cage, possibleNumbersIndexes, 0, new int[0]);
+                    return GetSumMatrix(possibleNumbersIndexes, cage);
                 }
                 else
                 {
@@ -99,6 +99,12 @@ namespace SudokuDlxLib.Processors
                 }
             });
             return (null, null, null);
+        }
+
+        private IEnumerable<int[]> GetSumMatrix(int[][] possibleNumbersIndexes, CageRule.Cage cage)
+        {
+            var possibleCombinations = GetPossibleCombinations(cage, possibleNumbersIndexes, 0, new int[0]);
+            return possibleCombinations;
         }
 
         /// <summary>
@@ -111,7 +117,7 @@ namespace SudokuDlxLib.Processors
         /// <param name="cageIndex"></param>
         /// <param name="combination"></param>
         /// <returns></returns>
-        private IEnumerable<int[]> GetSumMatrix(CageRule.Cage cage, int[][] possibleNumbersIndexes, int cageIndex, int[] combination)
+        private IEnumerable<int[]> GetPossibleCombinations(CageRule.Cage cage, int[][] possibleNumbersIndexes, int cageIndex, int[] combination)
         {
             var numberIndex = cage.indexes[cageIndex];
             var possibleNumbers = possibleNumbersIndexes[numberIndex];
@@ -119,7 +125,7 @@ namespace SudokuDlxLib.Processors
             {
                 if (combination.Contains(possibleNumber)) continue;
 
-                combination.Add(possibleNumber);
+                combination = combination.Add(possibleNumber);
                 if (cageIndex == cage.indexes.Length - 1)
                 {
                     if (combination.Sum() == cage.sum)
@@ -129,7 +135,7 @@ namespace SudokuDlxLib.Processors
                 }
                 else
                 {
-                    foreach (var numberCombination in GetSumMatrix(cage, possibleNumbersIndexes, cageIndex + 1, combination)) yield return numberCombination;
+                    foreach (var numberCombination in GetPossibleCombinations(cage, possibleNumbersIndexes, cageIndex + 1, combination)) yield return numberCombination;
                 }
             }
         }

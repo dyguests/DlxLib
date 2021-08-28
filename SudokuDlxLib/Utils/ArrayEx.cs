@@ -38,18 +38,22 @@ namespace SudokuDlxLib.Utils
             return result;
         }
 
-        public static void Add(this int[] array, int item)
+        public static int[] Add(this int[] array, int item)
         {
             Array.Resize(ref array, array.Length + 1);
             array[array.GetUpperBound(0)] = item;
+            return array;
         }
 
-        public static void AddUnique(this int[] array, int item)
+        public static int[] AddUnique(this int[] array, int item)
         {
-            if (array.Contains(item)) return;
+            if (!array.Contains(item))
+            {
+                Array.Resize(ref array, array.Length + 1);
+                array[array.GetUpperBound(0)] = item;
+            }
 
-            Array.Resize(ref array, array.Length + 1);
-            array[array.GetUpperBound(0)] = item;
+            return array;
         }
     }
 }
