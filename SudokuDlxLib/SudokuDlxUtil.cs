@@ -12,7 +12,7 @@ namespace SudokuDlxLib
         /// </summary>
         /// <param name="sudoku"></param>
         /// <returns>(matrix, primaryColumns, secondaryColumns)</returns>
-        public static (int[,] matrix, int[] primaryColumns, int[] secondaryColumns) SudokuToMatrix(Sudoku sudoku)
+        public static SudokuMatrix SudokuToMatrix(Sudoku sudoku)
         {
             // 取得所有处理器
             var ruleDlxProcessors = sudoku.rules.Select(rule => RuleRouter.GetRuleDlxProcessor(rule.Type)).ToList();
@@ -21,7 +21,12 @@ namespace SudokuDlxLib
             var ruleMatrices = ruleDlxProcessors.Select(processor => processor.RuleToMatrix(sudoku, possibleNumbersIndexes));
 
             var sudokuMatrix = ruleMatrices.First();
-            return (sudokuMatrix.matrix, sudokuMatrix.primaryColumns, sudokuMatrix.secondaryColumns);
+            return new SudokuMatrix
+            {
+                matrix = sudokuMatrix.matrix,
+                primaryColumns = sudokuMatrix.primaryColumns,
+                secondaryColumns = sudokuMatrix.secondaryColumns
+            };
         }
 
         public static int[] SolutionToNumbers(Sudoku sudoku, int[,] matrix, int[] solution)
@@ -30,10 +35,8 @@ namespace SudokuDlxLib
         }
     }
 
-    public struct RuleMatrix
+    public class SudokuMatrix
     {
-        public RuleType type;
-
         /// <summary>
         /// matrix中分为primaryColumns和secondaryColumns以及hintColumns。
         /// 其中hintColumns就是不在primaryColumns和secondaryColumns的列。
@@ -43,5 +46,12 @@ namespace SudokuDlxLib
 
         public int[] primaryColumns;
         public int[] secondaryColumns;
+
+        public void Deconstruct(out int[,] matrix, out int[] primaryColumns, out int[] secondaryColumns) => (matrix, primaryColumns, secondaryColumns) = (this.matrix, this.primaryColumns, this.secondaryColumns);
+    }
+
+    public class RuleMatrix : SudokuMatrix
+    {
+        public RuleType type;
     }
 }
