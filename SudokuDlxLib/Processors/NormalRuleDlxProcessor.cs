@@ -8,8 +8,6 @@ namespace SudokuDlxLib.Processors
 {
     public class NormalRuleDlxProcessor : RuleDlxProcessor
     {
-        private const int TileCount = 9 * 9;
-        private const int NumberCount = 9;
         private const int RowCount = 9 * 9;
         private const int ColCount = 9 * 9;
         private const int BoxCount = 9 * 9;

@@ -63,9 +63,10 @@ namespace SudokuTest
 
             var (matrix, primaryColumns, secondaryColumns) = SudokuDlxUtil.SudokuToMatrix(sudoku);
             var solutions = Dlx.Solve(matrix, primaryColumns, secondaryColumns).ToArray();
+            Console.WriteLine("Solution:\n");
             foreach (var result in solutions)
             {
-                Console.WriteLine("Solution:" + String.Join(",", result));
+                Console.WriteLine(String.Join(",", result));
             }
 
             Assert.True(solutions.Length == 1);

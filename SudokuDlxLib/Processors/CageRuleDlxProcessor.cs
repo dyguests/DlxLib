@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using SudokuDlxLib.Utils;
@@ -14,12 +15,13 @@ namespace SudokuDlxLib.Processors
 
         public override RuleMatrix RuleToMatrix(Sudoku sudoku, int[][] possibleNumbersIndexes)
         {
+            (int[,] matrix, int[] primaryColumns, int[] secondaryColumns) = ToMatrix(sudoku.GetRule<CageRule>(), possibleNumbersIndexes);
             return new RuleMatrix
             {
                 type = RuleType.Cage,
-                // matrix = matrix,
-                // primaryColumns = primaryColumns,
-                // secondaryColumns = secondaryColumns,
+                matrix = matrix,
+                primaryColumns = primaryColumns,
+                secondaryColumns = secondaryColumns,
             };
         }
 
@@ -83,9 +85,32 @@ namespace SudokuDlxLib.Processors
             }
         }
 
-        public override int[] SolutionToNumbers(int[,] matrix, int[] solution)
+        private (int[,] matrix, int[] primaryColumns, int[] secondaryColumns) ToMatrix(CageRule rule, int[][] possibleNumbersIndexes)
         {
-            return new int[0];
+            // var cageMatrix = rule.cages.Select(cage => GenerateNumberCombinations(cage, possibleNumbersIndexes));
+            return (null, null, null);
+        }
+
+        private IEnumerable<int[]> GenerateNumberCombinations(CageRule.Cage cage, int[][] possibleNumbersIndexes)
+        {
+            if (cage.sum > 0)
+            {
+                return GenerateSumNumberCombinations(cage, possibleNumbersIndexes);
+            }
+            else
+            {
+                return GenerateNoSumNumberCombinations(cage, possibleNumbersIndexes);
+            }
+        }
+
+        private IEnumerable<int[]> GenerateSumNumberCombinations(CageRule.Cage cage, int[][] possibleNumbersIndexes)
+        {
+            throw new NotImplementedException();
+        }
+
+        private IEnumerable<int[]> GenerateNoSumNumberCombinations(CageRule.Cage cage, int[][] possibleNumbersIndexes)
+        {
+            throw new NotImplementedException();
         }
     }
 }
