@@ -56,6 +56,7 @@ namespace SudokuDlxLib.Utils
                     row[col] = currRow[col];
                 }
 
+
                 var otherMatchRows = otherRows.Where(_row => ArrayUtil.HashSameKeyColumns(currRow, _row, keyColumns)).ToArray();
                 if (otherMatchRows.Length == 0)
                 {
@@ -73,7 +74,7 @@ namespace SudokuDlxLib.Utils
                             cloneRow[currLength + (col - keyColumns.Length)] = otherMatchRow[col];
                         }
 
-                        result.Add(row);
+                        result.Add(cloneRow);
                     }
                 }
             }
@@ -94,6 +95,27 @@ namespace SudokuDlxLib.Utils
                     if (keyColumns.Contains(col)) continue;
                     row[currLength + (col - keyColumns.Length)] = otherRow[col];
                 }
+
+                result.Add(row);
+            }
+
+            current.matrix = ArrayUtil.To2DArray(result);
+            if (current.primaryColumns != null && other.primaryColumns != null)
+            {
+                current.primaryColumns = current.primaryColumns.Union(other.primaryColumns.Select(index => currLength + index - keyColumns.Length)).ToArray();
+            }
+            else if (other.primaryColumns != null)
+            {
+                current.primaryColumns = other.primaryColumns.Select(index => currLength + index - keyColumns.Length).ToArray();
+            }
+
+            if (current.secondaryColumns != null && other.secondaryColumns != null)
+            {
+                current.secondaryColumns = current.secondaryColumns.Union(other.secondaryColumns.Select(index => currLength + index - keyColumns.Length)).ToArray();
+            }
+            else if (other.secondaryColumns != null)
+            {
+                current.secondaryColumns = other.secondaryColumns.Select(index => currLength + index - keyColumns.Length).ToArray();
             }
         }
 
@@ -107,6 +129,11 @@ namespace SudokuDlxLib.Utils
                     .Select(x => string.Join(",", x.Select(y => y.value))
                     )
             );
+        }
+
+        public static string ArrayToString(this int[] array)
+        {
+            return string.Join(",", array);
         }
     }
 }

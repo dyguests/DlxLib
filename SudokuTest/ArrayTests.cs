@@ -74,8 +74,9 @@ namespace SudokuTest
                     {1, 0, 1},
                     {0, 1, 0},
                 },
+                primaryColumns = new int[] {2},
             };
-            Console.WriteLine("matrix curr:\n" + curr.matrix.MatrixToString());
+            PrintMatrix(curr);
             var other = new Matrix
             {
                 matrix = new int[,]
@@ -84,14 +85,57 @@ namespace SudokuTest
                     {1, 0, 1, 0},
                     {0, 1, 0, 0},
                 },
+                secondaryColumns = new int[] {2},
             };
-            Console.WriteLine("matrix other:\n" + other.matrix.MatrixToString());
+            PrintMatrix(other);
 
             curr.Expand(other, new[] {0});
 
-            Console.WriteLine("matrix result:\n" + curr.matrix.MatrixToString());
+            PrintMatrix(curr);
 
             Assert.True(true);
+        }
+
+        [Test]
+        public void TestExpandMatrix3()
+        {
+            var curr = new Matrix
+            {
+                matrix = new int[,]
+                {
+                    {1, 0, 1},
+                    {0, 1, 0},
+                },
+                primaryColumns = new int[] {2},
+                secondaryColumns = new int[0],
+            };
+            PrintMatrix(curr);
+
+            var other = new Matrix
+            {
+                matrix = new int[,]
+                {
+                    {1, 0, 0, 1},
+                    {1, 0, 1, 0},
+                    {0, 1, 0, 1},
+                    {0, 0, 1, 1},
+                },
+                primaryColumns = new int[] {3},
+                secondaryColumns = new int[] {2},
+            };
+            PrintMatrix(other);
+
+            curr.Expand(other, new[] {0, 1});
+            PrintMatrix(curr);
+
+            Assert.True(true);
+        }
+
+        private static void PrintMatrix(Matrix matrix)
+        {
+            Console.WriteLine("matrix:\n" + matrix.matrix.MatrixToString());
+            Console.WriteLine("primaryColumns:\n" + matrix.primaryColumns?.ArrayToString());
+            Console.WriteLine("secondaryColumns:\n" + matrix.secondaryColumns?.ArrayToString());
         }
     }
 }

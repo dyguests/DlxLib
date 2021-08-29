@@ -40,8 +40,20 @@ namespace SudokuDlxLib.Utils
             }
         }
 
+        /// <summary>
+        /// 注意：这个方法仅在keyColumns存在时才检查；keyColumns不存在时直接返回false
+        /// </summary>
+        /// <param name="current"></param>
+        /// <param name="other"></param>
+        /// <param name="keyColumns"></param>
+        /// <returns></returns>
         public static bool HashSameKeyColumns(int[] current, int[] other, int[] keyColumns)
         {
+            if (keyColumns.Length == 0)
+            {
+                return false;
+            }
+
             foreach (var keyColumn in keyColumns)
             {
                 if (keyColumn >= current.Length || keyColumn >= other.Length)

@@ -89,17 +89,11 @@ namespace SudokuDlxLib.Processors
         {
             var matrix = new Matrix();
 
-            // var matrix = new int[0, 0];
-            var primaryColumns = new int[0];
-            var secondaryColumns = new int[0];
-
             foreach (var cage in rule.cages)
             {
                 if (cage.sum > 0)
                 {
-                    var matrix1 = GetSumMatrix(possibleNumbersIndexes, cage);
-                    // Console.WriteLine(matrix1);
-                    matrix.Expand(matrix1);
+                    matrix.Expand(GetSumMatrix(possibleNumbersIndexes, cage));
                 }
                 else
                 {
@@ -107,7 +101,7 @@ namespace SudokuDlxLib.Processors
                 }
             }
 
-            return (matrix.matrix, primaryColumns, secondaryColumns);
+            return (matrix.matrix, matrix.primaryColumns, matrix.secondaryColumns);
         }
 
         private Matrix GetSumMatrix(int[][] possibleNumbersIndexes, CageRule.Cage cage)
