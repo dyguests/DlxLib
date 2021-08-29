@@ -87,7 +87,11 @@ namespace SudokuDlxLib.Processors
 
         private (int[,] matrix, int[] primaryColumns, int[] secondaryColumns) ToMatrix(CageRule rule, int[][] possibleNumbersIndexes)
         {
-            var cageMatrixss = rule.cages.Select(cage =>
+            var matrix = new int[0, 0];
+            var primaryColumns = new int[0];
+            var secondaryColumns = new int[0];
+
+            foreach (var cage in rule.cages)
             {
                 if (cage.sum > 0)
                 {
@@ -96,15 +100,29 @@ namespace SudokuDlxLib.Processors
                     // 去掉重复(忽略顺序，仅保留升序)的组合。例如：2,1,6; 1,2,6; 2,3,4 -> 1,2,6; 2,3,4
                     var combinations = possibleCombinations.Select(ints => ints.Also(Array.Sort)).Distinct(new ArrayComparer()).ToArray();
                     var sumMatrix = GetSumMatrix(cage, 0, possibleNumbersIndexes, combinations, new Dictionary<int, int>()).ToArray();
-                    return sumMatrix;
+                    
+                    // todo
+                    // todo
+                    // todo
+                    // todo
+                    // todo
+                    // todo
+                    // todo
+                    // todo
+                    // todo
+                    // todo
+                    // todo
+                    // todo
+                    // todo
+                    // todo
                 }
                 else
                 {
-                    return GetUniqueMatrix(cage, possibleNumbersIndexes);
+                    var uniqueMatrix = GetUniqueMatrix(cage, possibleNumbersIndexes);
                 }
-            }).ToArray();
-            cageMatrixss.ForEach(cageMatrixs => cageMatrixs.ForEach(combination => Console.WriteLine("cageMatrix:" + string.Join(",", combination))));
-            return (null, null, null);
+            }
+
+            return (matrix, primaryColumns, secondaryColumns);
         }
 
         private IEnumerable<int[]> GetSumMatrix(CageRule.Cage cage, int cageIndex, int[][] possibleNumbersIndexes, int[][] combinations, Dictionary<int, int> currCombination)
