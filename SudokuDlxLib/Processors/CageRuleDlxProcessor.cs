@@ -81,6 +81,7 @@ namespace SudokuDlxLib.Processors
 
                     currentNumbers[cageIndex] = possibleNumber;
                     FindCagePossibleNumbers(possibleNumbersIndexes, cage, cagePossibleNumbersIndexes, cageIndex + 1, currentNumbers);
+                    currentNumbers.Remove(cageIndex);
                 }
             }
         }
@@ -110,7 +111,7 @@ namespace SudokuDlxLib.Processors
             var possibleCombinations = GetPossibleCombinations(cage, possibleNumbersIndexes, 0, new Dictionary<int, int>());
             // 去掉重复(忽略顺序，仅保留升序)的组合。例如：2,1,6; 1,2,6; 2,3,4 -> 1,2,6; 2,3,4
             var combinations = possibleCombinations.Select(ints => ints.Also(Array.Sort)).Distinct(new ArrayComparer()).ToArray();
-            var rows = GetSumRows(cage, 0, possibleNumbersIndexes, combinations, new Dictionary<int, int>()).ToArray();
+            var rows = GetSumRows(cage, 0, possibleNumbersIndexes, combinations, new Dictionary<int, int>()).Distinct(new ArrayComparer()).ToArray();
             if (rows.Length == 0)
             {
                 Console.WriteLine("GetSumMatrix rows is empty");
@@ -127,7 +128,7 @@ namespace SudokuDlxLib.Processors
 
             var matrix = ArrayUtil.To2DArray(rows);
             var primaryColumns = Enumerable.Range(0, TileCount).ToList();
-            primaryColumns.AddRange(Enumerable.Range(TileCount + NumberCount, matrix.GetLength(1) - TileCount + NumberCount));
+            primaryColumns.AddRange(Enumerable.Range(TileCount + NumberCount, matrix.GetLength(1) - (TileCount + NumberCount)));
             return new Matrix
             {
                 matrix = matrix,
