@@ -154,8 +154,7 @@ namespace SudokuDlxLib.Processors
                 }
                 else if (cageIndex == cage.indexes.Length - 1 /*&& currCombination.Sum() == cage.sum*/)
                 {
-                    // todo
-                    Console.WriteLine("GetSumRows combination:" + string.Join(",", currCombination.Values));
+                    // Console.WriteLine("GetSumRows combination:" + string.Join(",", currCombination.Values));
                     // matrix row
                     foreach (var row in GetSumMatrixRows(cage, combinations, currCombination.OrderBy(pair => pair.Key).Select(pair => pair.Value).ToArray()))
                     {

@@ -142,38 +142,38 @@ namespace SudokuTest
                     {
                         cages = new[]
                         {
-                            new CageRule.Cage {sum = 18,indexes = new[] {72,73,74,}},
-                            new CageRule.Cage {sum = 25,indexes = new[] {75,76,77,67,}},
-                            new CageRule.Cage {sum = 20,indexes = new[] {78,79,80,71,70,}},
-                            new CageRule.Cage {sum = 11,indexes = new[] {63,64,}},
-                            new CageRule.Cage {sum = 7,indexes = new[] {54,55,}},
-                            new CageRule.Cage {sum = 10,indexes = new[] {56,65,66,}},
-                            new CageRule.Cage {sum = 17,indexes = new[] {57,48,47,}},
-                            new CageRule.Cage {sum = 11,indexes = new[] {68,69,}},
-                            new CageRule.Cage {sum = 11,indexes = new[] {58,59,}},
-                            new CageRule.Cage {sum = 19,indexes = new[] {60,61,62,}},
-                            new CageRule.Cage {sum = 19,indexes = new[] {46,45,36,}},
-                            new CageRule.Cage {sum = 4,indexes = new[] {49,50,}},
-                            new CageRule.Cage {sum = 7,indexes = new[] {51,}},
-                            new CageRule.Cage {sum = 8,indexes = new[] {52,53,}},
-                            new CageRule.Cage {sum = 13,indexes = new[] {37,38,29,}},
-                            new CageRule.Cage {sum = 14,indexes = new[] {39,30,}},
-                            new CageRule.Cage {sum = 18,indexes = new[] {31,40,41,42,}},
-                            new CageRule.Cage {sum = 9,indexes = new[] {43,44,}},
-                            new CageRule.Cage {sum = 16,indexes = new[] {32,33,34,}},
-                            new CageRule.Cage {sum = 13,indexes = new[] {35,26,}},
-                            new CageRule.Cage {sum = 11,indexes = new[] {18,9,}},
-                            new CageRule.Cage {sum = 13,indexes = new[] {27,28,19,}},
-                            new CageRule.Cage {sum = 8,indexes = new[] {20,21,}},
-                            new CageRule.Cage {sum = 8,indexes = new[] {22,23,}},
-                            new CageRule.Cage {sum = 10,indexes = new[] {24,25,}},
-                            new CageRule.Cage {sum = 11,indexes = new[] {10,11,}},
-                            new CageRule.Cage {sum = 2,indexes = new[] {0,}},
-                            new CageRule.Cage {sum = 11,indexes = new[] {1,2,}},
-                            new CageRule.Cage {sum = 7,indexes = new[] {13,12,3,}},
-                            new CageRule.Cage {sum = 20,indexes = new[] {14,15,16,}},
-                            new CageRule.Cage {sum = 14,indexes = new[] {17,8,7,}},
-                            new CageRule.Cage {sum = 20,indexes = new[] {4,5,6,}},
+                            new CageRule.Cage {sum = 18, indexes = new[] {72, 73, 74,}},
+                            new CageRule.Cage {sum = 25, indexes = new[] {75, 76, 77, 67,}},
+                            new CageRule.Cage {sum = 20, indexes = new[] {78, 79, 80, 71, 70,}},
+                            new CageRule.Cage {sum = 11, indexes = new[] {63, 64,}},
+                            new CageRule.Cage {sum = 7, indexes = new[] {54, 55,}},
+                            new CageRule.Cage {sum = 10, indexes = new[] {56, 65, 66,}},
+                            new CageRule.Cage {sum = 17, indexes = new[] {57, 48, 47,}},
+                            new CageRule.Cage {sum = 11, indexes = new[] {68, 69,}},
+                            new CageRule.Cage {sum = 11, indexes = new[] {58, 59,}},
+                            new CageRule.Cage {sum = 19, indexes = new[] {60, 61, 62,}},
+                            new CageRule.Cage {sum = 19, indexes = new[] {46, 45, 36,}},
+                            new CageRule.Cage {sum = 4, indexes = new[] {49, 50,}},
+                            new CageRule.Cage {sum = 7, indexes = new[] {51,}},
+                            new CageRule.Cage {sum = 8, indexes = new[] {52, 53,}},
+                            new CageRule.Cage {sum = 13, indexes = new[] {37, 38, 29,}},
+                            new CageRule.Cage {sum = 14, indexes = new[] {39, 30,}},
+                            new CageRule.Cage {sum = 18, indexes = new[] {31, 40, 41, 42,}},
+                            new CageRule.Cage {sum = 9, indexes = new[] {43, 44,}},
+                            new CageRule.Cage {sum = 16, indexes = new[] {32, 33, 34,}},
+                            new CageRule.Cage {sum = 13, indexes = new[] {35, 26,}},
+                            new CageRule.Cage {sum = 11, indexes = new[] {18, 9,}},
+                            new CageRule.Cage {sum = 13, indexes = new[] {27, 28, 19,}},
+                            new CageRule.Cage {sum = 8, indexes = new[] {20, 21,}},
+                            new CageRule.Cage {sum = 8, indexes = new[] {22, 23,}},
+                            new CageRule.Cage {sum = 10, indexes = new[] {24, 25,}},
+                            new CageRule.Cage {sum = 11, indexes = new[] {10, 11,}},
+                            new CageRule.Cage {sum = 2, indexes = new[] {0,}},
+                            new CageRule.Cage {sum = 11, indexes = new[] {1, 2,}},
+                            new CageRule.Cage {sum = 7, indexes = new[] {13, 12, 3,}},
+                            new CageRule.Cage {sum = 20, indexes = new[] {14, 15, 16,}},
+                            new CageRule.Cage {sum = 14, indexes = new[] {17, 8, 7,}},
+                            new CageRule.Cage {sum = 20, indexes = new[] {4, 5, 6,}},
                         },
                     },
                 }
@@ -182,14 +182,13 @@ namespace SudokuTest
 
             var (matrix, primaryColumns, secondaryColumns) = SudokuDlxUtil.SudokuToMatrix(sudoku);
             var solutions = Dlx.Solve(matrix, primaryColumns, secondaryColumns).ToArray();
-            Console.WriteLine("Solution:\n");
+            Console.WriteLine("Solution: count:" + solutions.Length + "\n");
             foreach (var result in solutions)
             {
                 Console.WriteLine(String.Join(",", result));
             }
 
-            // Assert.True(solutions.Length == 1);
-            Assert.True(true);
+            Assert.True(solutions.Length == 1);
 
             if (solutions.Length == 1)
             {

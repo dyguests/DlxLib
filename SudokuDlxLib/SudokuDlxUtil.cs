@@ -18,10 +18,9 @@ namespace SudokuDlxLib
             var ruleDlxProcessors = sudoku.rules.Select(rule => RuleRouter.GetRuleDlxProcessor(rule.Type)).ToList();
             var possibleNumbersIndexes = Enumerable.Range(0, 81).Select(index => new[] {1, 2, 3, 4, 5, 6, 7, 8, 9}).ToArray();
             ruleDlxProcessors.ForEach(processor => processor.ReducePossibleNumbers(sudoku, possibleNumbersIndexes));
-            // var ruleMatrices = ruleDlxProcessors.Select(processor => processor.RuleToMatrix(sudoku, possibleNumbersIndexes));
-            var ruleMatrices = ruleDlxProcessors.Select(processor => processor.RuleToMatrix(sudoku, possibleNumbersIndexes)).ToArray();
-
-            var sudokuMatrix = ruleMatrices.First();
+            var ruleMatrices = ruleDlxProcessors.Select(processor => processor.RuleToMatrix(sudoku, possibleNumbersIndexes));
+            var sudokuMatrix = new Matrix();
+            ruleMatrices.ForEach(matrix => sudokuMatrix.Expand(matrix));
             return new SudokuMatrix
             {
                 matrix = sudokuMatrix.matrix,
