@@ -142,6 +142,7 @@ Answer:
 -[x] 可选约束
 -[ ] o dict -> stack
 -[ ] GetRuleDlxProcessor Singleton
+-[ ] dlx is unique solution(可能存在行号一致结果一致的情况)
 
 ## Reference
 

@@ -87,7 +87,7 @@ namespace SudokuDlxLib.Processors
 
         private (int[,] matrix, int[] primaryColumns, int[] secondaryColumns) ToMatrix(CageRule rule, int[][] possibleNumbersIndexes)
         {
-            var cageMatrixs = rule.cages.Select(cage =>
+            var cageMatrixss = rule.cages.Select(cage =>
             {
                 if (cage.sum > 0)
                 {
@@ -98,12 +98,17 @@ namespace SudokuDlxLib.Processors
                     return GetUniqueMatrix(cage, possibleNumbersIndexes);
                 }
             });
+            cageMatrixss.ForEach(cageMatrixs => cageMatrixs.ForEach(combination => Console.WriteLine("cageMatrix:" + string.Join(",", combination))));
             return (null, null, null);
         }
 
         private IEnumerable<int[]> GetSumMatrix(int[][] possibleNumbersIndexes, CageRule.Cage cage)
         {
+            // 返回可能的组合。例如：2,1,6; 1,2,6; 2,3,4 
             var possibleCombinations = GetPossibleCombinations(cage, possibleNumbersIndexes, 0, new int[0]);
+            // 去掉重复(忽略顺序，仅保留升序)的组合。例如：2,1,6; 1,2,6; 2,3,4 -> 1,2,6; 2,3,4
+            var combinations = possibleCombinations.Select(ints => new HashSet<int>(ints)).Distinct().Select(set => set.ToArray()).Select(ints => ints.Also(Array.Sort)).ToArray();
+            
             return possibleCombinations;
         }
 
