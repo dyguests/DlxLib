@@ -91,39 +91,70 @@ namespace SudokuDlxLib.Processors
             {
                 if (cage.sum > 0)
                 {
-                    return GetSumMatrix(possibleNumbersIndexes, cage);
+                    // 返回可能的组合。例如：2,1,6; 1,2,6; 2,3,4 
+                    var possibleCombinations = GetPossibleCombinations(cage, possibleNumbersIndexes, 0, new Dictionary<int, int>());
+                    // 去掉重复(忽略顺序，仅保留升序)的组合。例如：2,1,6; 1,2,6; 2,3,4 -> 1,2,6; 2,3,4
+                    var combinations = possibleCombinations.Select(ints => ints.Also(Array.Sort)).Distinct(new ArrayComparer()).ToArray();
+                    var sumMatrix = GetSumMatrix(cage, 0, possibleNumbersIndexes, combinations, new Dictionary<int, int>()).ToArray();
+                    return sumMatrix;
                 }
                 else
                 {
                     return GetUniqueMatrix(cage, possibleNumbersIndexes);
                 }
-            });
+            }).ToArray();
             cageMatrixss.ForEach(cageMatrixs => cageMatrixs.ForEach(combination => Console.WriteLine("cageMatrix:" + string.Join(",", combination))));
             return (null, null, null);
         }
 
-        private IEnumerable<int[]> GetSumMatrix(int[][] possibleNumbersIndexes, CageRule.Cage cage)
+        private IEnumerable<int[]> GetSumMatrix(CageRule.Cage cage, int cageIndex, int[][] possibleNumbersIndexes, int[][] combinations, Dictionary<int, int> currCombination)
         {
-            // 返回可能的组合。例如：2,1,6; 1,2,6; 2,3,4 
-            var possibleCombinations = GetPossibleCombinations(cage, possibleNumbersIndexes, 0, new Dictionary<int, int>());
-            // 去掉重复(忽略顺序，仅保留升序)的组合。例如：2,1,6; 1,2,6; 2,3,4 -> 1,2,6; 2,3,4
-            var combinations = possibleCombinations.Select(ints => ints.Also(Array.Sort)).Distinct(new ArrayComparer()).ToArray();
-
-            var currCombination = new int[cage.indexes.Length];
-            foreach (var cageIndex in cage.indexes)
+            foreach (var possibleNumber in possibleNumbersIndexes[cageIndex])
             {
-                foreach (var possibleNumber in possibleNumbersIndexes[cageIndex])
+                if (currCombination.Values.Contains(possibleNumber)) continue;
+                var matchedCombinations = combinations.Where(combination => currCombination.Values.Where(number => number > 0).All(combination.Contains));
+                if (!matchedCombinations.Any(combination => combination.Contains(possibleNumber))) continue;
+                currCombination[cageIndex] = possibleNumber;
+                if (cageIndex < cage.indexes.Length - 1)
                 {
-                    if (currCombination.Contains(possibleNumber)) continue;
-                    var matchedCombinations = combinations.Where(combination => currCombination.Where(number => number > 0).All(combination.Contains));
-                    if (!matchedCombinations.Any(combination => combination.Contains(possibleNumber))) continue;
-                    currCombination[cageIndex] = possibleNumber;
-                    if (cageIndex == cage.indexes.Length - 1 /*&& currCombination.Sum() == cage.sum*/)
+                    foreach (var row in GetSumMatrix(cage, cageIndex + 1, possibleNumbersIndexes, combinations, currCombination))
                     {
-                        //row
-                        yield return new int[10];
+                        yield return row;
                     }
                 }
+                else if (cageIndex == cage.indexes.Length - 1 /*&& currCombination.Sum() == cage.sum*/)
+                {
+                    Console.WriteLine("GetSumMatrix combination:" + string.Join(",", currCombination.Values));
+                    // matrix row
+                    foreach (var row in GetSumMatrixRows(cage, combinations, currCombination.OrderBy(pair => pair.Key).Select(pair => pair.Value).ToArray()))
+                    {
+                        yield return row;
+                    }
+                }
+
+                currCombination.Remove(cageIndex);
+            }
+        }
+
+        private IEnumerable<int[]> GetSumMatrixRows(CageRule.Cage cage, int[][] combinations, int[] currCombination)
+        {
+            var orderCombination = combinations.First(_orderCombination => currCombination.All(_orderCombination.Contains));
+            for (var cageIndex = 0; cageIndex < cage.indexes.Length; cageIndex++)
+            {
+                var row = new int[TileCount + NumberCount + cage.sum];
+                var numberIndex = cage.indexes[cageIndex];
+                row[numberIndex] = 1;
+                var currNumber = currCombination[cageIndex];
+                row[TileCount + currNumber - 1] = 1;
+                var indexOfOrderCombination = Array.IndexOf(orderCombination, currNumber);
+                var preCombinationIndex = orderCombination.Where((number, index) => index < indexOfOrderCombination).Sum();
+                // fill row
+                for (var i = 0; i < currNumber; i++)
+                {
+                    row[TileCount + NumberCount + preCombinationIndex + i] = 1;
+                }
+
+                yield return row;
             }
         }
 
