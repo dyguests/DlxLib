@@ -47,7 +47,7 @@ namespace SudokuTest
         {
             var sudoku = new Sudoku
             {
-                initNumbers = new[] {0, 0, 0, 0, 0, 8, 3, 0, 0, 0, 6, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 8, 5, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 1, 0, 2, 4, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 5, 0, 0},
+                initNumbers = new[] {0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 8, 5, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 1, 0, 2, 4, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 5, 0, 0},
                 rules = new Rule[]
                 {
                     new NormalRule(),
@@ -55,15 +55,16 @@ namespace SudokuTest
                     {
                         cages = new[]
                         {
-                            new CageRule.Cage {sum = 12, indexes = new[] {0, 1}},
+                            new CageRule.Cage {sum = 11, indexes = new[] {5, 6}},
                         },
                     },
                 }
             };
             Console.WriteLine("Sudoku:\n" + sudoku.initNumbers.NumbersToString());
 
-            var (matrix, primaryColumns, secondaryColumns) = SudokuDlxUtil.SudokuToMatrix(sudoku);
-            var solutions = Dlx.Solve(matrix, primaryColumns, secondaryColumns).ToArray();
+            var matrix = SudokuDlxUtil.SudokuToMatrix(sudoku);
+            MatrixUtil.PrintMatrix(matrix);
+            var solutions = Dlx.Solve(matrix.matrix, matrix.primaryColumns, matrix.secondaryColumns).ToArray();
             Console.WriteLine("Solution:\n");
             foreach (var result in solutions)
             {
@@ -74,7 +75,7 @@ namespace SudokuTest
 
             if (solutions.Length == 1)
             {
-                var solutionNumbers = SudokuDlxUtil.SolutionToNumbers(sudoku, matrix, solutions[0]);
+                var solutionNumbers = SudokuDlxUtil.SolutionToNumbers(sudoku, matrix.matrix, solutions[0]);
 
                 Console.WriteLine("Sudoku Solution:\n" + solutionNumbers.NumbersToString());
             }
