@@ -80,6 +80,56 @@ namespace SudokuTest
         }
 
         [Test]
+        public void TestKillerSudoku2()
+        {
+            var sudoku = new Sudoku
+            {
+                initNumbers = new[]
+                {
+                    0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0,
+                },
+                rules = new Rule[]
+                {
+                    new NormalRule(),
+                    new CageRule
+                    {
+                        cages = new[]
+                        {
+                            new CageRule.Cage {sum = 12, indexes = new[] {0, 1, 2,}},
+                        },
+                    },
+                }
+            };
+            Console.WriteLine("Sudoku:\n" + sudoku.initNumbers.NumbersToString());
+
+            var (matrix, primaryColumns, secondaryColumns) = SudokuDlxUtil.SudokuToMatrix(sudoku);
+            var solutions = Dlx.Solve(matrix, primaryColumns, secondaryColumns).ToArray();
+            Console.WriteLine("Solution:\n");
+            foreach (var result in solutions)
+            {
+                Console.WriteLine(String.Join(",", result));
+            }
+
+            // Assert.True(solutions.Length == 1);
+            Assert.True(true);
+
+            if (solutions.Length == 1)
+            {
+                var solutionNumbers = SudokuDlxUtil.SolutionToNumbers(sudoku, matrix, solutions[0]);
+
+                Console.WriteLine("Sudoku Solution:\n" + solutionNumbers.NumbersToString());
+            }
+        }
+
+        [Test]
         public void TestArray()
         {
             var array = new int[0];

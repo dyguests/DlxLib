@@ -105,11 +105,26 @@ namespace SudokuDlxLib.Processors
         private IEnumerable<int[]> GetSumMatrix(int[][] possibleNumbersIndexes, CageRule.Cage cage)
         {
             // 返回可能的组合。例如：2,1,6; 1,2,6; 2,3,4 
-            var possibleCombinations = GetPossibleCombinations(cage, possibleNumbersIndexes, 0, new int[0]);
+            var possibleCombinations = GetPossibleCombinations(cage, possibleNumbersIndexes, 0, new Dictionary<int, int>());
             // 去掉重复(忽略顺序，仅保留升序)的组合。例如：2,1,6; 1,2,6; 2,3,4 -> 1,2,6; 2,3,4
-            var combinations = possibleCombinations.Select(ints => new HashSet<int>(ints)).Distinct().Select(set => set.ToArray()).Select(ints => ints.Also(Array.Sort)).ToArray();
-            
-            return possibleCombinations;
+            var combinations = possibleCombinations.Select(ints => ints.Also(Array.Sort)).Distinct(new ArrayComparer()).ToArray();
+
+            var currCombination = new int[cage.indexes.Length];
+            foreach (var cageIndex in cage.indexes)
+            {
+                foreach (var possibleNumber in possibleNumbersIndexes[cageIndex])
+                {
+                    if (currCombination.Contains(possibleNumber)) continue;
+                    var matchedCombinations = combinations.Where(combination => currCombination.Where(number => number > 0).All(combination.Contains));
+                    if (!matchedCombinations.Any(combination => combination.Contains(possibleNumber))) continue;
+                    currCombination[cageIndex] = possibleNumber;
+                    if (cageIndex == cage.indexes.Length - 1 /*&& currCombination.Sum() == cage.sum*/)
+                    {
+                        //row
+                        yield return new int[10];
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -122,23 +137,23 @@ namespace SudokuDlxLib.Processors
         /// <param name="cageIndex"></param>
         /// <param name="combination"></param>
         /// <returns></returns>
-        private IEnumerable<int[]> GetPossibleCombinations(CageRule.Cage cage, int[][] possibleNumbersIndexes, int cageIndex, int[] combination)
+        private IEnumerable<int[]> GetPossibleCombinations(CageRule.Cage cage, int[][] possibleNumbersIndexes, int cageIndex, Dictionary<int, int> combination)
         {
             var numberIndex = cage.indexes[cageIndex];
             var possibleNumbers = possibleNumbersIndexes[numberIndex];
             foreach (var possibleNumber in possibleNumbers)
             {
-                if (combination.Contains(possibleNumber)) continue;
+                if (combination.Values.Contains(possibleNumber)) continue;
 
-                combination = combination.Add(possibleNumber);
+                combination[cageIndex] = possibleNumber;
                 if (cageIndex == cage.indexes.Length - 1)
                 {
-                    if (combination.Sum() == cage.sum)
+                    if (combination.Values.Sum() == cage.sum)
                     {
-                        yield return combination;
+                        yield return combination.Values.ToArray();
                     }
                 }
-                else
+                else if (cageIndex < cage.indexes.Length - 1)
                 {
                     foreach (var numberCombination in GetPossibleCombinations(cage, possibleNumbersIndexes, cageIndex + 1, combination)) yield return numberCombination;
                 }
