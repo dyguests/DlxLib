@@ -24,8 +24,9 @@ namespace SudokuTest
             };
             Console.WriteLine("Sudoku:\n" + sudoku.initNumbers.NumbersToString());
 
-            var (matrix, primaryColumns, secondaryColumns) = SudokuDlxUtil.SudokuToMatrix(sudoku);
-            var solutions = Dlx.Solve(matrix, primaryColumns, secondaryColumns).ToArray();
+            var matrix = SudokuDlxUtil.SudokuToMatrix(sudoku);
+            MatrixUtil.PrintMatrix(matrix);
+            var solutions = Dlx.Solve(matrix.matrix, matrix.primaryColumns, matrix.secondaryColumns).ToArray();
             foreach (var result in solutions)
             {
                 Console.WriteLine("Solution:" + String.Join(",", result));
@@ -35,7 +36,7 @@ namespace SudokuTest
 
             if (solutions.Length == 1)
             {
-                var solutionNumbers = SudokuDlxUtil.SolutionToNumbers(sudoku, matrix, solutions[0]);
+                var solutionNumbers = SudokuDlxUtil.SolutionToNumbers(sudoku, matrix.matrix, solutions[0]);
 
                 Console.WriteLine("Sudoku Solution:\n" + solutionNumbers.NumbersToString());
             }
@@ -180,8 +181,9 @@ namespace SudokuTest
             };
             Console.WriteLine("Sudoku:\n" + sudoku.initNumbers.NumbersToString());
 
-            var (matrix, primaryColumns, secondaryColumns) = SudokuDlxUtil.SudokuToMatrix(sudoku);
-            var solutions = Dlx.Solve(matrix, primaryColumns, secondaryColumns).ToArray();
+            var matrix = SudokuDlxUtil.SudokuToMatrix(sudoku);
+            MatrixUtil.PrintMatrix(matrix);
+            var solutions = Dlx.Solve(matrix.matrix, matrix.primaryColumns, matrix.secondaryColumns).ToArray();
             Console.WriteLine("Solution: count:" + solutions.Length + "\n");
             foreach (var result in solutions)
             {
@@ -192,7 +194,7 @@ namespace SudokuTest
 
             if (solutions.Length == 1)
             {
-                var solutionNumbers = SudokuDlxUtil.SolutionToNumbers(sudoku, matrix, solutions[0]);
+                var solutionNumbers = SudokuDlxUtil.SolutionToNumbers(sudoku, matrix.matrix, solutions[0]);
 
                 Console.WriteLine("Sudoku Solution:\n" + solutionNumbers.NumbersToString());
             }

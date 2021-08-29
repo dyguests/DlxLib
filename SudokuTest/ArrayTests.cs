@@ -76,7 +76,7 @@ namespace SudokuTest
                 },
                 primaryColumns = new int[] {2},
             };
-            PrintMatrix(curr);
+            MatrixUtil.PrintMatrix(curr);
             var other = new Matrix
             {
                 matrix = new int[,]
@@ -87,11 +87,11 @@ namespace SudokuTest
                 },
                 secondaryColumns = new int[] {2},
             };
-            PrintMatrix(other);
+            MatrixUtil.PrintMatrix(other);
 
             curr.Expand(other, new[] {0});
 
-            PrintMatrix(curr);
+            MatrixUtil.PrintMatrix(curr);
 
             Assert.True(true);
         }
@@ -109,7 +109,7 @@ namespace SudokuTest
                 primaryColumns = new int[] {2},
                 secondaryColumns = new int[0],
             };
-            PrintMatrix(curr);
+            MatrixUtil.PrintMatrix(curr);
 
             var other = new Matrix
             {
@@ -123,19 +123,12 @@ namespace SudokuTest
                 primaryColumns = new int[] {3},
                 secondaryColumns = new int[] {2},
             };
-            PrintMatrix(other);
+            MatrixUtil.PrintMatrix(other);
 
             curr.Expand(other, new[] {0, 1});
-            PrintMatrix(curr);
+            MatrixUtil.PrintMatrix(curr);
 
             Assert.True(true);
-        }
-
-        private static void PrintMatrix(Matrix matrix)
-        {
-            Console.WriteLine("matrix:\n" + matrix.matrix.MatrixToString());
-            Console.WriteLine("primaryColumns:\n" + matrix.primaryColumns?.ArrayToString());
-            Console.WriteLine("secondaryColumns:\n" + matrix.secondaryColumns?.ArrayToString());
         }
     }
 }
