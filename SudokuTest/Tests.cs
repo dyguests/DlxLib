@@ -226,10 +226,10 @@ namespace SudokuTest
                         {
                             new CageRule.Cage {sum = 21, indexes = new[] {72, 73, 74,}},
                             new CageRule.Cage {sum = 14, indexes = new[] {75, 66,}},
-                            new CageRule.Cage {sum = 14, indexes = new[] {76, 77,}},
+                            new CageRule.Cage {sum = 9, indexes = new[] {76, 77,}},
                             new CageRule.Cage {sum = 7, indexes = new[] {78, 69,}},
                             new CageRule.Cage {sum = 11, indexes = new[] {79, 70,}},
-                            new CageRule.Cage {sum = 11, indexes = new[] {80, 71,}},
+                            new CageRule.Cage {sum = 10, indexes = new[] {80, 71,}},
                             new CageRule.Cage {sum = 8, indexes = new[] {63, 54,}},
                             new CageRule.Cage {sum = 15, indexes = new[] {64, 65, 56,}},
                             new CageRule.Cage {sum = 10, indexes = new[] {55, 46, 37,}},
@@ -250,8 +250,8 @@ namespace SudokuTest
                             new CageRule.Cage {sum = 13, indexes = new[] {18, 19, 20,}},
                             new CageRule.Cage {sum = 8, indexes = new[] {9, 0,}},
                             new CageRule.Cage {sum = 9, indexes = new[] {10,}},
-                            new CageRule.Cage {sum = 12, indexes = new[] {21, 12, 11, 3,}},
                             new CageRule.Cage {sum = 9, indexes = new[] {1, 2,}},
+                            new CageRule.Cage {sum = 12, indexes = new[] {11, 12, 21, 3,}},
                             new CageRule.Cage {sum = 12, indexes = new[] {22, 23,}},
                             new CageRule.Cage {sum = 10, indexes = new[] {13, 4,}},
                             new CageRule.Cage {sum = 20, indexes = new[] {14, 5, 6, 7,}},
@@ -263,7 +263,7 @@ namespace SudokuTest
             Console.WriteLine("Sudoku:\n" + sudoku.initNumbers.NumbersToString());
 
             var matrix = SudokuDlxUtil.SudokuToMatrix(sudoku);
-            // MatrixUtil.PrintMatrix(matrix);
+            MatrixUtil.PrintMatrix(matrix);
             var solutions = Dlx.Solve(matrix.matrix, matrix.primaryColumns, matrix.secondaryColumns).ToArray();
             Console.WriteLine("Solution: count:" + solutions.Length + "\n");
             foreach (var result in solutions)
