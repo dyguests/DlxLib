@@ -36,9 +36,8 @@ namespace SudokuDlxLib
         }
     }
 
-    public class SudokuMatrix
+    public class Matrix
     {
-        /// <summary>
         /// matrix中分为primaryColumns和secondaryColumns以及hintColumns。
         /// 其中hintColumns就是不在primaryColumns和secondaryColumns的列。
         /// hintColumns不参与dlx运算，但是可以用于帮助多个矩阵进行连接，以及对solution的处理。
@@ -49,6 +48,21 @@ namespace SudokuDlxLib
         public int[] secondaryColumns;
 
         public void Deconstruct(out int[,] matrix, out int[] primaryColumns, out int[] secondaryColumns) => (matrix, primaryColumns, secondaryColumns) = (this.matrix, this.primaryColumns, this.secondaryColumns);
+    }
+
+    public class SudokuMatrix : Matrix
+    {
+        // /// <summary>
+        // /// matrix中分为primaryColumns和secondaryColumns以及hintColumns。
+        // /// 其中hintColumns就是不在primaryColumns和secondaryColumns的列。
+        // /// hintColumns不参与dlx运算，但是可以用于帮助多个矩阵进行连接，以及对solution的处理。
+        // /// </summary>
+        // public int[,] matrix;
+        //
+        // public int[] primaryColumns;
+        // public int[] secondaryColumns;
+        //
+        // public void Deconstruct(out int[,] matrix, out int[] primaryColumns, out int[] secondaryColumns) => (matrix, primaryColumns, secondaryColumns) = (this.matrix, this.primaryColumns, this.secondaryColumns);
     }
 
     public class RuleMatrix : SudokuMatrix

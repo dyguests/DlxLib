@@ -24,5 +24,38 @@ namespace SudokuDlxLib.Utils
 
             return array;
         }
+
+        public static IEnumerable<int[]> ToArrayIEnumerable(int[,] matrix)
+        {
+            for (int row = 0; row < matrix.GetLength(0); row++)
+            {
+                var cols = matrix.GetLength(1);
+                var array = new int[cols];
+                for (int col = 0; col < cols; col++)
+                {
+                    array[col] = matrix[row, col];
+                }
+
+                yield return array;
+            }
+        }
+
+        public static bool HashSameKeyColumns(int[] current, int[] other, int[] keyColumns)
+        {
+            foreach (var keyColumn in keyColumns)
+            {
+                if (keyColumn >= current.Length || keyColumn >= other.Length)
+                {
+                    return false;
+                }
+
+                if (current[keyColumn] != other[keyColumn])
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 }

@@ -47,6 +47,7 @@
         <Compile Include="Utils\ArrayComparer.cs" />
         <Compile Include="Utils\ArrayEx.cs" />
         <Compile Include="Utils\ArrayUtil.cs" />
+        <Compile Include="Utils\MatrixUtil.cs" />
         <Compile Include="Utils\ObjectExtensions.cs" />
         <Compile Include="Utils\SudokuUtil.cs" />
     </ItemGroup>
