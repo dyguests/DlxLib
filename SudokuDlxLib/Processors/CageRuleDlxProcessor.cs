@@ -111,6 +111,19 @@ namespace SudokuDlxLib.Processors
             // 去掉重复(忽略顺序，仅保留升序)的组合。例如：2,1,6; 1,2,6; 2,3,4 -> 1,2,6; 2,3,4
             var combinations = possibleCombinations.Select(ints => ints.Also(Array.Sort)).Distinct(new ArrayComparer()).ToArray();
             var rows = GetSumRows(cage, 0, possibleNumbersIndexes, combinations, new Dictionary<int, int>()).ToArray();
+            if (rows.Length == 0)
+            {
+                Console.WriteLine("GetSumMatrix rows is empty");
+                rows = possibleNumbersIndexes[cage.indexes[0]]
+                    .Select(possibleNumber => new int[TileCount + NumberCount + cage.sum]
+                        .Also(ints =>
+                        {
+                            ints[cage.indexes[0]] = 1;
+                            ints[TileCount + possibleNumber - 1] = 1;
+                        })
+                    )
+                    .ToArray();
+            }
 
             var matrix = ArrayUtil.To2DArray(rows);
             var primaryColumns = Enumerable.Range(0, TileCount).ToList();
@@ -125,7 +138,8 @@ namespace SudokuDlxLib.Processors
 
         private IEnumerable<int[]> GetSumRows(CageRule.Cage cage, int cageIndex, int[][] possibleNumbersIndexes, int[][] combinations, Dictionary<int, int> currCombination)
         {
-            foreach (var possibleNumber in possibleNumbersIndexes[cageIndex])
+            var numberIndex = cage.indexes[cageIndex];
+            foreach (var possibleNumber in possibleNumbersIndexes[numberIndex])
             {
                 if (currCombination.Values.Contains(possibleNumber)) continue;
                 var matchedCombinations = combinations.Where(combination => currCombination.Values.Where(number => number > 0).All(combination.Contains));
@@ -140,7 +154,8 @@ namespace SudokuDlxLib.Processors
                 }
                 else if (cageIndex == cage.indexes.Length - 1 /*&& currCombination.Sum() == cage.sum*/)
                 {
-                    Console.WriteLine("GetSumMatrix combination:" + string.Join(",", currCombination.Values));
+                    // todo
+                    Console.WriteLine("GetSumRows combination:" + string.Join(",", currCombination.Values));
                     // matrix row
                     foreach (var row in GetSumMatrixRows(cage, combinations, currCombination.OrderBy(pair => pair.Key).Select(pair => pair.Value).ToArray()))
                     {
@@ -204,6 +219,8 @@ namespace SudokuDlxLib.Processors
                 {
                     foreach (var numberCombination in GetPossibleCombinations(cage, possibleNumbersIndexes, cageIndex + 1, combination)) yield return numberCombination;
                 }
+
+                combination.Remove(cageIndex);
             }
         }
 
