@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuDlxLib", "SudokuDlxLi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuTest", "SudokuTest\SudokuTest.csproj", "{E548B15E-BE31-4166-A744-B2AAEE9946AC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuGeneratorLib", "SudokuGeneratorLib\SudokuGeneratorLib.csproj", "{D6F33D7E-0007-4589-ABEC-5CC8A9DEC9C4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,5 +50,9 @@ Global
 		{E548B15E-BE31-4166-A744-B2AAEE9946AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E548B15E-BE31-4166-A744-B2AAEE9946AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E548B15E-BE31-4166-A744-B2AAEE9946AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6F33D7E-0007-4589-ABEC-5CC8A9DEC9C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6F33D7E-0007-4589-ABEC-5CC8A9DEC9C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6F33D7E-0007-4589-ABEC-5CC8A9DEC9C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6F33D7E-0007-4589-ABEC-5CC8A9DEC9C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
