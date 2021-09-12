@@ -394,41 +394,44 @@ namespace SudokuTest
                 Console.WriteLine("Solution:" + String.Join(",", result));
             }
 
-            foreach (var solution in solutions)
+            if (sudoku.GetRule<DiagonalRule>() != null)
             {
-                Console.WriteLine("Solution Rows:");
-                solution.Select(index =>
-                    {
-                        return Enumerable.Range(0, matrix.matrix.GetLength(1))
-                            .Select(index1 => matrix.matrix[index, index1])
-                            .ToArray()
-                            .Let(row =>
-                            {
-                                var indexInRow = Array.IndexOf(row, 1, 0, 9 * 9);
-                                int number = Array.IndexOf(row, 1, 9 * 9, 9) % 9 + 1;
-                                var diagonal = row.SubArray(351 - 18, 9 * 2);
-                                return (indexInRow, number, diagonal);
-                            });
-                    })
-                    .OrderBy(tuple => tuple.indexInRow)
-                    .Select(tuple => tuple.indexInRow + ":" + tuple.number + ":" + string.Join("", tuple.diagonal))
-                    .ForEach(Console.WriteLine);
-                // foreach (var index in solution)
-                // {
-                //     Console.WriteLine(
-                //         string.Join("",
-                //             Enumerable.Range(0, matrix.matrix.GetLength(1))
-                //                 .Select(index1 => matrix.matrix[index, index1])
-                //                 .ToArray()
-                //                 .Let(row =>
-                //                 {
-                //                     var indexInRow = Array.IndexOf(row, 1, 0, 9 * 9);
-                //                     int number = Array.IndexOf(row, 1, 9 * 9, 9) % 9 + 1;
-                //                     return (indexInRow, number, row.SubArray(9 * 9 + 9, 9 * 2));
-                //                 })
-                //         )
-                //     );
-                // }
+                foreach (var solution in solutions)
+                {
+                    Console.WriteLine("Solution Rows:");
+                    solution.Select(index =>
+                        {
+                            return Enumerable.Range(0, matrix.matrix.GetLength(1))
+                                .Select(index1 => matrix.matrix[index, index1])
+                                .ToArray()
+                                .Let(row =>
+                                {
+                                    var indexInRow = Array.IndexOf(row, 1, 0, 9 * 9);
+                                    int number = Array.IndexOf(row, 1, 9 * 9, 9) % 9 + 1;
+                                    var diagonal = row.SubArray(351 - 18, 9 * 2);
+                                    return (indexInRow, number, diagonal);
+                                });
+                        })
+                        .OrderBy(tuple => tuple.indexInRow)
+                        .Select(tuple => tuple.indexInRow + ":" + tuple.number + ":" + string.Join("", tuple.diagonal))
+                        .ForEach(Console.WriteLine);
+                    // foreach (var index in solution)
+                    // {
+                    //     Console.WriteLine(
+                    //         string.Join("",
+                    //             Enumerable.Range(0, matrix.matrix.GetLength(1))
+                    //                 .Select(index1 => matrix.matrix[index, index1])
+                    //                 .ToArray()
+                    //                 .Let(row =>
+                    //                 {
+                    //                     var indexInRow = Array.IndexOf(row, 1, 0, 9 * 9);
+                    //                     int number = Array.IndexOf(row, 1, 9 * 9, 9) % 9 + 1;
+                    //                     return (indexInRow, number, row.SubArray(9 * 9 + 9, 9 * 2));
+                    //                 })
+                    //         )
+                    //     );
+                    // }
+                }
             }
 
             foreach (var solution in solutions)

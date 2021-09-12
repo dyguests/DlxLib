@@ -91,7 +91,7 @@ namespace SudokuDlxLib.Processors
 
             if (index % 9 + index / 9 == 8)
             {
-                possibleNumbers = possibleNumbers.Except(numbers.Where((number, tIndex) => index % 9 + index / 9 == 8)).ToArray();
+                possibleNumbers = possibleNumbers.Except(numbers.Where((number, tIndex) => tIndex % 9 + tIndex / 9 == 8)).ToArray();
             }
 
             return possibleNumbers;
