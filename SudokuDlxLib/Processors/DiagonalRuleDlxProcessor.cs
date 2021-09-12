@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using SudokuDlxLib.Utils;
@@ -92,7 +91,7 @@ namespace SudokuDlxLib.Processors
 
             if (index % 9 + index / 9 == 8)
             {
-                possibleNumbers = possibleNumbers.Except(numbers.Where((number, tIndex) => tIndex % 9 + tIndex / 9 == 8)).ToArray();
+                possibleNumbers = possibleNumbers.Except(numbers.Where((number, tIndex) => index % 9 + index / 9 == 8)).ToArray();
             }
 
             return possibleNumbers;
@@ -105,12 +104,12 @@ namespace SudokuDlxLib.Processors
             row[TileCount + possibleNumber - 1] = 1; //number
             if (index % 9 == index / 9)
             {
-                row[TileCount + NumberCount + index % 9] = 1; //slash
+                row[TileCount + NumberCount + possibleNumber - 1] = 1; //slash
             }
 
             if (index % 9 + index / 9 == 8)
             {
-                row[TileCount + NumberCount + SlashCount + index % 9] = 1; //backslash
+                row[TileCount + NumberCount + SlashCount + possibleNumber - 1] = 1; //backslash
             }
 
             return row;

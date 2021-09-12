@@ -367,15 +367,15 @@ namespace SudokuTest
             {
                 initNumbers = new[]
                 {
-                    0, 0, 0, 0, 0, 0, 3, 6, 0,
-                    8, 0, 2, 0, 0, 6, 0, 0, 0,
-                    0, 0, 0, 0, 3, 0, 0, 0, 8,
-                    2, 0, 3, 0, 4, 0, 0, 7, 0,
-                    7, 0, 0, 0, 0, 0, 0, 0, 4,
-                    0, 1, 0, 0, 5, 0, 8, 0, 2,
-                    3, 0, 0, 0, 8, 0, 0, 0, 0,
-                    0, 0, 0, 9, 0, 0, 2, 0, 3,
-                    0, 2, 9, 0, 0, 0, 0, 0, 0,
+                    9, 0, 0, 0, 0, 0, 0, 1, 0,
+                    0, 1, 0, 0, 0, 9, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 9, 0, 0,
+                    0, 0, 0, 0, 0, 4, 5, 7, 0,
+                    0, 0, 9, 0, 0, 0, 6, 0, 0,
+                    0, 2, 1, 3, 0, 0, 0, 0, 0,
+                    0, 0, 8, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 7, 0, 0, 0, 5, 0,
+                    0, 4, 0, 0, 0, 0, 0, 0, 8,
                 },
                 rules = new Rule[]
                 {
@@ -388,9 +388,47 @@ namespace SudokuTest
             var matrix = SudokuDlxUtil.SudokuToMatrix(sudoku);
             MatrixUtil.PrintMatrix(matrix);
             var solutions = Dlx.Solve(matrix.matrix, matrix.primaryColumns, matrix.secondaryColumns).ToArray();
+            Console.WriteLine("Solution Count:" + solutions.Length);
             foreach (var result in solutions)
             {
                 Console.WriteLine("Solution:" + String.Join(",", result));
+            }
+
+            foreach (var solution in solutions)
+            {
+                Console.WriteLine("Solution Rows:");
+                solution.Select(index =>
+                    {
+                        return Enumerable.Range(0, matrix.matrix.GetLength(1))
+                            .Select(index1 => matrix.matrix[index, index1])
+                            .ToArray()
+                            .Let(row =>
+                            {
+                                var indexInRow = Array.IndexOf(row, 1, 0, 9 * 9);
+                                int number = Array.IndexOf(row, 1, 9 * 9, 9) % 9 + 1;
+                                var diagonal = row.SubArray(351 - 18, 9 * 2);
+                                return (indexInRow, number, diagonal);
+                            });
+                    })
+                    .OrderBy(tuple => tuple.indexInRow)
+                    .Select(tuple => tuple.indexInRow + ":" + tuple.number + ":" + string.Join("", tuple.diagonal))
+                    .ForEach(Console.WriteLine);
+                // foreach (var index in solution)
+                // {
+                //     Console.WriteLine(
+                //         string.Join("",
+                //             Enumerable.Range(0, matrix.matrix.GetLength(1))
+                //                 .Select(index1 => matrix.matrix[index, index1])
+                //                 .ToArray()
+                //                 .Let(row =>
+                //                 {
+                //                     var indexInRow = Array.IndexOf(row, 1, 0, 9 * 9);
+                //                     int number = Array.IndexOf(row, 1, 9 * 9, 9) % 9 + 1;
+                //                     return (indexInRow, number, row.SubArray(9 * 9 + 9, 9 * 2));
+                //                 })
+                //         )
+                //     );
+                // }
             }
 
             foreach (var solution in solutions)

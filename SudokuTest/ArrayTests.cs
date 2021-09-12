@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NUnit.Framework;
 using SudokuDlxLib;
 using SudokuDlxLib.Utils;
@@ -127,6 +128,14 @@ namespace SudokuTest
 
             curr.Expand(other, new[] {0, 1});
             MatrixUtil.PrintMatrix(curr);
+
+            Assert.True(true);
+        }
+
+        [Test]
+        public void TestSlash()
+        {
+            Enumerable.Range(0, 81).ForEach(index => { Console.WriteLine(index + ":(" + (index % 9) + "," + (index / 9) + ")  isSlash:" + (index % 9 == index / 9) + "  isBackslash:" + (index % 9 + index / 9 == 8)); });
 
             Assert.True(true);
         }
