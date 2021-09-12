@@ -39,6 +39,7 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Processors\CageRuleDlxProcessor.cs" />
+        <Compile Include="Processors\DiagonalRuleDlxProcessor.cs" />
         <Compile Include="Processors\NormalRuleDlxProcessor.cs" />
         <Compile Include="Processors\RuleDlxProcessors.cs" />
         <Compile Include="Processors\RuleRouter.cs" />

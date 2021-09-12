@@ -6,15 +6,21 @@ using SudokuLib;
 
 namespace SudokuDlxLib.Processors
 {
-    public class NormalRuleDlxProcessor : AbsRuleDlxProcessor
+    public class DiagonalRuleDlxProcessor : AbsRuleDlxProcessor
     {
-        private const int RowCount = 9 * 9;
-        private const int ColCount = 9 * 9;
-        private const int BoxCount = 9 * 9;
+        /// <summary>
+        /// 斜杠
+        /// </summary>
+        private const int SlashCount = 9;
 
-        private static readonly int[] PrimaryColumns = new int[TileCount + RowCount + ColCount + BoxCount];
+        /// <summary>
+        /// 反斜杠
+        /// </summary>
+        private const int BackslashCount = 9;
 
-        static NormalRuleDlxProcessor()
+        private static readonly int[] PrimaryColumns = new int[TileCount + SlashCount + BackslashCount];
+
+        static DiagonalRuleDlxProcessor()
         {
             for (var i = 0; i < PrimaryColumns.Length; i++)
             {
@@ -40,6 +46,11 @@ namespace SudokuDlxLib.Processors
         public override RuleMatrix RuleToMatrix(Sudoku sudoku, int[][] possibleNumbersIndexes)
         {
             (int[,] matrix, int[] primaryColumns, int[] secondaryColumns) = ToMatrix(possibleNumbersIndexes);
+
+            // Console.WriteLine("matrix:\n" + matrix.MatrixToString());
+            // Console.WriteLine("primaryColumns:\n" + primaryColumns?.ArrayToString());
+            // Console.WriteLine("secondaryColumns:\n" + secondaryColumns?.ArrayToString());
+
             return new RuleMatrix
             {
                 type = RuleType.Normal,
@@ -47,15 +58,6 @@ namespace SudokuDlxLib.Processors
                 primaryColumns = primaryColumns,
                 secondaryColumns = secondaryColumns,
             };
-        }
-
-        public override int[] SolutionToNumbers(int[,] matrix, int[] solution)
-        {
-            return solution.Select(matrix.GetRow)
-                .Select(ParseToNumberAndIndex)
-                .OrderBy(numberAndIndex => numberAndIndex.Item2)
-                .Select(numberAndIndex => numberAndIndex.Item1)
-                .ToArray();
         }
 
         /// <summary>
@@ -83,31 +85,35 @@ namespace SudokuDlxLib.Processors
                 }
             }
 
-            return possibleNumbers.Except(
-                numbers.Where((number, index1) =>
-                    index1 % 9 == index % 9
-                    || index1 / 9 == index / 9
-                    || (index1 % 9 / 3 == index % 9 / 3 && index1 / 9 / 3 == index / 9 / 3)
-                )
-            ).ToArray();
+            if (index % 9 == index / 9)
+            {
+                possibleNumbers = possibleNumbers.Except(numbers.Where((number, tIndex) => tIndex % 9 == tIndex / 9)).ToArray();
+            }
+
+            if (index % 9 + index / 9 == 8)
+            {
+                possibleNumbers = possibleNumbers.Except(numbers.Where((number, tIndex) => tIndex % 9 + tIndex / 9 == 8)).ToArray();
+            }
+
+            return possibleNumbers;
         }
 
         private IEnumerable<int[]> GenerateRow(IEnumerable<int> possibleNumbers, int index) => possibleNumbers.Select(possibleNumber =>
         {
-            var row = new int[TileCount + NumberCount + RowCount + ColCount + BoxCount];
+            var row = new int[TileCount + NumberCount + SlashCount + BackslashCount];
             row[index] = 1; //index
             row[TileCount + possibleNumber - 1] = 1; //number
-            row[TileCount + NumberCount + index / 9 * 9 + possibleNumber - 1] = 1; //row
-            row[TileCount + NumberCount + RowCount + index % 9 * 9 + possibleNumber - 1] = 1; //col
-            row[TileCount + NumberCount + RowCount + ColCount + (index % 9 / 3 + index / 9 / 3 * 3) * 9 + possibleNumber - 1] = 1; //box
+            if (index % 9 == index / 9)
+            {
+                row[TileCount + NumberCount + index % 9] = 1; //slash
+            }
+
+            if (index % 9 + index / 9 == 8)
+            {
+                row[TileCount + NumberCount + SlashCount + index % 9] = 1; //backslash
+            }
+
             return row;
         });
-
-        private static Tuple<int, int> ParseToNumberAndIndex(int[] row)
-        {
-            var index = Array.IndexOf(row, 1, 0, TileCount);
-            int number = Array.IndexOf(row, 1, TileCount, RowCount) % 9 + 1;
-            return new Tuple<int, int>(number, index);
-        }
     }
 }

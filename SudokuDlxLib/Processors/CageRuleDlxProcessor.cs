@@ -6,7 +6,7 @@ using SudokuLib;
 
 namespace SudokuDlxLib.Processors
 {
-    public class CageRuleDlxProcessor : RuleDlxProcessor
+    public class CageRuleDlxProcessor : AbsRuleDlxProcessor
     {
         public override void ReducePossibleNumbers(Sudoku sudoku, int[][] possibleNumbersIndexes)
         {

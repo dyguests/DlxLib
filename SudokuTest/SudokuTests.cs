@@ -9,7 +9,7 @@ using SudokuLib;
 namespace SudokuTest
 {
     [TestFixture]
-    public class Tests
+    public class SudokuTests
     {
         [Test]
         public void TestNormalSudoku()
@@ -354,6 +354,49 @@ namespace SudokuTest
             foreach (var solution in solutions)
             {
                 var solutionNumbers = SudokuDlxUtil.SolutionToNumbers(sudoku, matrix.matrix, solution);
+                Console.WriteLine("Sudoku Solution:\n" + solutionNumbers.NumbersToString());
+            }
+
+            Assert.True(solutions.Length == 1);
+        }
+
+        [Test]
+        public void TestDiagonalSudoku()
+        {
+            var sudoku = new Sudoku
+            {
+                initNumbers = new[]
+                {
+                    0, 0, 0, 0, 0, 0, 3, 6, 0,
+                    8, 0, 2, 0, 0, 6, 0, 0, 0,
+                    0, 0, 0, 0, 3, 0, 0, 0, 8,
+                    2, 0, 3, 0, 4, 0, 0, 7, 0,
+                    7, 0, 0, 0, 0, 0, 0, 0, 4,
+                    0, 1, 0, 0, 5, 0, 8, 0, 2,
+                    3, 0, 0, 0, 8, 0, 0, 0, 0,
+                    0, 0, 0, 9, 0, 0, 2, 0, 3,
+                    0, 2, 9, 0, 0, 0, 0, 0, 0,
+                },
+                rules = new Rule[]
+                {
+                    new NormalRule(),
+                    new DiagonalRule(),
+                }
+            };
+            Console.WriteLine("Sudoku:\n" + sudoku.initNumbers.NumbersToString());
+
+            var matrix = SudokuDlxUtil.SudokuToMatrix(sudoku);
+            MatrixUtil.PrintMatrix(matrix);
+            var solutions = Dlx.Solve(matrix.matrix, matrix.primaryColumns, matrix.secondaryColumns).ToArray();
+            foreach (var result in solutions)
+            {
+                Console.WriteLine("Solution:" + String.Join(",", result));
+            }
+
+            foreach (var solution in solutions)
+            {
+                var solutionNumbers = SudokuDlxUtil.SolutionToNumbers(sudoku, matrix.matrix, solution);
+
                 Console.WriteLine("Sudoku Solution:\n" + solutionNumbers.NumbersToString());
             }
 
