@@ -46,9 +46,17 @@
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>
+      <ProjectReference Include="..\SudokuDlxLib\SudokuDlxLib.csproj">
+        <Project>{eae23e5d-e57d-4077-9801-9e78efa34420}</Project>
+        <Name>SudokuDlxLib</Name>
+      </ProjectReference>
       <ProjectReference Include="..\SudokuGeneratorLib\SudokuGeneratorLib.csproj">
         <Project>{d6f33d7e-0007-4589-abec-5cc8a9dec9c4}</Project>
         <Name>SudokuGeneratorLib</Name>
+      </ProjectReference>
+      <ProjectReference Include="..\SudokuLib\SudokuLib.csproj">
+        <Project>{e29c7b9d-a117-4a12-acfd-f48746063f6c}</Project>
+        <Name>SudokuLib</Name>
       </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

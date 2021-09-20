@@ -1,11 +1,31 @@
 ﻿using System;
+using System.Linq;
+using DlxLib;
+using SudokuDlxLib;
 using SudokuGeneratorLib.Utils;
+using SudokuLib;
 
 namespace SudokuGeneratorLib
 {
     public static class SudokuGenerator
     {
         private static readonly Random Random = new Random();
+
+        public static Sudoku GenerateNormalSudoku(int holeCount)
+        {
+            var solutionNumbers = GenerateSolution();
+            var initNumbers = (int[]) solutionNumbers.Clone();
+            HollowMatchNormalSudoku(initNumbers, holeCount);
+            return new Sudoku
+            {
+                initNumbers = initNumbers,
+                solutionNumbers = solutionNumbers,
+                rules = new Rule[]
+                {
+                    new NormalRule(),
+                },
+            };
+        }
 
         /// <summary>
         /// 新建一个numbers迷底
@@ -85,6 +105,90 @@ namespace SudokuGeneratorLib
 
             //矩阵转置
             board.Transpose();
+        }
+
+        /// <summary>
+        /// 挖洞
+        ///
+        /// 要保证挖完洞后，基于普通数独规则有唯一解
+        /// </summary>
+        /// <param name="initNumbers"></param>
+        /// <param name="holeCount"></param>
+        private static void HollowMatchNormalSudoku(int[] initNumbers, int holeCount)
+        {
+            var hollowedCount = HollowMatchNormalSudokuWithSimpleCheck(initNumbers, holeCount);
+            HollowMatchNormalSudokuWithDlxCheck(initNumbers, holeCount - hollowedCount);
+        }
+
+        /// <summary>
+        /// 挖洞
+        ///
+        /// 要保证挖完洞后，基于普通数独规则有唯一解
+        /// 检查规则是，挖的洞基于行、列、宫是否唯一值
+        /// </summary>
+        /// <param name="sudokuNumbers"></param>
+        /// <param name="holeCount"></param>
+        /// <returns>挖了的洞的数量</returns>
+        private static int HollowMatchNormalSudokuWithSimpleCheck(int[] sudokuNumbers, int holeCount)
+        {
+            return HollowMatchNormalSudokuWithCheck(sudokuNumbers, holeCount, (numbers, index) =>
+            {
+                return numbers.Where(i => i % 9 == index % 9
+                                          || i / 9 == index / 9
+                                          || (i % 9 / 3 == index % 9 / 3 && i / 9 / 3 == index / 9 / 3))
+                           .Distinct()
+                           .ToArray().Length == 8;
+            });
+        }
+
+        private static int HollowMatchNormalSudokuWithDlxCheck(int[] sudokuNumbers, int holeCount)
+        {
+            return HollowMatchNormalSudokuWithCheck(sudokuNumbers, holeCount, (numbers, index) =>
+            {
+                var sudoku = new Sudoku
+                {
+                    initNumbers = sudokuNumbers,
+                    rules = new Rule[]
+                    {
+                        new NormalRule(),
+                    }
+                };
+
+                var matrix = SudokuDlxUtil.SudokuToMatrix(sudoku);
+                var solutions = Dlx.Solve(matrix.matrix, matrix.primaryColumns, matrix.secondaryColumns).ToArray();
+                return solutions.Length == 1;
+            });
+        }
+
+        private static int HollowMatchNormalSudokuWithCheck(int[] initNumbers, int holeCount, Func<int[], int, bool> validator)
+        {
+            var removedItems = 0;
+            foreach (var index in Enumerable.Range(0, 9 * 9)
+                .OrderBy(i => Random.Next()))
+            {
+                if (removedItems >= holeCount)
+                {
+                    break;
+                }
+
+                var temp = initNumbers[index];
+                if (temp == 0)
+                {
+                    continue;
+                }
+
+                initNumbers[index] = 0;
+                if (validator(initNumbers, index))
+                {
+                    removedItems++;
+                }
+                else
+                {
+                    initNumbers[index] = temp;
+                }
+            }
+
+            return removedItems;
         }
     }
 }

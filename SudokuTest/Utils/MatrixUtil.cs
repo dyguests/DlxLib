@@ -2,7 +2,7 @@ using System;
 using SudokuDlxLib;
 using SudokuDlxLib.Utils;
 
-namespace SudokuTest
+namespace SudokuTest.Utils
 {
     internal static class MatrixUtil
     {

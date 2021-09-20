@@ -5,6 +5,7 @@ using NUnit.Framework;
 using SudokuDlxLib;
 using SudokuDlxLib.Utils;
 using SudokuLib;
+using MatrixUtil = SudokuTest.Utils.MatrixUtil;
 
 namespace SudokuTest
 {

@@ -3,6 +3,7 @@ using System.Linq;
 using NUnit.Framework;
 using SudokuDlxLib;
 using SudokuDlxLib.Utils;
+using MatrixUtil = SudokuTest.Utils.MatrixUtil;
 
 namespace SudokuTest
 {

@@ -1,5 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
+using SudokuDlxLib.Utils;
 using SudokuGeneratorLib;
 
 namespace SudokuGeneratorTest
@@ -8,10 +9,18 @@ namespace SudokuGeneratorTest
     public class NormalTests
     {
         [Test]
-        public void Test1()
+        public void TestGenerateSolution()
         {
             var solutionNumbers = SudokuGenerator.GenerateSolution();
             Console.WriteLine("Solution:" + String.Join("", solutionNumbers));
+            Assert.True(true);
+        }
+
+        [Test]
+        public void TestGenerate()
+        {
+            var sudoku = SudokuGenerator.GenerateNormalSudoku(30);
+            Console.WriteLine("Sudoku:\n" + sudoku.initNumbers.NumbersToString());
             Assert.True(true);
         }
     }
