@@ -3,7 +3,7 @@ using SudokuGeneratorLib.Utils;
 
 namespace SudokuGeneratorLib
 {
-    public class SudokuGenerator
+    public static class SudokuGenerator
     {
         private static readonly Random Random = new Random();
 

@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuTest", "SudokuTest\Su
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuGeneratorLib", "SudokuGeneratorLib\SudokuGeneratorLib.csproj", "{D6F33D7E-0007-4589-ABEC-5CC8A9DEC9C4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuGeneratorTest", "SudokuGeneratorTest\SudokuGeneratorTest.csproj", "{AC4DEE09-C0F5-4D91-B499-C9ED5208A866}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,5 +50,9 @@ Global
 		{D6F33D7E-0007-4589-ABEC-5CC8A9DEC9C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6F33D7E-0007-4589-ABEC-5CC8A9DEC9C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6F33D7E-0007-4589-ABEC-5CC8A9DEC9C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC4DEE09-C0F5-4D91-B499-C9ED5208A866}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC4DEE09-C0F5-4D91-B499-C9ED5208A866}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC4DEE09-C0F5-4D91-B499-C9ED5208A866}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC4DEE09-C0F5-4D91-B499-C9ED5208A866}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
