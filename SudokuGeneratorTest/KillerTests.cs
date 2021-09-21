@@ -1,6 +1,6 @@
 using System;
 using NUnit.Framework;
-using SudokuDlxLib.Utils;
+using SudokuConverterTest.Utils;
 using SudokuGeneratorLib;
 
 namespace SudokuGeneratorTest
