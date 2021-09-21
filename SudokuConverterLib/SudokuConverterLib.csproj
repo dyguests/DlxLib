@@ -38,11 +38,23 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Converters\CageRuleConverter.cs" />
+        <Compile Include="Converters\ConverterRouter.cs" />
+        <Compile Include="Converters\IRuleConverter.cs" />
+        <Compile Include="Converters\NormalRuleConverter.cs" />
         <Compile Include="SudokuConverter.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="Utils\ArrayEx.cs" />
     </ItemGroup>
     <ItemGroup>
+      <Content Include="Converters\README.md" />
       <Content Include="README.md" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\SudokuLib\SudokuLib.csproj">
+        <Project>{e29c7b9d-a117-4a12-acfd-f48746063f6c}</Project>
+        <Name>SudokuLib</Name>
+      </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

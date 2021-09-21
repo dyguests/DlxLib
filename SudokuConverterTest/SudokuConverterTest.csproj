@@ -47,6 +47,10 @@
         <Compile Include="Utils\SudokuUtil.cs" />
     </ItemGroup>
     <ItemGroup>
+      <ProjectReference Include="..\SudokuConverterLib\SudokuConverterLib.csproj">
+        <Project>{90877cc5-a752-4e84-b86b-2d4f1fdbde79}</Project>
+        <Name>SudokuConverterLib</Name>
+      </ProjectReference>
       <ProjectReference Include="..\SudokuGeneratorLib\SudokuGeneratorLib.csproj">
         <Project>{d6f33d7e-0007-4589-abec-5cc8a9dec9c4}</Project>
         <Name>SudokuGeneratorLib</Name>

@@ -170,7 +170,8 @@ namespace SudokuGeneratorLib
 
                 var cageIndexes = new HashSet<int> {startIndex};
 
-                while (cageIndexes.Count < maxSize)
+                var size = Random.Next(minSize, maxSize);
+                while (cageIndexes.Count < size)
                 {
                     var nearIndexFound = false;
                     var nearIndexes = GetNearIndexes();
