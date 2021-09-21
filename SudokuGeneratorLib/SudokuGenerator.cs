@@ -54,8 +54,10 @@ namespace SudokuGeneratorLib
             var initNumbers = (int[]) solutionNumbers.Clone();
             var cageRule = GenerateKillerRule(initNumbers, solutionNumbers, cageMinSize, cageMaxSize);
             HollowMatchKillerSudoku(initNumbers, solutionNumbers, cageRule, holeCount);
+            CleanCages();
+            ReducedCages();
 
-            var sudoku = new Sudoku
+            return new Sudoku
             {
                 initNumbers = initNumbers,
                 solutionNumbers = solutionNumbers,
@@ -66,14 +68,60 @@ namespace SudokuGeneratorLib
                 },
             };
 
-            var matrix = SudokuDlxUtil.SudokuToMatrix(sudoku);
-            var solutions = Dlx.Solve(matrix.matrix, matrix.primaryColumns, matrix.secondaryColumns).ToArray();
-            if (solutions.Length != 1)
+            void CleanCages()
             {
-                Console.WriteLine("sudoku no one solution.");
+                cageRule.cages = cageRule.cages.Where(cage => cage.indexes.Any(index => initNumbers[index] == 0)).ToArray();
             }
 
-            return sudoku;
+            void ReducedCages()
+            {
+                var removableCages = new HashSet<CageRule.Cage>(cageRule.cages);
+                while (cageRule.cages.Select(cage => cage.indexes.Length).Sum() > cageMaxCoverCount)
+                {
+                    var hasCageRemoved = false;
+
+                    var orderCages = removableCages.OrderBy(cage => Random.Next());
+                    foreach (var cage in orderCages)
+                    {
+                        var tmpCages = cageRule.cages.ToList();
+                        tmpCages.Remove(cage);
+
+                        var sudoku = new Sudoku
+                        {
+                            initNumbers = initNumbers,
+                            solutionNumbers = solutionNumbers,
+                            rules = new Rule[]
+                            {
+                                new NormalRule(),
+                                new CageRule
+                                {
+                                    cages = tmpCages.ToArray(),
+                                },
+                            },
+                        };
+
+                        var matrix = SudokuDlxUtil.SudokuToMatrix(sudoku);
+                        var solutions = Dlx.Solve(matrix.matrix, matrix.primaryColumns, matrix.secondaryColumns).ToArray();
+                        if (solutions.Length != 1)
+                        {
+                            removableCages.Remove(cage);
+                            continue;
+                        }
+
+                        removableCages.Remove(cage);
+                        cageRule.cages = tmpCages.ToArray();
+                        hasCageRemoved = true;
+                        break;
+                    }
+
+                    if (hasCageRemoved)
+                    {
+                        continue;
+                    }
+
+                    break;
+                }
+            }
         }
 
         /// <summary>
@@ -98,7 +146,7 @@ namespace SudokuGeneratorLib
 
         private static CageRule GenerateKillerRule(int[] initNumbers, int[] solutionNumbers, int cageMinSize, int cageMaxSize)
         {
-            var order = Enumerable.Range(0, 9 * 9).OrderBy(Random.Next);
+            var order = Enumerable.Range(0, 9 * 9).OrderBy(index => Random.Next());
             var unusedIndexes = new HashSet<int>(Enumerable.Range(0, 9 * 9));
 
             var cages = new List<CageRule.Cage>();
@@ -190,7 +238,7 @@ namespace SudokuGeneratorLib
                         .Select(tuple => tuple.Item1 + tuple.Item2 * 9)
                         .Where(index => unusedIndexes.Contains(index))
                         .Where(index => !cageIndexes.Contains(index))
-                        .OrderBy(Random.Next);
+                        .OrderBy(index => Random.Next());
                 }
             }
         }
@@ -315,8 +363,7 @@ namespace SudokuGeneratorLib
         private static int HollowMatchNormalSudokuWithCheck(int[] initNumbers, int holeCount, Func<int, bool> validator)
         {
             var removedItems = 0;
-            foreach (var index in Enumerable.Range(0, 9 * 9)
-                .OrderBy(i => Random.Next()))
+            foreach (var index in Enumerable.Range(0, 9 * 9).OrderBy(i => Random.Next()))
             {
                 if (removedItems >= holeCount)
                 {
