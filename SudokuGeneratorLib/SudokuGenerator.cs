@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DlxLib;
 using SudokuDlxLib;
@@ -11,11 +12,11 @@ namespace SudokuGeneratorLib
     {
         private static readonly Random Random = new Random();
 
-        public static Sudoku GenerateNormalSudoku(int holeCount)
+        public static Sudoku GenerateNormalSudoku(int holeCount, int advancedHoleCount = 0)
         {
             var solutionNumbers = GenerateSolution();
             var initNumbers = (int[]) solutionNumbers.Clone();
-            HollowMatchNormalSudoku(initNumbers, holeCount);
+            HollowMatchNormalSudoku(initNumbers, holeCount, advancedHoleCount);
             return new Sudoku
             {
                 initNumbers = initNumbers,
@@ -25,6 +26,34 @@ namespace SudokuGeneratorLib
                     new NormalRule(),
                 },
             };
+        }
+
+        public static Sudoku GenerateKillerSudoku(int holeCount)
+        {
+            var solutionNumbers = GenerateSolution();
+            var initNumbers = (int[]) solutionNumbers.Clone();
+            Hollow(initNumbers, holeCount);
+            var cageRule = GenerateKillerRule(initNumbers, solutionNumbers);
+
+            var sudoku = new Sudoku
+            {
+                initNumbers = initNumbers,
+                solutionNumbers = solutionNumbers,
+                rules = new Rule[]
+                {
+                    new NormalRule(),
+                    cageRule
+                },
+            };
+
+            var matrix = SudokuDlxUtil.SudokuToMatrix(sudoku);
+            var solutions = Dlx.Solve(matrix.matrix, matrix.primaryColumns, matrix.secondaryColumns).ToArray();
+            if (solutions.Length != 1)
+            {
+                Console.WriteLine("sudoku no one solution.");
+            }
+
+            return sudoku;
         }
 
         /// <summary>
@@ -46,6 +75,103 @@ namespace SudokuGeneratorLib
 
             return board.Flatten();
         }
+
+        private static CageRule GenerateKillerRule(int[] initNumbers, int[] solutionNumbers)
+        {
+            var holeIndexes = initNumbers.Select((number, index) => (number, index)).Where(tuple => tuple.number == 0).Select(tuple => tuple.index);
+            var usedIndexes = new HashSet<int>(Enumerable.Range(0, 9 * 9));
+
+            var cages = new List<CageRule.Cage>();
+            foreach (var holeIndex in holeIndexes)
+            {
+                var cage = GenerateCage(holeIndex);
+                if (cage != null)
+                {
+                    cages.Add(cage.Value);
+                }
+            }
+
+            return new CageRule
+            {
+                cages = cages.ToArray(),
+            };
+
+            CageRule.Cage? GenerateCage(int holeIndex)
+            {
+                var cageExpectLength = Random.Next(1, 3) + Random.Next(1, 3);
+
+                if (!usedIndexes.Contains(holeIndex)) return null;
+
+                var indexes = new HashSet<int>();
+
+                AddIndex(holeIndex);
+
+                for (int i = 1; i < cageExpectLength; i++)
+                {
+                    try
+                    {
+                        var nearIndex = GetNearIndex();
+                        if (nearIndex >= 0)
+                        {
+                            AddIndex(nearIndex);
+                        }
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        // Console.WriteLine(e);
+                        // throw;
+                    }
+                }
+
+                return new CageRule.Cage
+                {
+                    sum = solutionNumbers.Where((number, index) => indexes.Contains(index)).Sum(),
+                    indexes = indexes.ToArray(),
+                };
+
+                int GetNearIndex()
+                {
+                    return indexes.Select(i => (i % 9, i / 9))
+                        .SelectMany(tuple =>
+                        {
+                            var list = new HashSet<(int, int)>();
+
+                            if (tuple.Item1 > 0)
+                            {
+                                list.Add((tuple.Item1 - 1, tuple.Item2));
+                            }
+
+                            if (tuple.Item1 < 9 - 1)
+                            {
+                                list.Add((tuple.Item1 + 1, tuple.Item2));
+                            }
+
+                            if (tuple.Item2 > 0)
+                            {
+                                list.Add((tuple.Item1, tuple.Item2 - 1));
+                            }
+
+                            if (tuple.Item2 < 9 - 1)
+                            {
+                                list.Add((tuple.Item1, tuple.Item2 + 1));
+                            }
+
+                            return list;
+                        })
+                        .Select(tuple => tuple.Item1 + tuple.Item2 * 9)
+                        .Where(index => usedIndexes.Contains(index))
+                        .OrderBy(Random.Next)
+                        .FirstOrDefault(-1);
+                }
+
+                void AddIndex(int index)
+                {
+                    usedIndexes.Remove(index);
+                    indexes.Add(index);
+                }
+            }
+        }
+
 
         private static void Shuffle(int[,] board, int times = 15)
         {
@@ -107,31 +233,27 @@ namespace SudokuGeneratorLib
             board.Transpose();
         }
 
-        /// <summary>
-        /// 挖洞
-        ///
-        /// 要保证挖完洞后，基于普通数独规则有唯一解
-        /// </summary>
-        /// <param name="initNumbers"></param>
-        /// <param name="holeCount"></param>
-        private static void HollowMatchNormalSudoku(int[] initNumbers, int holeCount)
+        private static void Hollow(int[] initNumbers, int holeCount)
         {
-            var hollowedCount = HollowMatchNormalSudokuWithSimpleCheck(initNumbers, holeCount);
-            HollowMatchNormalSudokuWithDlxCheck(initNumbers, holeCount - hollowedCount);
+            HollowWithNoCheck(initNumbers, holeCount);
+        }
+
+        private static int HollowWithNoCheck(int[] sudokuNumbers, int holeCount)
+        {
+            return HollowMatchNormalSudokuWithCheck(sudokuNumbers, holeCount, (numbers, index) => true);
         }
 
         /// <summary>
         /// 挖洞
-        ///
+        /// 
         /// 要保证挖完洞后，基于普通数独规则有唯一解
-        /// 检查规则是，挖的洞基于行、列、宫是否唯一值
         /// </summary>
-        /// <param name="sudokuNumbers"></param>
+        /// <param name="initNumbers"></param>
         /// <param name="holeCount"></param>
-        /// <returns>挖了的洞的数量</returns>
-        private static int HollowMatchNormalSudokuWithSimpleCheck(int[] sudokuNumbers, int holeCount)
+        /// <param name="advancedHoleCount"></param>
+        private static void HollowMatchNormalSudoku(int[] initNumbers, int holeCount, int advancedHoleCount)
         {
-            return HollowMatchNormalSudokuWithCheck(sudokuNumbers, holeCount, (numbers, index) =>
+            var hollowedCount = HollowMatchNormalSudokuWithCheck(initNumbers, holeCount, (numbers, index) =>
             {
                 return numbers.Where(i => i % 9 == index % 9
                                           || i / 9 == index / 9
@@ -139,15 +261,12 @@ namespace SudokuGeneratorLib
                            .Distinct()
                            .ToArray().Length == 8;
             });
-        }
-
-        private static int HollowMatchNormalSudokuWithDlxCheck(int[] sudokuNumbers, int holeCount)
-        {
-            return HollowMatchNormalSudokuWithCheck(sudokuNumbers, holeCount, (numbers, index) =>
+            int holeCount1 = advancedHoleCount + holeCount - hollowedCount;
+            HollowMatchNormalSudokuWithCheck(initNumbers, holeCount1, (numbers, index) =>
             {
                 var sudoku = new Sudoku
                 {
-                    initNumbers = sudokuNumbers,
+                    initNumbers = initNumbers,
                     rules = new Rule[]
                     {
                         new NormalRule(),
