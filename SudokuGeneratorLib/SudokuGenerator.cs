@@ -28,12 +28,32 @@ namespace SudokuGeneratorLib
             };
         }
 
-        public static Sudoku GenerateKillerSudoku(int holeCount)
+        /// <summary>
+        /// 生成杀手数独
+        /// </summary>
+        /// <param name="holeCount"></param>
+        /// <param name="cageMaxSize"></param>
+        /// <param name="cageMaxCoverCount"></param>
+        /// <returns></returns>
+        public static Sudoku GenerateKillerSudoku(int holeCount, int cageMaxSize, int cageMaxCoverCount)
+        {
+            return GenerateKillerSudoku(holeCount, 2, cageMaxSize, cageMaxCoverCount);
+        }
+
+        /// <summary>
+        /// 生成杀手数独
+        /// </summary>
+        /// <param name="holeCount">挖洞数量</param>
+        /// <param name="cageMinSize">笼子最小size</param>
+        /// <param name="cageMaxSize">笼子最大size</param>
+        /// <param name="cageMaxCoverCount">笼子最大覆盖数量</param>
+        /// <returns></returns>
+        private static Sudoku GenerateKillerSudoku(int holeCount, int cageMinSize, int cageMaxSize, int cageMaxCoverCount)
         {
             var solutionNumbers = GenerateSolution();
             var initNumbers = (int[]) solutionNumbers.Clone();
-            Hollow(initNumbers, holeCount);
-            var cageRule = GenerateKillerRule(initNumbers, solutionNumbers);
+            var cageRule = GenerateKillerRule(initNumbers, solutionNumbers, cageMinSize, cageMaxSize);
+            HollowMatchKillerSudoku(initNumbers, solutionNumbers, cageRule, holeCount);
 
             var sudoku = new Sudoku
             {
@@ -76,15 +96,15 @@ namespace SudokuGeneratorLib
             return board.Flatten();
         }
 
-        private static CageRule GenerateKillerRule(int[] initNumbers, int[] solutionNumbers)
+        private static CageRule GenerateKillerRule(int[] initNumbers, int[] solutionNumbers, int cageMinSize, int cageMaxSize)
         {
-            var holeIndexes = initNumbers.Select((number, index) => (number, index)).Where(tuple => tuple.number == 0).Select(tuple => tuple.index);
-            var usedIndexes = new HashSet<int>(Enumerable.Range(0, 9 * 9));
+            var order = Enumerable.Range(0, 9 * 9).OrderBy(Random.Next);
+            var unusedIndexes = new HashSet<int>(Enumerable.Range(0, 9 * 9));
 
             var cages = new List<CageRule.Cage>();
-            foreach (var holeIndex in holeIndexes)
+            foreach (var index in order)
             {
-                var cage = GenerateCage(holeIndex);
+                var cage = GenerateCage(index, cageMinSize, cageMaxSize);
                 if (cage != null)
                 {
                     cages.Add(cage.Value);
@@ -96,42 +116,51 @@ namespace SudokuGeneratorLib
                 cages = cages.ToArray(),
             };
 
-            CageRule.Cage? GenerateCage(int holeIndex)
+            CageRule.Cage? GenerateCage(int startIndex, int minSize, int maxSize)
             {
-                var cageExpectLength = Random.Next(1, 3) + Random.Next(1, 3);
+                if (!unusedIndexes.Contains(startIndex)) return null;
 
-                if (!usedIndexes.Contains(holeIndex)) return null;
+                var cageIndexes = new HashSet<int> {startIndex};
 
-                var indexes = new HashSet<int>();
-
-                AddIndex(holeIndex);
-
-                for (int i = 1; i < cageExpectLength; i++)
+                while (cageIndexes.Count < maxSize)
                 {
-                    try
+                    var nearIndexFound = false;
+                    var nearIndexes = GetNearIndexes();
+                    foreach (var nearIndex in nearIndexes)
                     {
-                        var nearIndex = GetNearIndex();
-                        if (nearIndex >= 0)
+                        if (cageIndexes.Select(cageIndex => solutionNumbers[cageIndex]).Any(number => number == solutionNumbers[nearIndex]))
                         {
-                            AddIndex(nearIndex);
+                            continue;
                         }
+
+                        cageIndexes.Add(nearIndex);
+                        nearIndexFound = true;
+                        break;
                     }
-                    catch (InvalidOperationException)
+
+                    if (nearIndexFound)
                     {
-                        // Console.WriteLine(e);
-                        // throw;
+                        continue;
                     }
+
+                    break;
                 }
 
+                if (cageIndexes.Count < minSize)
+                {
+                    return null;
+                }
+
+                unusedIndexes.ExceptWith(cageIndexes);
                 return new CageRule.Cage
                 {
-                    sum = solutionNumbers.Where((number, index) => indexes.Contains(index)).Sum(),
-                    indexes = indexes.ToArray(),
+                    sum = solutionNumbers.Where((number, index) => cageIndexes.Contains(index)).Sum(),
+                    indexes = cageIndexes.ToArray(),
                 };
 
-                int GetNearIndex()
+                IEnumerable<int> GetNearIndexes()
                 {
-                    return indexes.Select(i => (i % 9, i / 9))
+                    return cageIndexes.Select(i => (i % 9, i / 9))
                         .SelectMany(tuple =>
                         {
                             var list = new HashSet<(int, int)>();
@@ -159,15 +188,9 @@ namespace SudokuGeneratorLib
                             return list;
                         })
                         .Select(tuple => tuple.Item1 + tuple.Item2 * 9)
-                        .Where(index => usedIndexes.Contains(index))
-                        .OrderBy(Random.Next)
-                        .FirstOrDefault(-1);
-                }
-
-                void AddIndex(int index)
-                {
-                    usedIndexes.Remove(index);
-                    indexes.Add(index);
+                        .Where(index => unusedIndexes.Contains(index))
+                        .Where(index => !cageIndexes.Contains(index))
+                        .OrderBy(Random.Next);
                 }
             }
         }
@@ -233,14 +256,24 @@ namespace SudokuGeneratorLib
             board.Transpose();
         }
 
-        private static void Hollow(int[] initNumbers, int holeCount)
+        private static void HollowMatchKillerSudoku(int[] initNumbers, int[] solutionNumbers, CageRule cageRule, int holeCount)
         {
-            HollowWithNoCheck(initNumbers, holeCount);
-        }
+            HollowMatchNormalSudokuWithCheck(initNumbers, holeCount, index =>
+            {
+                var sudoku = new Sudoku
+                {
+                    initNumbers = initNumbers,
+                    rules = new Rule[]
+                    {
+                        new NormalRule(),
+                        cageRule,
+                    }
+                };
 
-        private static int HollowWithNoCheck(int[] sudokuNumbers, int holeCount)
-        {
-            return HollowMatchNormalSudokuWithCheck(sudokuNumbers, holeCount, (numbers, index) => true);
+                var matrix = SudokuDlxUtil.SudokuToMatrix(sudoku);
+                var solutions = Dlx.Solve(matrix.matrix, matrix.primaryColumns, matrix.secondaryColumns).ToArray();
+                return solutions.Length == 1;
+            });
         }
 
         /// <summary>
@@ -253,16 +286,16 @@ namespace SudokuGeneratorLib
         /// <param name="advancedHoleCount"></param>
         private static void HollowMatchNormalSudoku(int[] initNumbers, int holeCount, int advancedHoleCount)
         {
-            var hollowedCount = HollowMatchNormalSudokuWithCheck(initNumbers, holeCount, (numbers, index) =>
+            var hollowedCount = HollowMatchNormalSudokuWithCheck(initNumbers, holeCount, index =>
             {
-                return numbers.Where(i => i % 9 == index % 9
-                                          || i / 9 == index / 9
-                                          || (i % 9 / 3 == index % 9 / 3 && i / 9 / 3 == index / 9 / 3))
+                return initNumbers.Where(i => i % 9 == index % 9
+                                              || i / 9 == index / 9
+                                              || (i % 9 / 3 == index % 9 / 3 && i / 9 / 3 == index / 9 / 3))
                            .Distinct()
                            .ToArray().Length == 8;
             });
             int holeCount1 = advancedHoleCount + holeCount - hollowedCount;
-            HollowMatchNormalSudokuWithCheck(initNumbers, holeCount1, (numbers, index) =>
+            HollowMatchNormalSudokuWithCheck(initNumbers, holeCount1, index =>
             {
                 var sudoku = new Sudoku
                 {
@@ -279,7 +312,7 @@ namespace SudokuGeneratorLib
             });
         }
 
-        private static int HollowMatchNormalSudokuWithCheck(int[] initNumbers, int holeCount, Func<int[], int, bool> validator)
+        private static int HollowMatchNormalSudokuWithCheck(int[] initNumbers, int holeCount, Func<int, bool> validator)
         {
             var removedItems = 0;
             foreach (var index in Enumerable.Range(0, 9 * 9)
@@ -297,7 +330,7 @@ namespace SudokuGeneratorLib
                 }
 
                 initNumbers[index] = 0;
-                if (validator(initNumbers, index))
+                if (validator(index))
                 {
                     removedItems++;
                 }

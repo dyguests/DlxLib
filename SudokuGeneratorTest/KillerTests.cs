@@ -11,7 +11,7 @@ namespace SudokuGeneratorTest
         [Test]
         public void TestGenerateEasy()
         {
-            var sudoku = SudokuGenerator.GenerateKillerSudoku(50);
+            var sudoku = SudokuGenerator.GenerateKillerSudoku(50, 3, 9 * 9);
             Console.WriteLine("Sudoku:\n" + sudoku.initNumbers.NumbersToString());
             Assert.True(true);
         }
