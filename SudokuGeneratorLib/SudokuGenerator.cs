@@ -152,6 +152,7 @@ namespace SudokuGeneratorLib
                 },
             };
             var matrix = SudokuDlxUtil.SudokuToMatrix(sudoku);
+            matrix.matrix.ShuffleDimension0();
             var solutions = Dlx.Solve(matrix.matrix, matrix.primaryColumns, matrix.secondaryColumns).ToArray();
 
             return sudoku;

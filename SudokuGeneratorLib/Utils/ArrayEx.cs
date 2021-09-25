@@ -1,7 +1,11 @@
+using System;
+
 namespace SudokuGeneratorLib.Utils
 {
     public static class ArrayEx
     {
+        private static readonly Random random = new Random();
+
         public static int[] Flatten(this int[,] input)
         {
             // Step 1: get total size of 2D array, and allocate 1D array.
@@ -52,6 +56,31 @@ namespace SudokuGeneratorLib.Utils
             }
 
             return transposed;
+        }
+
+        /// <summary>
+        /// 洗混矩阵
+        ///
+        /// 注意：只是各行相互洗混
+        /// 行内元素顺序不变
+        ///
+        /// 当使用dlx求解matrix时，若有多个解，本方法洗混功能可以使解随机
+        /// </summary>
+        /// <param name="arr"></param>
+        /// <typeparam name="T"></typeparam>
+        public static void ShuffleDimension0<T>(this T[,] arr)
+        {
+            var upperBound0 = arr.GetUpperBound(0);
+            for (int i = 0; i <= upperBound0; i++)
+            {
+                var i2 = random.Next(upperBound0);
+                for (int z = 0; z <= arr.GetUpperBound(1); z++)
+                {
+                    var tmp = arr[i, z];
+                    arr[i, z] = arr[i2, z];
+                    arr[i2, z] = tmp;
+                }
+            }
         }
     }
 }
