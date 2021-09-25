@@ -39,7 +39,17 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="ColumnObject.cs" />
+        <Compile Include="ColumnPredicates\ColumnsPredicate.cs" />
+        <Compile Include="ColumnPredicates\IColumnPredicate.cs" />
+        <Compile Include="ColumnPredicates\NumPrimaryColumnsPredicate.cs" />
+        <Compile Include="ColumnPredicates\SecondaryColumnsPredicate.cs" />
+        <Compile Include="DataObject.cs" />
         <Compile Include="Dlx.cs" />
+        <Compile Include="Instrumentations\DefaultInstrumentation.cs" />
+        <Compile Include="Instrumentations\Instrumentation.cs" />
+        <Compile Include="Instrumentations\UpToOneInstrumentation.cs" />
+        <Compile Include="Instrumentations\UpToTwoInstrumentation.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

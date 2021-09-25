@@ -101,10 +101,7 @@ namespace SudokuGeneratorLib
                         };
 
                         var matrix = SudokuDlxUtil.SudokuToMatrix(sudoku);
-                        var solutions = Dlx.Solve(
-                                matrix.matrix, matrix.primaryColumns, matrix.secondaryColumns,
-                                new Dlx.UpToOneInstrumentation()
-                            )
+                        var solutions = Dlx.Solve(matrix.matrix, matrix.primaryColumns, matrix.secondaryColumns)
                             .ToArray();
                         if (solutions.Length != 1)
                         {
