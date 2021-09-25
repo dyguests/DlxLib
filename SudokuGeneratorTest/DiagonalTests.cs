@@ -47,7 +47,7 @@ namespace SudokuGeneratorTest
         [Test]
         public void TestGenerateDiagonal()
         {
-            var sudoku = SudokuGenerator.GenerateDiagonalSudoku();
+            var sudoku = SudokuGenerator.GenerateDiagonalSudoku(0);
             Console.WriteLine("Sudoku:\n" + sudoku.initNumbers.NumbersToString());
             Assert.True(true);
         }

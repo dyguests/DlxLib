@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using DlxLib;
+using DlxLib.Instrumentations;
 using SudokuDlxLib;
 using SudokuGeneratorLib.Utils;
 using SudokuLib;
@@ -125,7 +127,7 @@ namespace SudokuGeneratorLib
             }
         }
 
-        public static Sudoku GenerateDiagonalSudoku()
+        public static Sudoku GenerateDiagonalSudoku(int holeCount, int advancedHoleCount = 0)
         {
             // empty diagonal sudoku
             var sudoku = new Sudoku
@@ -150,7 +152,19 @@ namespace SudokuGeneratorLib
             };
             var matrix = SudokuDlxUtil.SudokuToMatrix(sudoku);
             matrix.matrix.ShuffleDimension0();
-            var solutions = Dlx.Solve(matrix.matrix, matrix.primaryColumns, matrix.secondaryColumns).ToArray();
+            var solutions = Dlx.Solve(matrix.matrix, matrix.primaryColumns, matrix.secondaryColumns, new UpToOneInstrumentation()).ToArray();
+            if (solutions.Length < 1)
+            {
+                throw new InvalidDataException();
+            }
+
+            var solutionNumbers = SudokuDlxUtil.SolutionToNumbers(sudoku, matrix.matrix, solutions.First());
+
+            // filled diagonal sudoku
+            sudoku.initNumbers = (int[]) solutionNumbers.Clone();
+            sudoku.solutionNumbers = (int[]) solutionNumbers.Clone();
+
+            HollowMatchNormalSudoku(sudoku.initNumbers, holeCount, advancedHoleCount);
 
             return sudoku;
         }
