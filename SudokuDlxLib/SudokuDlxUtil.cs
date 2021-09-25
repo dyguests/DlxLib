@@ -37,6 +37,7 @@ namespace SudokuDlxLib
 
     public class Matrix
     {
+        /// <summary>
         /// matrix中分为primaryColumns和secondaryColumns以及hintColumns。
         /// 其中hintColumns就是不在primaryColumns和secondaryColumns的列。
         /// hintColumns不参与dlx运算，但是可以用于帮助多个矩阵进行连接，以及对solution的处理。

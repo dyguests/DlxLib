@@ -101,7 +101,11 @@ namespace SudokuGeneratorLib
                         };
 
                         var matrix = SudokuDlxUtil.SudokuToMatrix(sudoku);
-                        var solutions = Dlx.Solve(matrix.matrix, matrix.primaryColumns, matrix.secondaryColumns).ToArray();
+                        var solutions = Dlx.Solve(
+                                matrix.matrix, matrix.primaryColumns, matrix.secondaryColumns,
+                                new Dlx.UpToOneInstrumentation()
+                            )
+                            .ToArray();
                         if (solutions.Length != 1)
                         {
                             removableCages.Remove(cage);
@@ -124,9 +128,33 @@ namespace SudokuGeneratorLib
             }
         }
 
-        public static Sudoku GenerateDiagonalSolution()
+        public static Sudoku GenerateDiagonalSudoku()
         {
-            throw new NotImplementedException();
+            // empty diagonal sudoku
+            var sudoku = new Sudoku
+            {
+                initNumbers = new[]
+                {
+                    0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0,
+                },
+                rules = new Rule[]
+                {
+                    new NormalRule(),
+                    new DiagonalRule(),
+                },
+            };
+            var matrix = SudokuDlxUtil.SudokuToMatrix(sudoku);
+            var solutions = Dlx.Solve(matrix.matrix, matrix.primaryColumns, matrix.secondaryColumns).ToArray();
+
+            return sudoku;
         }
 
         /// <summary>

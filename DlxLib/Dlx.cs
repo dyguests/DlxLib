@@ -44,6 +44,11 @@ namespace DlxLib
             return Solve(matrix, new ColumnsPredicate(primaryColumns, secondaryColumns));
         }
 
+        public static IEnumerable<int[]> Solve(int[,] matrix, int[] primaryColumns, int[] secondaryColumns, params Instrumentation[] instrumentations)
+        {
+            return Solve(matrix, new ColumnsPredicate(primaryColumns, secondaryColumns), instrumentations);
+        }
+
         public static IEnumerable<int[]> Solve(int[,] matrix, IColumnPredicate columnPredicate)
         {
             return Solve(matrix, columnPredicate, new UpToTwoInstrumentation());
@@ -275,6 +280,24 @@ namespace DlxLib
                 base.NotifySolutionIncrease();
                 numberOfSolutions++;
                 if (numberOfSolutions >= 2)
+                {
+                    Cancel();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 只求其中一个解就行
+        /// </summary>
+        public class UpToOneInstrumentation : Instrumentation
+        {
+            private int numberOfSolutions;
+
+            public override void NotifySolutionIncrease()
+            {
+                base.NotifySolutionIncrease();
+                numberOfSolutions++;
+                if (numberOfSolutions >= 1)
                 {
                     Cancel();
                 }
