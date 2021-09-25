@@ -40,6 +40,7 @@
     <ItemGroup>
         <Compile Include="Converters\CageRuleConverter.cs" />
         <Compile Include="Converters\ConverterRouter.cs" />
+        <Compile Include="Converters\DiagonalRuleConverter.cs" />
         <Compile Include="Converters\IRuleConverter.cs" />
         <Compile Include="Converters\NormalRuleConverter.cs" />
         <Compile Include="SudokuConverter.cs" />

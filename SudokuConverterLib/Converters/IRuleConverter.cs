@@ -1,6 +1,6 @@
 using SudokuLib;
 
-namespace Databases.Converters
+namespace SudokuConverterLib.Converters
 {
     public interface IRuleConverter
     {

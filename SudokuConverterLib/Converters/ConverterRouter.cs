@@ -1,5 +1,4 @@
 using System.IO;
-using Databases.Converters;
 using SudokuLib;
 
 namespace SudokuConverterLib.Converters
@@ -20,6 +19,10 @@ namespace SudokuConverterLib.Converters
             else if (ruleTypeString == RuleType.Cage.ToString())
             {
                 return CageRuleConverter.GetInstance();
+            }
+            else if (ruleTypeString == RuleType.Diagonal.ToString())
+            {
+                return DiagonalRuleConverter.GetInstance();
             }
             else throw new InvalidDataException();
         }
