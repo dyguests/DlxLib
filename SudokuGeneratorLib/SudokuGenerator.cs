@@ -124,6 +124,11 @@ namespace SudokuGeneratorLib
             }
         }
 
+        public static Sudoku GenerateDiagonalSolution()
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// 新建一个numbers迷底
         /// </summary>
