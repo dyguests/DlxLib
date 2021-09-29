@@ -1,7 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
 using SudokuConverterLib;
-using SudokuConverterTest.Utils;
 using SudokuGeneratorLib;
 
 namespace SudokuConverterTest
@@ -13,9 +12,52 @@ namespace SudokuConverterTest
         public void TestGenerateNormalSudoku()
         {
             var sudoku = SudokuGenerator.GenerateNormalSudoku(30);
-            Console.WriteLine("Sudoku:\n" + sudoku.initNumbers.NumbersToString());
-            Console.WriteLine("Sudoku:\n" + sudoku.ToDataString());
+            Console.WriteLine(sudoku.ToDataString());
             Assert.True(true);
+        }
+
+        [Test]
+        public void TestGenerateNormalSudoku1()
+        {
+            for (int i = 0; i < 150; i++)
+            {
+                var sudoku = SudokuGenerator.GenerateNormalSudoku(30);
+                Console.WriteLine(sudoku.ToDataString());
+                Assert.True(true);
+            }
+        }
+
+        [Test]
+        public void TestGenerateNormalSudoku2()
+        {
+            for (int i = 0; i < 150; i++)
+            {
+                var sudoku = SudokuGenerator.GenerateNormalSudoku(35, 5);
+                Console.WriteLine(sudoku.ToDataString());
+                Assert.True(true);
+            }
+        }
+
+        [Test]
+        public void TestGenerateNormalSudoku3()
+        {
+            for (int i = 0; i < 150; i++)
+            {
+                var sudoku = SudokuGenerator.GenerateNormalSudoku(40, 10);
+                Console.WriteLine(sudoku.ToDataString());
+                Assert.True(true);
+            }
+        }
+
+        [Test]
+        public void TestGenerateNormalSudoku4()
+        {
+            for (int i = 0; i < 150; i++)
+            {
+                var sudoku = SudokuGenerator.GenerateNormalSudoku(45, 15);
+                Console.WriteLine(sudoku.ToDataString());
+                Assert.True(true);
+            }
         }
     }
 }
