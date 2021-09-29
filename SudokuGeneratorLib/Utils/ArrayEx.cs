@@ -26,7 +26,37 @@ namespace SudokuGeneratorLib.Utils
             return result;
         }
 
-        public static T[,] Transpose<T>(this T[,] arr)
+        public static void Transpose<T>(this T[,] arr)
+        {
+            int rowCount = arr.GetLength(0);
+            int columnCount = arr.GetLength(1);
+            // T[,] transposed = new T[columnCount, rowCount];
+            if (rowCount == columnCount)
+            {
+                // transposed = (T[,]) arr.Clone();
+                for (int i = 1; i < rowCount; i++)
+                {
+                    for (int j = 0; j < i; j++)
+                    {
+                        T temp = arr[i, j];
+                        arr[i, j] = arr[j, i];
+                        arr[j, i] = temp;
+                    }
+                }
+            }
+            // else
+            // {
+            //     for (int column = 0; column < columnCount; column++)
+            //     {
+            //         for (int row = 0; row < rowCount; row++)
+            //         {
+            //             arr[column, row] = arr[row, column];
+            //         }
+            //     }
+            // }
+        }
+
+        public static T[,] TransposeNew<T>(this T[,] arr)
         {
             int rowCount = arr.GetLength(0);
             int columnCount = arr.GetLength(1);

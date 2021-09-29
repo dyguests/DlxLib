@@ -14,7 +14,7 @@ namespace SudokuConverterTest
             var count = 10;
             for (int i = 0; i < count; i++)
             {
-                var sudoku = SudokuGenerator.GenerateDiagonalSudoku(30,10);
+                var sudoku = SudokuGenerator.GenerateDiagonalSudoku(30, 10);
                 Console.WriteLine(sudoku.ToDataString());
             }
 
@@ -59,6 +59,7 @@ namespace SudokuConverterTest
 
             Assert.True(true);
         }
+
         [Test]
         public void TestGenerateDiagonalSudoku5()
         {
