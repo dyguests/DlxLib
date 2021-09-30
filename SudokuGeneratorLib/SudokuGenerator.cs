@@ -175,18 +175,37 @@ namespace SudokuGeneratorLib
         /// <returns></returns>
         public static int[] GenerateSolution()
         {
-            var board = new int[9, 9];
-            for (var i = 0; i < board.GetLength(0); i++)
+            // empty diagonal sudoku
+            var sudoku = new Sudoku
             {
-                for (var j = 0; j < board.GetLength(1); j++)
+                initNumbers = new[]
                 {
-                    board[i, j] = (i * 3 + i / 3 + j) % 9 + 1;
-                }
+                    0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0,
+                },
+                rules = new Rule[]
+                {
+                    new NormalRule(),
+                },
+            };
+            var matrix = SudokuDlxUtil.SudokuToMatrix(sudoku);
+            matrix.matrix.ShuffleDimension0();
+            var solutions = Dlx.Solve(matrix.matrix, matrix.primaryColumns, matrix.secondaryColumns, new UpToOneInstrumentation()).ToArray();
+            if (solutions.Length < 1)
+            {
+                throw new InvalidDataException();
             }
 
-            Shuffle(board);
+            var solutionNumbers = SudokuDlxUtil.SolutionToNumbers(sudoku, matrix.matrix, solutions.First());
 
-            return board.Flatten();
+            return solutionNumbers;
         }
 
         private static CageRule GenerateKillerRule(int[] initNumbers, int[] solutionNumbers, int cageMinSize, int cageMaxSize)
@@ -290,13 +309,13 @@ namespace SudokuGeneratorLib
         }
 
 
-        private static void Shuffle(int[,] board, int times = 15)
-        {
-            for (int i = 0; i < times; i++)
-            {
-                ShuffleOnce(board);
-            }
-        }
+        // private static void Shuffle(int[,] board, int times = 15)
+        // {
+        //     for (int i = 0; i < times; i++)
+        //     {
+        //         ShuffleOnce(board);
+        //     }
+        // }
 
         private static void ShuffleOnce(int[,] board)
         {

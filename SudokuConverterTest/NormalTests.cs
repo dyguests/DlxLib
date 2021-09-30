@@ -8,7 +8,7 @@ namespace SudokuConverterTest
     [TestFixture]
     public class NormalTests
     {
-        [Test]
+        // [Test]
         public void TestGenerateNormalSudoku()
         {
             var sudoku = SudokuGenerator.GenerateNormalSudoku(30);

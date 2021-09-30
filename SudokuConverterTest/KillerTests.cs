@@ -76,7 +76,7 @@ namespace SudokuConverterTest
             for (int i = 0; i < count; i++)
             {
                 // 生成时间太久了，半小时都完成不了一关
-                var sudoku = SudokuGenerator.GenerateKillerSudoku(81, 6, 45);
+                var sudoku = SudokuGenerator.GenerateKillerSudoku(70, 5, 50);
                 // var sudoku = SudokuGenerator.GenerateKillerSudoku(81, 5, 50);
                 Console.WriteLine(sudoku.ToDataString());
             }
