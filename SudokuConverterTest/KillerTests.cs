@@ -9,7 +9,7 @@ namespace SudokuConverterTest
     [TestFixture]
     public class KillerTests
     {
-        [Test]
+        // [Test]
         public void TestGenerateKillerSudoku()
         {
             var sudoku = SudokuGenerator.GenerateKillerSudoku(50, 3, 50);
@@ -18,7 +18,7 @@ namespace SudokuConverterTest
             Assert.True(true);
         }
 
-        [Test]
+        // [Test]
         public void TestGenerateKillerSudoku4()
         {
             var sudoku = SudokuGenerator.GenerateKillerSudoku(81, 6, 40);
@@ -72,7 +72,7 @@ namespace SudokuConverterTest
         [Test]
         public void TestGenerateKillerSudokus4()
         {
-            var count = 1;
+            var count = 10;
             for (int i = 0; i < count; i++)
             {
                 // 生成时间太久了，半小时都完成不了一关
