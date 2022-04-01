@@ -5,26 +5,19 @@ namespace SudokuConverterLib.Converters
 {
     public static class ConverterRouter
     {
-        public static IRuleConverter GetConverter(RuleType ruleType)
+        public static IRuleConverter GetConverter(Rule rule)
         {
-            return GetConverter(ruleType.ToString());
-        }
-
-        public static IRuleConverter GetConverter(string ruleTypeString)
-        {
-            if (ruleTypeString == RuleType.Normal.ToString())
+            switch (rule)
             {
-                return NormalRuleConverter.GetInstance();
+                case NormalRule _:
+                    return NormalRuleConverter.GetInstance();
+                case CageRule _:
+                    return CageRuleConverter.GetInstance();
+                case DiagonalRule _:
+                    return DiagonalRuleConverter.GetInstance();
+                default:
+                    throw new InvalidDataException();
             }
-            else if (ruleTypeString == RuleType.Cage.ToString())
-            {
-                return CageRuleConverter.GetInstance();
-            }
-            else if (ruleTypeString == RuleType.Diagonal.ToString())
-            {
-                return DiagonalRuleConverter.GetInstance();
-            }
-            else throw new InvalidDataException();
         }
     }
 }

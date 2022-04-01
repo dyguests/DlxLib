@@ -16,7 +16,7 @@ namespace SudokuConverterLib
         /// <returns></returns>
         public static string ToDataString(this Sudoku sudoku)
         {
-            return string.Join(",", sudoku.rules.Select(rule => ConverterRouter.GetConverter(rule.Type).ToDataString(sudoku, rule)).Select(Quote));
+            return string.Join(",", sudoku.rules.Select(rule => ConverterRouter.GetConverter(rule).ToDataString(sudoku, rule)).Select(Quote));
 
             string Quote(string content) => "\"" + content + "\"";
         }

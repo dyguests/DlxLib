@@ -42,7 +42,7 @@ namespace SudokuDlxLib.Processors
             (int[,] matrix, int[] primaryColumns, int[] secondaryColumns) = ToMatrix(possibleNumbersIndexes);
             return new RuleMatrix
             {
-                type = RuleType.Normal,
+                rule = sudoku.GetRule<NormalRule>(),
                 matrix = matrix,
                 primaryColumns = primaryColumns,
                 secondaryColumns = secondaryColumns,

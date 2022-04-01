@@ -5,15 +5,15 @@ namespace SudokuDlxLib.Processors
 {
     public static class RuleRouter
     {
-        public static AbsRuleDlxProcessor GetRuleDlxProcessor(RuleType ruleType)
+        public static AbsRuleDlxProcessor GetRuleDlxProcessor(Rule rule)
         {
-            switch (ruleType)
+            switch (rule)
             {
-                case RuleType.Normal:
+                case NormalRule _:
                     return new NormalRuleDlxProcessor();
-                case RuleType.Cage:
+                case CageRule _:
                     return new CageRuleDlxProcessor();
-                case RuleType.Diagonal:
+                case DiagonalRule _:
                     return new DiagonalRuleDlxProcessor();
                 default:
                     throw new InvalidDataException();

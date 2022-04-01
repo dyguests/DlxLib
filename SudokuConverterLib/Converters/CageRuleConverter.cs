@@ -7,7 +7,7 @@ namespace SudokuConverterLib.Converters
 {
     public class CageRuleConverter : IRuleConverter
     {
-        private static readonly string RulePrefix = RuleType.Cage.ToString();
+        private static readonly string RulePrefix = "Cage";
 
         private static CageRuleConverter sInstance;
 

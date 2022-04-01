@@ -4,7 +4,7 @@ namespace SudokuConverterLib.Converters
 {
     public class DiagonalRuleConverter : IRuleConverter
     {
-        private static readonly string RulePrefix = RuleType.Diagonal.ToString();
+        private static readonly string RulePrefix = "Diagonal";
 
         private static DiagonalRuleConverter sInstance;
 

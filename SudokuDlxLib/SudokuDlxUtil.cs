@@ -15,7 +15,7 @@ namespace SudokuDlxLib
         public static SudokuMatrix SudokuToMatrix(Sudoku sudoku)
         {
             // 取得所有处理器
-            var ruleDlxProcessors = sudoku.rules.Select(rule => RuleRouter.GetRuleDlxProcessor(rule.Type)).ToList();
+            var ruleDlxProcessors = sudoku.rules.Select(rule => RuleRouter.GetRuleDlxProcessor(rule)).ToList();
             var possibleNumbersIndexes = Enumerable.Range(0, 81).Select(index => new[] {1, 2, 3, 4, 5, 6, 7, 8, 9}).ToArray();
             ruleDlxProcessors.ForEach(processor => processor.ReducePossibleNumbers(sudoku, possibleNumbersIndexes));
             var ruleMatrices = ruleDlxProcessors.Select(processor => processor.RuleToMatrix(sudoku, possibleNumbersIndexes));
@@ -31,7 +31,7 @@ namespace SudokuDlxLib
 
         public static int[] SolutionToNumbers(Sudoku sudoku, int[,] matrix, int[] solution)
         {
-            return sudoku.rules.First().Let(rule => RuleRouter.GetRuleDlxProcessor(rule.Type)).SolutionToNumbers(matrix, solution);
+            return sudoku.rules.First().Let(rule => RuleRouter.GetRuleDlxProcessor(rule)).SolutionToNumbers(matrix, solution);
         }
     }
 
@@ -47,7 +47,8 @@ namespace SudokuDlxLib
         public int[] primaryColumns;
         public int[] secondaryColumns;
 
-        public void Deconstruct(out int[,] matrix, out int[] primaryColumns, out int[] secondaryColumns) => (matrix, primaryColumns, secondaryColumns) = (this.matrix, this.primaryColumns, this.secondaryColumns);
+        public void Deconstruct(out int[,] matrix, out int[] primaryColumns, out int[] secondaryColumns) =>
+            (matrix, primaryColumns, secondaryColumns) = (this.matrix, this.primaryColumns, this.secondaryColumns);
     }
 
     public class SudokuMatrix : Matrix
@@ -67,6 +68,6 @@ namespace SudokuDlxLib
 
     public class RuleMatrix : SudokuMatrix
     {
-        public RuleType type;
+        public Rule rule;
     }
 }

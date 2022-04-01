@@ -15,10 +15,11 @@ namespace SudokuDlxLib.Processors
 
         public override RuleMatrix RuleToMatrix(Sudoku sudoku, int[][] possibleNumbersIndexes)
         {
-            (int[,] matrix, int[] primaryColumns, int[] secondaryColumns) = ToMatrix(sudoku.GetRule<CageRule>(), possibleNumbersIndexes);
+            var rule = sudoku.GetRule<CageRule>();
+            (int[,] matrix, int[] primaryColumns, int[] secondaryColumns) = ToMatrix(rule, possibleNumbersIndexes);
             return new RuleMatrix
             {
-                type = RuleType.Cage,
+                rule = rule,
                 matrix = matrix,
                 primaryColumns = primaryColumns,
                 secondaryColumns = secondaryColumns,
@@ -46,7 +47,8 @@ namespace SudokuDlxLib.Processors
         /// <param name="cageIndex"></param>
         /// <param name="currentNumbers"> todo change to stack
         /// </param>
-        private void FindCagePossibleNumbers(int[][] possibleNumbersIndexes, CageRule.Cage cage, Dictionary<int, HashSet<int>> cagePossibleNumbersIndexes, int cageIndex, Dictionary<int, int> currentNumbers)
+        private void FindCagePossibleNumbers(int[][] possibleNumbersIndexes, CageRule.Cage cage, Dictionary<int, HashSet<int>> cagePossibleNumbersIndexes, int cageIndex,
+            Dictionary<int, int> currentNumbers)
         {
             if (cageIndex >= cage.indexes.Length)
             {
