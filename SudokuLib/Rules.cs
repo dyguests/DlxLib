@@ -1,12 +1,8 @@
 namespace SudokuLib
 {
-    public abstract class Rule
-    {
-    }
+    public abstract class Rule { }
 
-    public class NormalRule : Rule
-    {
-    }
+    public class NormalRule : Rule { }
 
     public class CageRule : Rule
     {
@@ -19,8 +15,16 @@ namespace SudokuLib
         }
     }
 
-    public class DiagonalRule : Rule
+    public class DiagonalRule : Rule { }
+
+    public class ThermometerRule : Rule
     {
+        public Thermometer[] thermometers;
+
+        public struct Thermometer
+        {
+            public int[] indexes;
+        }
     }
 
     // public enum RuleType
