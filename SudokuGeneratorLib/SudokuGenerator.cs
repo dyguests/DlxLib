@@ -70,6 +70,107 @@ namespace SudokuGeneratorLib
                 },
             };
 
+
+            CageRule GenerateKillerRule(int[] initNumbers_, int[] solutionNumbers_, int cageMinSize_, int cageMaxSize_)
+            {
+                var order = Enumerable.Range(0, 9 * 9).OrderBy(index => Random.Next());
+                var unusedIndexes = new HashSet<int>(Enumerable.Range(0, 9 * 9));
+
+                var cages = new List<CageRule.Cage>();
+                foreach (var index in order)
+                {
+                    var cage = GenerateCage(index, cageMinSize_, cageMaxSize_);
+                    if (cage != null)
+                    {
+                        cages.Add(cage.Value);
+                    }
+                }
+
+                return new CageRule
+                {
+                    cages = cages.ToArray(),
+                };
+
+                CageRule.Cage? GenerateCage(int startIndex, int minSize, int maxSize)
+                {
+                    if (!unusedIndexes.Contains(startIndex)) return null;
+
+                    var cageIndexes = new HashSet<int> {startIndex};
+
+                    var size = Random.Next(minSize, maxSize + 1);
+                    while (cageIndexes.Count < size)
+                    {
+                        var nearIndexFound = false;
+                        var nearIndexes = GetNearIndexes();
+                        foreach (var nearIndex in nearIndexes)
+                        {
+                            if (cageIndexes.Select(cageIndex => solutionNumbers_[cageIndex]).Any(number => number == solutionNumbers_[nearIndex]))
+                            {
+                                continue;
+                            }
+
+                            cageIndexes.Add(nearIndex);
+                            nearIndexFound = true;
+                            break;
+                        }
+
+                        if (nearIndexFound)
+                        {
+                            continue;
+                        }
+
+                        break;
+                    }
+
+                    if (cageIndexes.Count < minSize)
+                    {
+                        return null;
+                    }
+
+                    unusedIndexes.ExceptWith(cageIndexes);
+                    return new CageRule.Cage
+                    {
+                        sum = solutionNumbers_.Where((number, index) => cageIndexes.Contains(index)).Sum(),
+                        indexes = cageIndexes.ToArray(),
+                    };
+
+                    IEnumerable<int> GetNearIndexes()
+                    {
+                        return cageIndexes.Select(i => (i % 9, i / 9))
+                            .SelectMany(tuple =>
+                            {
+                                var list = new HashSet<(int, int)>();
+
+                                if (tuple.Item1 > 0)
+                                {
+                                    list.Add((tuple.Item1 - 1, tuple.Item2));
+                                }
+
+                                if (tuple.Item1 < 9 - 1)
+                                {
+                                    list.Add((tuple.Item1 + 1, tuple.Item2));
+                                }
+
+                                if (tuple.Item2 > 0)
+                                {
+                                    list.Add((tuple.Item1, tuple.Item2 - 1));
+                                }
+
+                                if (tuple.Item2 < 9 - 1)
+                                {
+                                    list.Add((tuple.Item1, tuple.Item2 + 1));
+                                }
+
+                                return list;
+                            })
+                            .Select(tuple => tuple.Item1 + tuple.Item2 * 9)
+                            .Where(index => unusedIndexes.Contains(index))
+                            .Where(index => !cageIndexes.Contains(index))
+                            .OrderBy(index => Random.Next());
+                    }
+                }
+            }
+
             void CleanCages()
             {
                 cageRule.cages = cageRule.cages.Where(cage => cage.indexes.Any(index => initNumbers[index] == 0)).ToArray();
@@ -169,6 +270,31 @@ namespace SudokuGeneratorLib
             return sudoku;
         }
 
+        public static Sudoku GenerateThermometerSudoku(int thermometerCount, int maxThermometerSize = 6)
+        {
+            var solutionNumbers = GenerateSolution();
+            var initNumbers = (int[]) solutionNumbers.Clone();
+            var thermometerRule = GenerateThermometerRule();
+            return new Sudoku
+            {
+                initNumbers = initNumbers,
+                solutionNumbers = solutionNumbers,
+                rules = new Rule[]
+                {
+                    new NormalRule(),
+                    thermometerRule,
+                },
+            };
+
+            ThermometerRule GenerateThermometerRule()
+            {
+                var order = Enumerable.Range(0, 9 * 9).OrderBy(index => Random.Next());
+
+                return new ThermometerRule();
+            }
+        }
+
+
         /// <summary>
         /// 新建一个numbers迷底
         /// </summary>
@@ -206,106 +332,6 @@ namespace SudokuGeneratorLib
             var solutionNumbers = SudokuDlxUtil.SolutionToNumbers(sudoku, matrix.matrix, solutions.First());
 
             return solutionNumbers;
-        }
-
-        private static CageRule GenerateKillerRule(int[] initNumbers, int[] solutionNumbers, int cageMinSize, int cageMaxSize)
-        {
-            var order = Enumerable.Range(0, 9 * 9).OrderBy(index => Random.Next());
-            var unusedIndexes = new HashSet<int>(Enumerable.Range(0, 9 * 9));
-
-            var cages = new List<CageRule.Cage>();
-            foreach (var index in order)
-            {
-                var cage = GenerateCage(index, cageMinSize, cageMaxSize);
-                if (cage != null)
-                {
-                    cages.Add(cage.Value);
-                }
-            }
-
-            return new CageRule
-            {
-                cages = cages.ToArray(),
-            };
-
-            CageRule.Cage? GenerateCage(int startIndex, int minSize, int maxSize)
-            {
-                if (!unusedIndexes.Contains(startIndex)) return null;
-
-                var cageIndexes = new HashSet<int> {startIndex};
-
-                var size = Random.Next(minSize, maxSize + 1);
-                while (cageIndexes.Count < size)
-                {
-                    var nearIndexFound = false;
-                    var nearIndexes = GetNearIndexes();
-                    foreach (var nearIndex in nearIndexes)
-                    {
-                        if (cageIndexes.Select(cageIndex => solutionNumbers[cageIndex]).Any(number => number == solutionNumbers[nearIndex]))
-                        {
-                            continue;
-                        }
-
-                        cageIndexes.Add(nearIndex);
-                        nearIndexFound = true;
-                        break;
-                    }
-
-                    if (nearIndexFound)
-                    {
-                        continue;
-                    }
-
-                    break;
-                }
-
-                if (cageIndexes.Count < minSize)
-                {
-                    return null;
-                }
-
-                unusedIndexes.ExceptWith(cageIndexes);
-                return new CageRule.Cage
-                {
-                    sum = solutionNumbers.Where((number, index) => cageIndexes.Contains(index)).Sum(),
-                    indexes = cageIndexes.ToArray(),
-                };
-
-                IEnumerable<int> GetNearIndexes()
-                {
-                    return cageIndexes.Select(i => (i % 9, i / 9))
-                        .SelectMany(tuple =>
-                        {
-                            var list = new HashSet<(int, int)>();
-
-                            if (tuple.Item1 > 0)
-                            {
-                                list.Add((tuple.Item1 - 1, tuple.Item2));
-                            }
-
-                            if (tuple.Item1 < 9 - 1)
-                            {
-                                list.Add((tuple.Item1 + 1, tuple.Item2));
-                            }
-
-                            if (tuple.Item2 > 0)
-                            {
-                                list.Add((tuple.Item1, tuple.Item2 - 1));
-                            }
-
-                            if (tuple.Item2 < 9 - 1)
-                            {
-                                list.Add((tuple.Item1, tuple.Item2 + 1));
-                            }
-
-                            return list;
-                        })
-                        .Select(tuple => tuple.Item1 + tuple.Item2 * 9)
-                        .Where(index => unusedIndexes.Contains(index))
-                        .Where(index => !cageIndexes.Contains(index))
-                        .OrderBy(index => Random.Next());
-                }
-            }
         }
 
 
@@ -404,8 +430,8 @@ namespace SudokuGeneratorLib
                 return initNumbers.Where(i => i % 9 == index % 9
                                               || i / 9 == index / 9
                                               || (i % 9 / 3 == index % 9 / 3 && i / 9 / 3 == index / 9 / 3))
-                           .Distinct()
-                           .ToArray().Length == 8;
+                    .Distinct()
+                    .ToArray().Length == 8;
             });
             int holeCount1 = advancedHoleCount + holeCount - hollowedCount;
             HollowMatchNormalSudokuWithCheck(initNumbers, holeCount1, index =>

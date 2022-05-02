@@ -2,8 +2,39 @@
 
 用DLX算法（跳舞链算法）求解精确匹配(Exact Cover)问题。
 
-## Show
+# 项目架构
 
+- DlxLib
+
+  核心算法：Dlx算法
+
+    - ExactCoverTest
+
+      DlxLib的测试用例
+
+- SudokuLib
+
+  数独数据结构。提供数独的数据类，Rule的数据类
+
+- SudokuDlxLib
+
+  数独与Dlx的转换库。将数独问题转换成Dlx问题；将Dlx结果转换成数独结果
+
+- SudokuGeneratorLib
+
+  数独生成器
+
+- SudokuConverterLib
+
+  将数独转换成可存储的数据结构（string）。
+
+    - SudokuConverterTest
+
+      数独生成用例，批量生成用。
+
+      **最终用此库来生成题目。**
+
+## Show
 
 | params | description |
 | ---- | ---- |
