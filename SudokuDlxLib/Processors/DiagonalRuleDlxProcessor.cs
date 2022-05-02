@@ -5,7 +5,7 @@ using SudokuLib;
 
 namespace SudokuDlxLib.Processors
 {
-    public class DiagonalRuleDlxProcessor : AbsRuleDlxProcessor
+    public class DiagonalRuleDlxProcessor : RuleDlxProcessor
     {
         /// <summary>
         /// 斜杠

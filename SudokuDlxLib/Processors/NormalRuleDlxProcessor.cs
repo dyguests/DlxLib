@@ -6,7 +6,7 @@ using SudokuLib;
 
 namespace SudokuDlxLib.Processors
 {
-    public class NormalRuleDlxProcessor : AbsRuleDlxProcessor
+    public class NormalRuleDlxProcessor : RuleDlxProcessor
     {
         private const int RowCount = 9 * 9;
         private const int ColCount = 9 * 9;

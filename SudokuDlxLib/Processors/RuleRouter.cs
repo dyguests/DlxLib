@@ -5,7 +5,7 @@ namespace SudokuDlxLib.Processors
 {
     public static class RuleRouter
     {
-        public static AbsRuleDlxProcessor GetRuleDlxProcessor(Rule rule)
+        public static RuleDlxProcessor GetRuleDlxProcessor(Rule rule)
         {
             switch (rule)
             {
@@ -15,6 +15,8 @@ namespace SudokuDlxLib.Processors
                     return new CageRuleDlxProcessor();
                 case DiagonalRule _:
                     return new DiagonalRuleDlxProcessor();
+                case ThermometerRule _:
+                    return new ThermometerRuleDlxProcessor();
                 default:
                     throw new InvalidDataException();
             }

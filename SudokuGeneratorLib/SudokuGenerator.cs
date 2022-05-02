@@ -270,7 +270,7 @@ namespace SudokuGeneratorLib
             return sudoku;
         }
 
-        public static Sudoku GenerateThermometerSudoku(int thermometerCount, int maxThermometerSize = 6)
+        public static Sudoku GenerateThermometerSudoku(int thermometerCount, int minThermometerSize = 2, int maxThermometerSize = 6)
         {
             var solutionNumbers = GenerateSolution();
             var initNumbers = (int[]) solutionNumbers.Clone();
@@ -289,6 +289,17 @@ namespace SudokuGeneratorLib
             ThermometerRule GenerateThermometerRule()
             {
                 var order = Enumerable.Range(0, 9 * 9).OrderBy(index => Random.Next());
+                var unusedIndexes = new HashSet<int>(Enumerable.Range(0, 9 * 9));
+
+                var thermometers = new List<ThermometerRule.Thermometer>();
+
+                // todo  20220502
+                // todo  20220502
+                // todo  20220502
+                // todo  20220502
+                // todo  20220502
+                // todo  20220502
+                // todo  20220502
 
                 return new ThermometerRule();
             }

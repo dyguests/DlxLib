@@ -3,7 +3,7 @@ using SudokuLib;
 
 namespace SudokuDlxLib.Processors
 {
-    public abstract class AbsRuleDlxProcessor
+    public abstract class RuleDlxProcessor
     {
         protected const int TileCount = 9 * 9;
         protected const int NumberCount = 9;
