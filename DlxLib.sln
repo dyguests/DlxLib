@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuConverterLib", "Sudok
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuConverterTest", "SudokuConverterTest\SudokuConverterTest.csproj", "{D5EEF5DE-0317-4015-9B12-863CEC8EC682}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuzzleLib", "PuzzleLib\PuzzleLib.csproj", "{B8D62484-4F52-4B87-8975-DC6E1B12665F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,5 +68,9 @@ Global
 		{D5EEF5DE-0317-4015-9B12-863CEC8EC682}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5EEF5DE-0317-4015-9B12-863CEC8EC682}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5EEF5DE-0317-4015-9B12-863CEC8EC682}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8D62484-4F52-4B87-8975-DC6E1B12665F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8D62484-4F52-4B87-8975-DC6E1B12665F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8D62484-4F52-4B87-8975-DC6E1B12665F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8D62484-4F52-4B87-8975-DC6E1B12665F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

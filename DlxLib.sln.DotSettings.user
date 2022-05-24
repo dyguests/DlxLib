@@ -2,6 +2,8 @@
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=9ab129bb_002Dc268_002D490b_002D8fc0_002D0e70ba10d6ad/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="TestNormalSudoku" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::E548B15E-BE31-4166-A744-B2AAEE9946AC::.NETFramework,Version=v4.7.1::SudokuTest.SudokuTests.TestNormalSudoku&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::D5EEF5DE-0317-4015-9B12-863CEC8EC682::.NETFramework,Version=v4.7.1::SudokuConverterTest.KillerTests.TestGenerateKillerSudoku&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::AC4DEE09-C0F5-4D91-B499-C9ED5208A866::.NETFramework,Version=v4.7.1::SudokuGeneratorTest.NormalTests.TestGenerateEasy&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Datas/@EntryIndexedValue">True</s:Boolean>
