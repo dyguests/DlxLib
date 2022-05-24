@@ -17,9 +17,20 @@ namespace SudokuConverterTest
         }
 
         [Test]
+        public void TestGenerateNormalSudoku0()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                var sudoku = SudokuGenerator.GenerateNormalSudoku(20);
+                Console.WriteLine(sudoku.ToDataString());
+                Assert.True(true);
+            }
+        }
+
+        [Test]
         public void TestGenerateNormalSudoku1()
         {
-            for (int i = 0; i < 150; i++)
+            for (int i = 0; i < 10; i++)
             {
                 var sudoku = SudokuGenerator.GenerateNormalSudoku(30);
                 Console.WriteLine(sudoku.ToDataString());

@@ -1,5 +1,5 @@
 using System.IO;
-using SudokuLib;
+using PuzzleLib.Rules;
 
 namespace SudokuConverterLib.Converters
 {
@@ -11,10 +11,10 @@ namespace SudokuConverterLib.Converters
             {
                 case NormalRule _:
                     return NormalRuleConverter.GetInstance();
-                case CageRule _:
-                    return CageRuleConverter.GetInstance();
-                case DiagonalRule _:
-                    return DiagonalRuleConverter.GetInstance();
+                // case CageRule _:
+                //     return CageRuleConverter.GetInstance();
+                // case DiagonalRule _:
+                //     return DiagonalRuleConverter.GetInstance();
                 default:
                     throw new InvalidDataException();
             }

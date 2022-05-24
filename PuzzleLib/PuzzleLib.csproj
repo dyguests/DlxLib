@@ -44,7 +44,7 @@
         <Compile Include="Rules\NormalRule.cs" />
         <Compile Include="Rules\Rule.cs" />
         <Compile Include="Sudoku.cs" />
-        <Compile Include="Vector2Int.cs" />
+        <Compile Include="UnityEngine\Vector2Int.cs" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

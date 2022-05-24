@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using SudokuDlxLib.Utils;
-using SudokuLib;
+using PuzzleLib;
+using PuzzleLib.Rules;
 
 namespace SudokuDlxLib.Processors
 {

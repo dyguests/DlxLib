@@ -1,4 +1,4 @@
-namespace PuzzleLib
+namespace PuzzleLib.UnityEngine
 {
     public struct Vector2Int
     {

@@ -1,4 +1,5 @@
-using SudokuLib;
+using PuzzleLib;
+using PuzzleLib.Rules;
 
 namespace SudokuConverterLib.Converters
 {

@@ -49,6 +49,10 @@
         <Compile Include="Utils\SudokuUtil.cs" />
     </ItemGroup>
     <ItemGroup>
+      <ProjectReference Include="..\PuzzleLib\PuzzleLib.csproj">
+        <Project>{b8d62484-4f52-4b87-8975-dc6e1b12665f}</Project>
+        <Name>PuzzleLib</Name>
+      </ProjectReference>
       <ProjectReference Include="..\SudokuConverterLib\SudokuConverterLib.csproj">
         <Project>{90877cc5-a752-4e84-b86b-2d4f1fdbde79}</Project>
         <Name>SudokuConverterLib</Name>
@@ -56,10 +60,6 @@
       <ProjectReference Include="..\SudokuGeneratorLib\SudokuGeneratorLib.csproj">
         <Project>{d6f33d7e-0007-4589-abec-5cc8a9dec9c4}</Project>
         <Name>SudokuGeneratorLib</Name>
-      </ProjectReference>
-      <ProjectReference Include="..\SudokuLib\SudokuLib.csproj">
-        <Project>{e29c7b9d-a117-4a12-acfd-f48746063f6c}</Project>
-        <Name>SudokuLib</Name>
       </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,5 +1,5 @@
 using System;
-using SudokuLib;
+using PuzzleLib;
 
 namespace SudokuDlxLib.Processors
 {

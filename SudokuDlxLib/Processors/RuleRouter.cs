@@ -1,5 +1,5 @@
 using System.IO;
-using SudokuLib;
+using PuzzleLib.Rules;
 
 namespace SudokuDlxLib.Processors
 {
@@ -11,12 +11,12 @@ namespace SudokuDlxLib.Processors
             {
                 case NormalRule _:
                     return new NormalRuleDlxProcessor();
-                case CageRule _:
-                    return new CageRuleDlxProcessor();
-                case DiagonalRule _:
-                    return new DiagonalRuleDlxProcessor();
-                case ThermometerRule _:
-                    return new ThermometerRuleDlxProcessor();
+                // case CageRule _:
+                //     return new CageRuleDlxProcessor();
+                // case DiagonalRule _:
+                //     return new DiagonalRuleDlxProcessor();
+                // case ThermometerRule _:
+                //     return new ThermometerRuleDlxProcessor();
                 default:
                     throw new InvalidDataException();
             }
