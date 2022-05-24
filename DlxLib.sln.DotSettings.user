@@ -4,6 +4,12 @@
     &lt;TestId&gt;NUnit3x::E548B15E-BE31-4166-A744-B2AAEE9946AC::.NETFramework,Version=v4.7.1::SudokuTest.SudokuTests.TestNormalSudoku&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::D5EEF5DE-0317-4015-9B12-863CEC8EC682::.NETFramework,Version=v4.7.1::SudokuConverterTest.KillerTests.TestGenerateKillerSudoku&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::AC4DEE09-C0F5-4D91-B499-C9ED5208A866::.NETFramework,Version=v4.7.1::SudokuGeneratorTest.NormalTests.TestGenerateEasy&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::D5EEF5DE-0317-4015-9B12-863CEC8EC682::.NETFramework,Version=v4.7.1::SudokuConverterTest.NormalTests.TestGenerateNormalSudoku0&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::D5EEF5DE-0317-4015-9B12-863CEC8EC682::.NETFramework,Version=v4.7.1::SudokuConverterTest.NormalTests.TestGenerateNormalSudoku1&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::D5EEF5DE-0317-4015-9B12-863CEC8EC682::.NETFramework,Version=v4.7.1::SudokuConverterTest.NormalTests.TestGenerateNormalSudoku2&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::D5EEF5DE-0317-4015-9B12-863CEC8EC682::.NETFramework,Version=v4.7.1::SudokuConverterTest.NormalTests.TestGenerateNormalSudoku3&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::D5EEF5DE-0317-4015-9B12-863CEC8EC682::.NETFramework,Version=v4.7.1::SudokuConverterTest.NormalTests.TestGenerateNormalSudoku4&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::D5EEF5DE-0317-4015-9B12-863CEC8EC682::.NETFramework,Version=v4.7.1::SudokuConverterTest.NormalTests.TestGenerateNormalSudoku&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Datas/@EntryIndexedValue">True</s:Boolean>

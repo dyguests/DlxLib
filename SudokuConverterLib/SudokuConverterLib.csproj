@@ -11,6 +11,7 @@
         <AssemblyName>SudokuConverterLib</AssemblyName>
         <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <PlatformTarget>AnyCPU</PlatformTarget>
@@ -45,6 +46,7 @@
         <Compile Include="Converters\NormalRuleConverter.cs" />
         <Compile Include="SudokuConverter.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="Tables\PuzzleTable.cs" />
         <Compile Include="Utils\ArrayEx.cs" />
     </ItemGroup>
     <ItemGroup>

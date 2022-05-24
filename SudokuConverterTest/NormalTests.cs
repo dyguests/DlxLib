@@ -8,11 +8,11 @@ namespace SudokuConverterTest
     [TestFixture]
     public class NormalTests
     {
-        // [Test]
+        [Test]
         public void TestGenerateNormalSudoku()
         {
             var sudoku = SudokuGenerator.GenerateNormalSudoku(30);
-            Console.WriteLine(sudoku.ToDataString());
+            Console.WriteLine(SudokuConverter.ToPuzzleTable(sudoku));
             Assert.True(true);
         }
 
@@ -22,7 +22,7 @@ namespace SudokuConverterTest
             for (int i = 0; i < 10; i++)
             {
                 var sudoku = SudokuGenerator.GenerateNormalSudoku(20);
-                Console.WriteLine(sudoku.ToDataString());
+                Console.WriteLine(SudokuConverter.ToPuzzleTable(sudoku));
                 Assert.True(true);
             }
         }
@@ -32,8 +32,8 @@ namespace SudokuConverterTest
         {
             for (int i = 0; i < 10; i++)
             {
-                var sudoku = SudokuGenerator.GenerateNormalSudoku(30);
-                Console.WriteLine(sudoku.ToDataString());
+                var sudoku = SudokuGenerator.GenerateNormalSudoku(35, 5);
+                Console.WriteLine(SudokuConverter.ToPuzzleTable(sudoku));
                 Assert.True(true);
             }
         }
@@ -41,10 +41,10 @@ namespace SudokuConverterTest
         [Test]
         public void TestGenerateNormalSudoku2()
         {
-            for (int i = 0; i < 150; i++)
+            for (int i = 0; i < 10; i++)
             {
-                var sudoku = SudokuGenerator.GenerateNormalSudoku(35, 5);
-                Console.WriteLine(sudoku.ToDataString());
+                var sudoku = SudokuGenerator.GenerateNormalSudoku(40, 10);
+                Console.WriteLine(SudokuConverter.ToPuzzleTable(sudoku));
                 Assert.True(true);
             }
         }
@@ -52,10 +52,10 @@ namespace SudokuConverterTest
         [Test]
         public void TestGenerateNormalSudoku3()
         {
-            for (int i = 0; i < 150; i++)
+            for (int i = 0; i < 10; i++)
             {
-                var sudoku = SudokuGenerator.GenerateNormalSudoku(40, 10);
-                Console.WriteLine(sudoku.ToDataString());
+                var sudoku = SudokuGenerator.GenerateNormalSudoku(35, 20);
+                Console.WriteLine(SudokuConverter.ToPuzzleTable(sudoku));
                 Assert.True(true);
             }
         }
@@ -63,10 +63,10 @@ namespace SudokuConverterTest
         [Test]
         public void TestGenerateNormalSudoku4()
         {
-            for (int i = 0; i < 150; i++)
+            for (int i = 0; i < 10; i++)
             {
-                var sudoku = SudokuGenerator.GenerateNormalSudoku(45, 15);
-                Console.WriteLine(sudoku.ToDataString());
+                var sudoku = SudokuGenerator.GenerateNormalSudoku(35, 30);
+                Console.WriteLine(SudokuConverter.ToPuzzleTable(sudoku));
                 Assert.True(true);
             }
         }

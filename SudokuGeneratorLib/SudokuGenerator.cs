@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DlxLib;
 using DlxLib.Instrumentations;
 using PuzzleLib;
 using PuzzleLib.Rules;
+using PuzzleLib.UnityEngine;
 using SudokuDlxLib;
 using SudokuGeneratorLib.Utils;
 
@@ -22,6 +22,8 @@ namespace SudokuGeneratorLib
             HollowMatchNormalSudoku(initNumbers, holeCount, advancedHoleCount);
             return new Sudoku
             {
+                size = new Vector2Int(9, 9),
+                boxSize = new Vector2Int(3, 3),
                 initNumbers = initNumbers,
                 solutionNumbers = solutionNumbers,
                 rules = new Rule[]
