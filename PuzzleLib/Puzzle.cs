@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using PuzzleLib.Entities;
 using PuzzleLib.Rules;
-using PuzzleLib.UnityEngine;
 
 namespace PuzzleLib
 {
@@ -34,6 +34,8 @@ namespace PuzzleLib
             tileX / (size.x / boxSize.x),
             tileY / (size.y / boxSize.y)
         );
+
+        public abstract bool IsCompleted(Note note);
 
         public override string ToString()
         {

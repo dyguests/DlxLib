@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 using PuzzleLib;
+using PuzzleLib.Entities;
 using PuzzleLib.Rules;
-using PuzzleLib.UnityEngine;
 using SudokuConverterLib.Tables;
 
 namespace SudokuConverterLib

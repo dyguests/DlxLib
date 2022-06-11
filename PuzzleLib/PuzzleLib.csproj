@@ -39,11 +39,14 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Coord.cs" />
+        <Compile Include="Entities\Coord.cs" />
+        <Compile Include="Entities\IUpdatable.cs" />
+        <Compile Include="Entities\Note.cs" />
         <Compile Include="Nurikabe.cs" />
         <Compile Include="Puzzle.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Rules\NormalRule.cs" />
+        <Compile Include="Rules\NurikabeRule.cs" />
         <Compile Include="Rules\Rule.cs" />
         <Compile Include="Sudoku.cs" />
     </ItemGroup>

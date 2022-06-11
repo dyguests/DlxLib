@@ -4,8 +4,8 @@ using System.Linq;
 using DlxLib;
 using DlxLib.Instrumentations;
 using PuzzleLib;
+using PuzzleLib.Entities;
 using PuzzleLib.Rules;
-using PuzzleLib.UnityEngine;
 using SudokuDlxLib;
 using SudokuGeneratorLib.Utils;
 
@@ -28,7 +28,7 @@ namespace SudokuGeneratorLib
                 solutionNumbers = solutionNumbers,
                 rules = new Rule[]
                 {
-                    new NormalRule(),
+                    NormalRule.Instance,
                 }.ToList(),
             };
         }
@@ -332,7 +332,7 @@ namespace SudokuGeneratorLib
                 },
                 rules = new Rule[]
                 {
-                    new NormalRule(),
+                    NormalRule.Instance,
                 }.ToList(),
             };
             var matrix = SudokuDlxUtil.SudokuToMatrix(sudoku);
@@ -455,7 +455,7 @@ namespace SudokuGeneratorLib
                     initNumbers = initNumbers,
                     rules = new Rule[]
                     {
-                        new NormalRule(),
+                        NormalRule.Instance,
                     }.ToList(),
                 };
 

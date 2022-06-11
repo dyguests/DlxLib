@@ -1,4 +1,4 @@
-namespace PuzzleLib.UnityEngine
+namespace PuzzleLib.Entities
 {
     public struct Coord
     {

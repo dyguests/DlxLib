@@ -7,5 +7,6 @@
     {
         private static NormalRule sInstance;
         public static NormalRule Instance => sInstance ??= new NormalRule();
+        private NormalRule() { }
     }
 }
