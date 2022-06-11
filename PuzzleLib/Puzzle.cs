@@ -10,12 +10,12 @@ namespace PuzzleLib
         /// <summary>
         /// 有多少个tile
         /// </summary>
-        public Vector2Int size;
+        public Coord size;
 
         /// <summary>
         /// 有多少个box
         /// </summary>
-        public Vector2Int boxSize = Vector2Int.one;
+        public Coord boxSize = Coord.one;
 
         public int[] initNumbers;
         public int[] solutionNumbers;
@@ -30,7 +30,7 @@ namespace PuzzleLib
         /// <param name="tileX"></param>
         /// <param name="tileY"></param>
         /// <returns></returns>
-        public Vector2Int GetBoxCoord(int tileX, int tileY) => new(
+        public Coord GetBoxCoord(int tileX, int tileY) => new(
             tileX / (size.x / boxSize.x),
             tileY / (size.y / boxSize.y)
         );

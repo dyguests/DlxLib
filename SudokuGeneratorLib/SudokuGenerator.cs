@@ -22,8 +22,8 @@ namespace SudokuGeneratorLib
             HollowMatchNormalSudoku(initNumbers, holeCount, advancedHoleCount);
             return new Sudoku
             {
-                size = new Vector2Int(9, 9),
-                boxSize = new Vector2Int(3, 3),
+                size = new Coord(9, 9),
+                boxSize = new Coord(3, 3),
                 initNumbers = initNumbers,
                 solutionNumbers = solutionNumbers,
                 rules = new Rule[]

@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using PuzzleLib;
-using PuzzleLib.Rules;
 using SudokuDlxLib.Processors;
 using SudokuDlxLib.Utils;
 
@@ -13,7 +12,7 @@ namespace SudokuDlxLib
         /// </summary>
         /// <param name="sudoku"></param>
         /// <returns>(matrix, primaryColumns, secondaryColumns)</returns>
-        public static SudokuMatrix SudokuToMatrix(Sudoku sudoku)
+        public static Matrix SudokuToMatrix(Sudoku sudoku)
         {
             // 取得所有处理器
             var ruleDlxProcessors = sudoku.rules.Select(RuleRouter.GetRuleDlxProcessor).ToList();
@@ -22,7 +21,7 @@ namespace SudokuDlxLib
             var ruleMatrices = ruleDlxProcessors.Select(processor => processor.RuleToMatrix(sudoku, possibleNumbersIndexes));
             var sudokuMatrix = new Matrix();
             ruleMatrices.ForEach(matrix => sudokuMatrix.Expand(matrix));
-            return new SudokuMatrix
+            return new Matrix
             {
                 matrix = sudokuMatrix.matrix,
                 primaryColumns = sudokuMatrix.primaryColumns,
@@ -50,25 +49,5 @@ namespace SudokuDlxLib
 
         public void Deconstruct(out int[,] matrix, out int[] primaryColumns, out int[] secondaryColumns) =>
             (matrix, primaryColumns, secondaryColumns) = (this.matrix, this.primaryColumns, this.secondaryColumns);
-    }
-
-    public class SudokuMatrix : Matrix
-    {
-        // /// <summary>
-        // /// matrix中分为primaryColumns和secondaryColumns以及hintColumns。
-        // /// 其中hintColumns就是不在primaryColumns和secondaryColumns的列。
-        // /// hintColumns不参与dlx运算，但是可以用于帮助多个矩阵进行连接，以及对solution的处理。
-        // /// </summary>
-        // public int[,] matrix;
-        //
-        // public int[] primaryColumns;
-        // public int[] secondaryColumns;
-        //
-        // public void Deconstruct(out int[,] matrix, out int[] primaryColumns, out int[] secondaryColumns) => (matrix, primaryColumns, secondaryColumns) = (this.matrix, this.primaryColumns, this.secondaryColumns);
-    }
-
-    public class RuleMatrix : SudokuMatrix
-    {
-        public Rule rule;
     }
 }

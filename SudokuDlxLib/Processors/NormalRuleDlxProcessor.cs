@@ -38,12 +38,11 @@ namespace SudokuDlxLib.Processors
             }
         }
 
-        public override RuleMatrix RuleToMatrix(Sudoku sudoku, int[][] possibleNumbersIndexes)
+        public override Matrix RuleToMatrix(Sudoku sudoku, int[][] possibleNumbersIndexes)
         {
             (int[,] matrix, int[] primaryColumns, int[] secondaryColumns) = ToMatrix(possibleNumbersIndexes);
-            return new RuleMatrix
+            return new Matrix
             {
-                rule = sudoku.GetRule<NormalRule>(),
                 matrix = matrix,
                 primaryColumns = primaryColumns,
                 secondaryColumns = secondaryColumns,

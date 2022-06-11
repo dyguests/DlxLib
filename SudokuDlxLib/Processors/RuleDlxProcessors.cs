@@ -15,7 +15,7 @@ namespace SudokuDlxLib.Processors
         /// <param name="possibleNumbersIndexes"></param>
         public abstract void ReducePossibleNumbers(Sudoku sudoku, int[][] possibleNumbersIndexes);
 
-        public abstract RuleMatrix RuleToMatrix(Sudoku sudoku, int[][] possibleNumbersIndexes);
+        public abstract Matrix RuleToMatrix(Sudoku sudoku, int[][] possibleNumbersIndexes);
         public virtual int[] SolutionToNumbers(int[,] matrix, int[] solution) => throw new NotImplementedException();
     }
 }

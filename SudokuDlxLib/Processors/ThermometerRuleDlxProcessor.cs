@@ -10,7 +10,7 @@ namespace SudokuDlxLib.Processors
             throw new NotImplementedException();
         }
 
-        public override RuleMatrix RuleToMatrix(Sudoku sudoku, int[][] possibleNumbersIndexes)
+        public override Matrix RuleToMatrix(Sudoku sudoku, int[][] possibleNumbersIndexes)
         {
             throw new System.NotImplementedException();
         }

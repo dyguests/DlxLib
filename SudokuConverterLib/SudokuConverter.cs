@@ -125,15 +125,15 @@ namespace SudokuConverterLib
         //     return sudokuNote;
         // }
 
-        private static Vector2Int Byte2Size(int oneByte)
+        private static Coord Byte2Size(int oneByte)
         {
-            var size = new Vector2Int(
+            var size = new Coord(
                 (oneByte >> 4) + 1,
                 y: (oneByte & 0b1111) + 1
             );
             return size;
         }
 
-        private static byte SizeToByte(Vector2Int size) => (byte) (((size.x - 1) << 4) | (size.y - 1));
+        private static byte SizeToByte(Coord size) => (byte) (((size.x - 1) << 4) | (size.y - 1));
     }
 }
