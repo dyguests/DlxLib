@@ -1,8 +1,10 @@
+using System.Collections.Generic;
+using DlxLib;
 using NUnit.Framework;
 
-namespace DlxLib
+namespace DlxLibTest
 {
-    class Program
+    class DLXSolverTest
     {
         [SetUp]
         public void Setup() { }
