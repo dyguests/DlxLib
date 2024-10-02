@@ -12,7 +12,124 @@ namespace DlxLibTest
         public void Setup() { }
 
         [Test]
-        public void Test1()
+        public void TestEmpty()
+        {
+            var matrix = new int[0, 0];
+            Validate(matrix);
+            Assert.True(true);
+        }
+
+        [Test]
+        public void Test1ColsHasSolutions()
+        {
+            var matrix = new[,]
+            {
+                { 1 },
+            };
+            Validate(matrix);
+            Assert.True(true);
+        }
+
+        [Test]
+        public void Test1ColsHasNotSolutions()
+        {
+            var matrix = new[,]
+            {
+                { 0 },
+            };
+            Validate(matrix);
+            Assert.True(true);
+        }
+
+        [Test]
+        public void Test2Cols()
+        {
+            var matrix = new[,]
+            {
+                { 1, 0 },
+                { 0, 1 },
+                { 1, 1 },
+                { 0, 0 },
+            };
+            Validate(matrix);
+            Assert.True(true);
+        }
+
+        [Test]
+        public void TestSample()
+        {
+            var matrix = new[,]
+            {
+                { 1, 0, 0, 1, 0, 0, 1 },
+                { 1, 0, 0, 1, 0, 0, 0 },
+                { 0, 0, 0, 1, 1, 0, 1 },
+                { 0, 0, 1, 0, 1, 1, 0 },
+                { 0, 1, 1, 0, 0, 1, 1 },
+                { 0, 1, 0, 0, 0, 0, 1 },
+            };
+            Validate(matrix);
+            Assert.True(true);
+        }
+
+        [Test]
+        public void TestSecondary()
+        {
+            var matrix = new[,]
+            {
+                { 1, 0, 1, 0 },
+                { 0, 1, 1, 0 },
+                { 0, 1, 0, 1 },
+                { 0, 1, 0, 0 },
+            };
+            Validate(matrix, 2);
+            Assert.True(true);
+        }
+
+        [Test]
+        public void TestSecondaryColumns()
+        {
+            var matrix = new[,]
+            {
+                { 1, 0, 1, 0 },
+                { 0, 1, 1, 0 },
+                { 0, 1, 0, 1 },
+                { 0, 1, 0, 0 },
+            };
+            Validate(matrix /*, new[] {2, 3}*/);
+            Assert.True(true);
+        }
+
+        [Test]
+        public void TestSecondaryColumns2()
+        {
+            var matrix = new[,]
+            {
+                { 1, 0, 1, 1, 0 },
+                { 0, 1, 1, 0, 0 },
+                { 0, 1, 0, 1, 1 },
+                { 0, 1, 0, 0, 0 },
+            };
+            Validate(matrix /*, new[] {2, 4}*/);
+            Assert.True(true);
+        }
+
+        [Test]
+        public void TestHintColumns()
+        {
+            var matrix = new[,]
+            {
+                //P  P     S  P  S
+                { 1, 0, 1, 1, 1, 0 },
+                { 0, 1, 1, 1, 0, 0 },
+                { 0, 1, 1, 0, 1, 1 },
+                { 0, 1, 1, 0, 0, 0 },
+            };
+            Validate(matrix /*, new[] {0, 1, 4}, new[] {3, 5}*/);
+            Assert.True(true);
+        }
+
+        [Test]
+        public void TestColumnNames()
         {
             // 确切覆盖问题矩阵
             var matrix = new[,]
@@ -33,7 +150,7 @@ namespace DlxLibTest
         }
 
         [Test]
-        public void Test2()
+        public void TestPrint()
         {
             // 确切覆盖问题矩阵
             var matrix = new[,]
