@@ -5,7 +5,7 @@
         public Node left, right, up, down;
         public Column column;
 
-        public int RowIndex; // 新增的行号属性
+        public int rowIndex; // 新增的行号属性
 
         public Node()
         {

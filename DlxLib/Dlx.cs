@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DlxLib
 {
@@ -32,7 +33,7 @@ namespace DlxLib
                         Node newNode = new Node
                         {
                             column = columns[j],
-                            RowIndex = i,
+                            rowIndex = i,
                         };
                         columns[j].LinkDown(newNode);
                         if (firstNode == null)
@@ -102,10 +103,10 @@ namespace DlxLib
 
         private void PrintSolution()
         {
-            foreach (var row in solution)
+            foreach (var row in solution.OrderBy(node => node.rowIndex))
             {
-                Console.Write($"Row {row.RowIndex}: "); // 输出行号
-                Node node = row;
+                Console.Write($"Row {row.rowIndex}: "); // 输出行号
+                var node = row;
                 do
                 {
                     Console.Write(node.column.name + " ");
@@ -113,7 +114,6 @@ namespace DlxLib
                 } while (node != row);
                 Console.WriteLine();
             }
-            Console.WriteLine();
         }
     }
 }
