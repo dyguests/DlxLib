@@ -2,37 +2,37 @@ namespace DlxLib
 {
     class Column : Node
     {
-        public int Size;
-        public string Name;
+        public readonly string name;
+        public int size;
 
         public Column(string name)
         {
-            Size = 0;
-            Name = name;
-            Column = this;
+            this.name = name;
+            size = 0;
+            column = this;
         }
 
         public void Cover()
         {
             UnlinkLeftRight();
-            for (Node row = Down; row != this; row = row.Down)
+            for (Node row = down; row != this; row = row.down)
             {
-                for (Node node = row.Right; node != row; node = node.Right)
+                for (Node node = row.right; node != row; node = node.right)
                 {
                     node.UnlinkUpDown();
-                    node.Column.Size--;
+                    node.column.size--;
                 }
             }
         }
 
         public void Uncover()
         {
-            for (Node row = Up; row != this; row = row.Up)
+            for (Node row = up; row != this; row = row.up)
             {
-                for (Node node = row.Left; node != row; node = node.Left)
+                for (Node node = row.left; node != row; node = node.left)
                 {
                     node.RelinkUpDown();
-                    node.Column.Size++;
+                    node.column.size++;
                 }
             }
             RelinkLeftRight();

@@ -2,52 +2,52 @@
 {
     class Node
     {
-        public Node Left, Right, Up, Down;
-        public Column Column;
+        public Node left, right, up, down;
+        public Column column;
 
         public Node()
         {
-            Left = Right = Up = Down = this;
+            left = right = up = down = this;
         }
 
         public void LinkRight(Node node)
         {
-            node.Right = Right;
-            node.Left = this;
-            Right.Left = node;
-            Right = node;
+            node.right = right;
+            node.left = this;
+            right.left = node;
+            right = node;
         }
 
         public void LinkDown(Node node)
         {
-            node.Down = Down;
-            node.Up = this;
-            Down.Up = node;
-            Down = node;
+            node.down = down;
+            node.up = this;
+            down.up = node;
+            down = node;
         }
 
         public void UnlinkLeftRight()
         {
-            Left.Right = Right;
-            Right.Left = Left;
+            left.right = right;
+            right.left = left;
         }
 
         public void RelinkLeftRight()
         {
-            Left.Right = this;
-            Right.Left = this;
+            left.right = this;
+            right.left = this;
         }
 
         public void UnlinkUpDown()
         {
-            Up.Down = Down;
-            Down.Up = Up;
+            up.down = down;
+            down.up = up;
         }
 
         public void RelinkUpDown()
         {
-            Up.Down = this;
-            Down.Up = this;
+            up.down = this;
+            down.up = this;
         }
     }
 }

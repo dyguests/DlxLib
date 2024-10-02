@@ -29,7 +29,7 @@ namespace DlxLib
                 {
                     if (matrix[i, j] == 1)
                     {
-                        Node newNode = new Node { Column = columns[j] };
+                        Node newNode = new Node { column = columns[j] };
                         columns[j].LinkDown(newNode);
                         if (firstNode == null)
                         {
@@ -39,7 +39,7 @@ namespace DlxLib
                         {
                             firstNode.LinkRight(newNode);
                         }
-                        columns[j].Size++;
+                        columns[j].size++;
                     }
                 }
             }
@@ -47,7 +47,7 @@ namespace DlxLib
 
         public void Search(int deep = 0)
         {
-            if (header.Right == header)
+            if (header.right == header)
             {
                 // 找到解决方案
                 PrintSolution();
@@ -58,24 +58,24 @@ namespace DlxLib
             Column column = SelectColumn();
             column.Cover();
 
-            for (Node row = column.Down; row != column; row = row.Down)
+            for (Node row = column.down; row != column; row = row.down)
             {
                 solution.Add(row);
 
-                for (Node node = row.Right; node != row; node = node.Right)
+                for (Node node = row.right; node != row; node = node.right)
                 {
-                    node.Column.Cover();
+                    node.column.Cover();
                 }
 
                 Search(deep + 1);
 
                 row = solution[solution.Count - 1];
                 solution.RemoveAt(solution.Count - 1);
-                column = row.Column;
+                column = row.column;
 
-                for (Node node = row.Left; node != row; node = node.Left)
+                for (Node node = row.left; node != row; node = node.left)
                 {
-                    node.Column.Uncover();
+                    node.column.Uncover();
                 }
             }
             column.Uncover();
@@ -85,12 +85,12 @@ namespace DlxLib
         {
             Column best = null;
             int minSize = int.MaxValue;
-            for (Column column = (Column)header.Right; column != header; column = (Column)column.Right)
+            for (Column column = (Column)header.right; column != header; column = (Column)column.right)
             {
-                if (column.Size < minSize)
+                if (column.size < minSize)
                 {
                     best = column;
-                    minSize = column.Size;
+                    minSize = column.size;
                 }
             }
             return best;
@@ -103,8 +103,8 @@ namespace DlxLib
                 Node node = row;
                 do
                 {
-                    Console.Write(node.Column.Name + " ");
-                    node = node.Right;
+                    Console.Write(node.column.name + " ");
+                    node = node.right;
                 } while (node != row);
                 Console.WriteLine();
             }
