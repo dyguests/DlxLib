@@ -13,24 +13,24 @@ namespace DlxLib
         {
             header = new Column("header");
             solution = new List<Node>();
-            Column[] columns = new Column[matrix.GetLength(1)];
+            var columns = new Column[matrix.GetLength(1)];
 
             // 创建列
-            for (int i = 0; i < matrix.GetLength(1); i++)
+            for (var i = 0; i < matrix.GetLength(1); i++)
             {
                 columns[i] = new Column(columnNames?[i] ?? $"column{i}");
                 header.LinkRight(columns[i]);
             }
 
             // 创建节点
-            for (int i = 0; i < matrix.GetLength(0); i++)
+            for (var i = 0; i < matrix.GetLength(0); i++)
             {
                 Node firstNode = null;
-                for (int j = 0; j < matrix.GetLength(1); j++)
+                for (var j = 0; j < matrix.GetLength(1); j++)
                 {
                     if (matrix[i, j] == 1)
                     {
-                        Node newNode = new Node
+                        var newNode = new Node
                         {
                             column = columns[j],
                             rowIndex = i,
@@ -60,14 +60,14 @@ namespace DlxLib
             }
 
             // 选择列
-            Column column = SelectColumn();
+            var column = SelectColumn();
             column.Cover();
 
-            for (Node row = column.down; row != column; row = row.down)
+            for (var row = column.down; row != column; row = row.down)
             {
                 solution.Add(row);
 
-                for (Node node = row.right; node != row; node = node.right)
+                for (var node = row.right; node != row; node = node.right)
                 {
                     node.column.Cover();
                 }
@@ -78,7 +78,7 @@ namespace DlxLib
                 solution.RemoveAt(solution.Count - 1);
                 column = row.column;
 
-                for (Node node = row.left; node != row; node = node.left)
+                for (var node = row.left; node != row; node = node.left)
                 {
                     node.column.Uncover();
                 }
@@ -89,8 +89,8 @@ namespace DlxLib
         private Column SelectColumn()
         {
             Column best = null;
-            int minSize = int.MaxValue;
-            for (Column column = (Column)header.right; column != header; column = (Column)column.right)
+            var minSize = int.MaxValue;
+            for (var column = (Column)header.right; column != header; column = (Column)column.right)
             {
                 if (column.size < minSize)
                 {

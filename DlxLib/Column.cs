@@ -15,9 +15,9 @@ namespace DlxLib
         public void Cover()
         {
             UnlinkLeftRight();
-            for (Node row = down; row != this; row = row.down)
+            for (var row = down; row != this; row = row.down)
             {
-                for (Node node = row.right; node != row; node = node.right)
+                for (var node = row.right; node != row; node = node.right)
                 {
                     node.UnlinkUpDown();
                     node.column.size--;
@@ -27,9 +27,9 @@ namespace DlxLib
 
         public void Uncover()
         {
-            for (Node row = up; row != this; row = row.up)
+            for (var row = up; row != this; row = row.up)
             {
-                for (Node node = row.left; node != row; node = node.left)
+                for (var node = row.left; node != row; node = node.left)
                 {
                     node.RelinkUpDown();
                     node.column.size++;
