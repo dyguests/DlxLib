@@ -29,7 +29,11 @@ namespace DlxLib
                 {
                     if (matrix[i, j] == 1)
                     {
-                        Node newNode = new Node { column = columns[j] };
+                        Node newNode = new Node
+                        {
+                            column = columns[j],
+                            RowIndex = i,
+                        };
                         columns[j].LinkDown(newNode);
                         if (firstNode == null)
                         {
@@ -100,6 +104,7 @@ namespace DlxLib
         {
             foreach (var row in solution)
             {
+                Console.Write($"Row {row.RowIndex}: "); // 输出行号
                 Node node = row;
                 do
                 {
