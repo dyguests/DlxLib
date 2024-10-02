@@ -1,11 +1,11 @@
 namespace DlxLib
 {
-    class DLXColumn : DLXNode
+    class DlxColumn : DlxNode
     {
         public int Size;
         public string Name;
 
-        public DLXColumn(string name)
+        public DlxColumn(string name)
         {
             Size = 0;
             Name = name;
@@ -15,9 +15,9 @@ namespace DlxLib
         public void Cover()
         {
             UnlinkLeftRight();
-            for (DLXNode row = Down; row != this; row = row.Down)
+            for (DlxNode row = Down; row != this; row = row.Down)
             {
-                for (DLXNode node = row.Right; node != row; node = node.Right)
+                for (DlxNode node = row.Right; node != row; node = node.Right)
                 {
                     node.UnlinkUpDown();
                     node.Column.Size--;
@@ -27,9 +27,9 @@ namespace DlxLib
 
         public void Uncover()
         {
-            for (DLXNode row = Up; row != this; row = row.Up)
+            for (DlxNode row = Up; row != this; row = row.Up)
             {
-                for (DLXNode node = row.Left; node != row; node = node.Left)
+                for (DlxNode node = row.Left; node != row; node = node.Left)
                 {
                     node.RelinkUpDown();
                     node.Column.Size++;

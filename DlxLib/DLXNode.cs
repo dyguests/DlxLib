@@ -1,16 +1,16 @@
 ﻿namespace DlxLib
 {
-    class DLXNode
+    class DlxNode
     {
-        public DLXNode Left, Right, Up, Down;
-        public DLXColumn Column;
+        public DlxNode Left, Right, Up, Down;
+        public DlxColumn Column;
 
-        public DLXNode()
+        public DlxNode()
         {
             Left = Right = Up = Down = this;
         }
 
-        public void LinkRight(DLXNode node)
+        public void LinkRight(DlxNode node)
         {
             node.Right = Right;
             node.Left = this;
@@ -18,7 +18,7 @@
             Right = node;
         }
 
-        public void LinkDown(DLXNode node)
+        public void LinkDown(DlxNode node)
         {
             node.Down = Down;
             node.Up = this;

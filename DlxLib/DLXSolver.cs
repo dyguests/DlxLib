@@ -3,33 +3,33 @@ using System.Collections.Generic;
 
 namespace DlxLib
 {
-    public class DLXSolver
+    public class DlxSolver
     {
-        private DLXColumn header;
-        private List<DLXNode> solution;
+        private DlxColumn header;
+        private List<DlxNode> solution;
 
-        public DLXSolver(int[,] matrix, List<string> columnNames)
+        public DlxSolver(int[,] matrix, List<string> columnNames)
         {
-            header = new DLXColumn("header");
-            solution = new List<DLXNode>();
-            DLXColumn[] columns = new DLXColumn[matrix.GetLength(1)];
+            header = new DlxColumn("header");
+            solution = new List<DlxNode>();
+            DlxColumn[] columns = new DlxColumn[matrix.GetLength(1)];
 
             // 创建列
             for (int i = 0; i < matrix.GetLength(1); i++)
             {
-                columns[i] = new DLXColumn(columnNames[i]);
+                columns[i] = new DlxColumn(columnNames[i]);
                 header.LinkRight(columns[i]);
             }
 
             // 创建节点
             for (int i = 0; i < matrix.GetLength(0); i++)
             {
-                DLXNode firstNode = null;
+                DlxNode firstNode = null;
                 for (int j = 0; j < matrix.GetLength(1); j++)
                 {
                     if (matrix[i, j] == 1)
                     {
-                        DLXNode newNode = new DLXNode { Column = columns[j] };
+                        DlxNode newNode = new DlxNode { Column = columns[j] };
                         columns[j].LinkDown(newNode);
                         if (firstNode == null)
                         {
@@ -55,14 +55,14 @@ namespace DlxLib
             }
 
             // 选择列
-            DLXColumn column = SelectColumn();
+            DlxColumn column = SelectColumn();
             column.Cover();
 
-            for (DLXNode row = column.Down; row != column; row = row.Down)
+            for (DlxNode row = column.Down; row != column; row = row.Down)
             {
                 solution.Add(row);
 
-                for (DLXNode node = row.Right; node != row; node = node.Right)
+                for (DlxNode node = row.Right; node != row; node = node.Right)
                 {
                     node.Column.Cover();
                 }
@@ -73,7 +73,7 @@ namespace DlxLib
                 solution.RemoveAt(solution.Count - 1);
                 column = row.Column;
 
-                for (DLXNode node = row.Left; node != row; node = node.Left)
+                for (DlxNode node = row.Left; node != row; node = node.Left)
                 {
                     node.Column.Uncover();
                 }
@@ -81,11 +81,11 @@ namespace DlxLib
             column.Uncover();
         }
 
-        private DLXColumn SelectColumn()
+        private DlxColumn SelectColumn()
         {
-            DLXColumn best = null;
+            DlxColumn best = null;
             int minSize = int.MaxValue;
-            for (DLXColumn column = (DLXColumn)header.Right; column != header; column = (DLXColumn)column.Right)
+            for (DlxColumn column = (DlxColumn)header.Right; column != header; column = (DlxColumn)column.Right)
             {
                 if (column.Size < minSize)
                 {
@@ -100,7 +100,7 @@ namespace DlxLib
         {
             foreach (var row in solution)
             {
-                DLXNode node = row;
+                DlxNode node = row;
                 do
                 {
                     Console.Write(node.Column.Name + " ");

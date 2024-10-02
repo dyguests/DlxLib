@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace DlxLibTest
 {
-    class DLXSolverTest
+    class DlxSolverTest
     {
         [SetUp]
         public void Setup() { }
@@ -13,7 +13,7 @@ namespace DlxLibTest
         public void Test1()
         {
             // 确切覆盖问题矩阵
-            int[,] matrix = new int[,]
+            var matrix = new[,]
             {
                 { 1, 0, 0, 1, 0, 0, 1 },
                 { 1, 0, 0, 1, 0, 0, 0 },
@@ -23,9 +23,9 @@ namespace DlxLibTest
                 { 0, 1, 0, 0, 0, 0, 1 }
             };
 
-            List<string> columnNames = new List<string> { "A", "B", "C", "D", "E", "F", "G" };
+            var columnNames = new List<string> { "A", "B", "C", "D", "E", "F", "G" };
 
-            DLXSolver solver = new DLXSolver(matrix, columnNames);
+            var solver = new DlxSolver(matrix, columnNames);
             solver.Search(0);
             Assert.Pass();
         }
