@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace DlxLib
 {
-    public class DlxSolver
+    public class Dlx
     {
         private DlxColumn header;
         private List<DlxNode> solution;
 
-        public DlxSolver(int[,] matrix, List<string> columnNames)
+        public Dlx(int[,] matrix, List<string> columnNames)
         {
             header = new DlxColumn("header");
             solution = new List<DlxNode>();
@@ -45,7 +45,7 @@ namespace DlxLib
             }
         }
 
-        public void Search(int k)
+        public void Search(int deep = 0)
         {
             if (header.Right == header)
             {
@@ -67,7 +67,7 @@ namespace DlxLib
                     node.Column.Cover();
                 }
 
-                Search(k + 1);
+                Search(deep + 1);
 
                 row = solution[solution.Count - 1];
                 solution.RemoveAt(solution.Count - 1);

@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace DlxLibTest
 {
-    class DlxSolverTest
+    class DlxTest
     {
         [SetUp]
         public void Setup() { }
@@ -25,8 +25,8 @@ namespace DlxLibTest
 
             var columnNames = new List<string> { "A", "B", "C", "D", "E", "F", "G" };
 
-            var solver = new DlxSolver(matrix, columnNames);
-            solver.Search(0);
+            var solver = new Dlx(matrix, columnNames);
+            solver.Search();
             Assert.Pass();
         }
     }
