@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace DlxLib
 {
@@ -18,7 +17,7 @@ namespace DlxLib
             // 创建列
             for (var i = 0; i < matrix.GetLength(1); i++)
             {
-                columns[i] = new Column(columnNames?[i] ?? $"column{i}");
+                columns[i] = new Column(columnNames?[i] ?? $"col{i}");
                 header.LinkRight(columns[i]);
             }
 
@@ -103,7 +102,7 @@ namespace DlxLib
 
         private void PrintSolution()
         {
-            foreach (var row in solution.OrderBy(node => node.rowIndex))
+            foreach (var row in solution /*.OrderBy(node => node.rowIndex)*/)
             {
                 Console.Write($"Row {row.rowIndex}: "); // 输出行号
                 var node = row;
