@@ -46,9 +46,7 @@ namespace DlxLibTest
                 { 0, 1, 0, 0, 0, 0, 1 }
             };
 
-            var dlx = new Dlx(matrix);
-            dlx.Search();
-            Assert.Pass();
+            Validate(matrix);
         }
 
         private static void Validate(int[,] matrix, int numPrimaryColumns = int.MaxValue)
@@ -63,10 +61,10 @@ namespace DlxLibTest
             Console.WriteLine("Solutions:");
 
             var dlx = new Dlx(matrix);
-            // foreach (var result in Dlx.Search())
-            // {
-            //     Console.WriteLine("Solution:" + String.Join(",", result));
-            // }
+            foreach (var result in dlx.Search())
+            {
+                Console.WriteLine("Solution:" + String.Join(",", result));
+            }
 
             Console.WriteLine("-------- end --------");
 

@@ -1,5 +1,5 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DlxLib
 {
@@ -49,13 +49,13 @@ namespace DlxLib
             }
         }
 
-        public void Search(int deep = 0)
+        public IEnumerable<int[]> Search(int deep = 0)
         {
             if (header.right == header)
             {
                 // 找到解决方案
-                PrintSolution();
-                return;
+                yield return solution.Select(node => node.rowIndex).ToArray();
+                yield break;
             }
 
             // 选择列
@@ -71,9 +71,12 @@ namespace DlxLib
                     node.column.Cover();
                 }
 
-                Search(deep + 1);
+                foreach (var result in Search(deep + 1))
+                {
+                    yield return result;
+                }
 
-                row = solution[solution.Count - 1];
+                row = solution[^1];
                 solution.RemoveAt(solution.Count - 1);
                 column = row.column;
 
@@ -98,21 +101,6 @@ namespace DlxLib
                 }
             }
             return best;
-        }
-
-        private void PrintSolution()
-        {
-            foreach (var row in solution /*.OrderBy(node => node.rowIndex)*/)
-            {
-                Console.Write($"Row {row.rowIndex}: "); // 输出行号
-                var node = row;
-                do
-                {
-                    Console.Write(node.column.name + " ");
-                    node = node.right;
-                } while (node != row);
-                Console.WriteLine();
-            }
         }
     }
 }
