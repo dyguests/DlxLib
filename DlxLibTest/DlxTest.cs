@@ -29,5 +29,24 @@ namespace DlxLibTest
             solver.Search();
             Assert.Pass();
         }
+
+        [Test]
+        public void Test2()
+        {
+            // 确切覆盖问题矩阵
+            var matrix = new[,]
+            {
+                { 1, 0, 0, 1, 0, 0, 1 },
+                { 1, 0, 0, 1, 0, 0, 0 },
+                { 0, 0, 0, 1, 1, 0, 1 },
+                { 0, 0, 1, 0, 1, 1, 0 },
+                { 0, 1, 1, 0, 0, 1, 1 },
+                { 0, 1, 0, 0, 0, 0, 1 }
+            };
+
+            var solver = new Dlx(matrix);
+            solver.Search();
+            Assert.Pass();
+        }
     }
 }

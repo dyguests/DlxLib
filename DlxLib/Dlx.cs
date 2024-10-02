@@ -8,7 +8,7 @@ namespace DlxLib
         private Column header;
         private List<Node> solution;
 
-        public Dlx(int[,] matrix, List<string> columnNames)
+        public Dlx(int[,] matrix, List<string>? columnNames = null)
         {
             header = new Column("header");
             solution = new List<Node>();
@@ -17,7 +17,7 @@ namespace DlxLib
             // 创建列
             for (int i = 0; i < matrix.GetLength(1); i++)
             {
-                columns[i] = new Column(columnNames[i]);
+                columns[i] = new Column(columnNames?[i] ?? $"column{i}");
                 header.LinkRight(columns[i]);
             }
 
