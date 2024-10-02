@@ -5,31 +5,31 @@ namespace DlxLib
 {
     public class Dlx
     {
-        private DlxColumn header;
-        private List<DlxNode> solution;
+        private Column header;
+        private List<Node> solution;
 
         public Dlx(int[,] matrix, List<string> columnNames)
         {
-            header = new DlxColumn("header");
-            solution = new List<DlxNode>();
-            DlxColumn[] columns = new DlxColumn[matrix.GetLength(1)];
+            header = new Column("header");
+            solution = new List<Node>();
+            Column[] columns = new Column[matrix.GetLength(1)];
 
             // 创建列
             for (int i = 0; i < matrix.GetLength(1); i++)
             {
-                columns[i] = new DlxColumn(columnNames[i]);
+                columns[i] = new Column(columnNames[i]);
                 header.LinkRight(columns[i]);
             }
 
             // 创建节点
             for (int i = 0; i < matrix.GetLength(0); i++)
             {
-                DlxNode firstNode = null;
+                Node firstNode = null;
                 for (int j = 0; j < matrix.GetLength(1); j++)
                 {
                     if (matrix[i, j] == 1)
                     {
-                        DlxNode newNode = new DlxNode { Column = columns[j] };
+                        Node newNode = new Node { Column = columns[j] };
                         columns[j].LinkDown(newNode);
                         if (firstNode == null)
                         {
@@ -55,14 +55,14 @@ namespace DlxLib
             }
 
             // 选择列
-            DlxColumn column = SelectColumn();
+            Column column = SelectColumn();
             column.Cover();
 
-            for (DlxNode row = column.Down; row != column; row = row.Down)
+            for (Node row = column.Down; row != column; row = row.Down)
             {
                 solution.Add(row);
 
-                for (DlxNode node = row.Right; node != row; node = node.Right)
+                for (Node node = row.Right; node != row; node = node.Right)
                 {
                     node.Column.Cover();
                 }
@@ -73,7 +73,7 @@ namespace DlxLib
                 solution.RemoveAt(solution.Count - 1);
                 column = row.Column;
 
-                for (DlxNode node = row.Left; node != row; node = node.Left)
+                for (Node node = row.Left; node != row; node = node.Left)
                 {
                     node.Column.Uncover();
                 }
@@ -81,11 +81,11 @@ namespace DlxLib
             column.Uncover();
         }
 
-        private DlxColumn SelectColumn()
+        private Column SelectColumn()
         {
-            DlxColumn best = null;
+            Column best = null;
             int minSize = int.MaxValue;
-            for (DlxColumn column = (DlxColumn)header.Right; column != header; column = (DlxColumn)column.Right)
+            for (Column column = (Column)header.Right; column != header; column = (Column)column.Right)
             {
                 if (column.Size < minSize)
                 {
@@ -100,7 +100,7 @@ namespace DlxLib
         {
             foreach (var row in solution)
             {
-                DlxNode node = row;
+                Node node = row;
                 do
                 {
                     Console.Write(node.Column.Name + " ");
