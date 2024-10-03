@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using SudokuDlxLib;
 using SudokuLib;
 using SudokuLibTest;
 
@@ -17,6 +18,7 @@ namespace SudokuDlxLibTest
             var puzzle = PuzzleSketcher.FromSketch(sketch);
             Console.WriteLine($"sketch:{sketch}");
             Console.WriteLine($"puzzle:\n{puzzle.ToDisplay()}");
+            int[,] matrix = SudokuDlxUtil.ToMatrix(puzzle);
             Assert.Pass();
         }
     }
