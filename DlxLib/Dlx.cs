@@ -49,7 +49,7 @@ namespace DlxLib
             }
         }
 
-        public IEnumerable<int[]> Search(int deep = 0)
+        public IEnumerable<int[]> Solve(int deep = 0)
         {
             if (header.right == header)
             {
@@ -71,7 +71,7 @@ namespace DlxLib
                     node.column.Cover();
                 }
 
-                foreach (var result in Search(deep + 1))
+                foreach (var result in Solve(deep + 1))
                 {
                     yield return result;
                 }

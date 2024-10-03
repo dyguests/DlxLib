@@ -1,4 +1,5 @@
 using System;
+using DlxLib;
 using NUnit.Framework;
 using SudokuDlxLib;
 using SudokuLib;
@@ -20,6 +21,11 @@ namespace SudokuDlxLibTest
             Console.WriteLine($"puzzle:\n{puzzle.ToDisplay()}");
             var matrix = SudokuDlxUtil.ToMatrix(puzzle);
             Console.WriteLine($"matrix:\n{matrix.ToDisplay()}");
+            var dlx = new Dlx(matrix);
+            foreach (var result in dlx.Solve())
+            {
+                Console.WriteLine("Solution:" + string.Join(",", result));
+            }
             Assert.Pass();
         }
     }

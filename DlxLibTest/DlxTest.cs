@@ -145,7 +145,7 @@ namespace DlxLibTest
             var columnNames = new List<string> { "A", "B", "C", "D", "E", "F", "G" };
 
             var dlx = new Dlx(matrix, columnNames);
-            dlx.Search();
+            dlx.Solve();
             Assert.Pass();
         }
 
@@ -178,7 +178,7 @@ namespace DlxLibTest
             Console.WriteLine("Solutions:");
 
             var dlx = new Dlx(matrix);
-            foreach (var result in dlx.Search())
+            foreach (var result in dlx.Solve())
             {
                 Console.WriteLine("Solution:" + String.Join(",", result));
             }
