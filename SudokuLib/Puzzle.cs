@@ -9,13 +9,29 @@ namespace SudokuLib
         int[] Digits { get; }
         int[] Solution { get; }
         IRule[] Rules { get; }
+
+        void SetSolution(int[] solution);
     }
 
     public class Puzzle : IPuzzle
     {
+        #region IPuzzle
+
         public int[] Digits { get; }
         public int[] Solution { get; }
         public IRule[] Rules { get; }
+
+        public void SetSolution(int[] solution)
+        {
+            if (solution == null || solution.Length != Digits.Length)
+            {
+                throw new ArgumentException("Solution must be initialized and have the same length as Digits", nameof(solution));
+            }
+
+            Array.Copy(solution, Solution, solution.Length);
+        }
+
+        #endregion
 
         public Puzzle(int[] digits, params IRule[] rules)
         {
