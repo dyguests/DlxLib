@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SudokuLib.Rules;
 
 namespace SudokuLib
 {
@@ -45,7 +46,9 @@ namespace SudokuLib
                 }
             }
 
-            return new Puzzle(digits);
+            var puzzle = new Puzzle(digits);
+            puzzle.SetSolution(solution);
+            return puzzle;
         }
 
         /// <summary>
