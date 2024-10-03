@@ -26,7 +26,7 @@ namespace SudokuLib
 
                 // 如果队列中全是空，返回 null
                 return null;
-            })?.Select(c => c is >= '1' and <= '9' ? c + 1 - '1' : 0).ToArray() ?? throw new Exception("sketch is empty");
+            })?.Select(c => c is >= CharDigit1 and <= CharDigit9 ? c + 1 - CharDigit1 : 0).ToArray() ?? throw new Exception("sketch is empty");
 
             return new Puzzle(digits);
         }
@@ -36,8 +36,8 @@ namespace SudokuLib
         {
             var enumerable = Enumerable.Range(0, puzzle.Digits.Length).Select(i =>
             {
-                if (puzzle.Digits[i] != 0) return (char)('1' + (puzzle.Digits[i] - 1));
-                if (showSolution && puzzle.Solution[i] != 0) return (char)('a' + (puzzle.Solution[i] - 1));
+                if (puzzle.Digits[i] != 0) return (char)(CharDigit1 + (puzzle.Digits[i] - 1));
+                if (showSolution && puzzle.Solution[i] != 0) return (char)(CharMask1 + (puzzle.Solution[i] - 1));
                 return '.';
             });
             var digitsSketch = string.Join("", enumerable);
