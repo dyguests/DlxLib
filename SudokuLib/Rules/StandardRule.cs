@@ -11,7 +11,7 @@ namespace SudokuLib.Rules
         public override IEnumerable<int[]> ExpandRows(IEnumerable<int[]> rows, IPuzzle puzzle)
         {
             var ruleRowStart = 0;
-            const int ruleRowCount = 9 * 9 + /*colCount*digitCount*/9 * 9 + /*boxCount*digitCount*/9 * 9;
+            const int ruleRowCount = /*rowCount*digitCount*/ 9 * 9 + /*colCount*digitCount*/9 * 9 + /*boxCount*digitCount*/9 * 9;
 
             var expandedRows = rows.SelectMany((row, index) =>
             {
@@ -22,7 +22,7 @@ namespace SudokuLib.Rules
                 var possibleDigits = digit == 0 ? Enumerable.Range(1, 9).ToArray() : new[] { digit };
                 return possibleDigits.Select(possibleDigit =>
                 {
-                    var standardRow = new int[ /*rowCount*digitCount*/9 * 9 + /*colCount*digitCount*/9 * 9 + /*boxCount*digitCount*/9 * 9];
+                    var standardRow = new int[ruleRowCount];
                     standardRow[ /*rowIndex*digitCount*/position / 9 * 9 + possibleDigit - 1] = 1;
                     standardRow[ /*rowCount*digitCount*/9 * 9 + /*columnIndex*digitCount*/position % 9 * 9 + possibleDigit - 1] = 1;
                     standardRow[ /*rowCount*digitCount*/
@@ -45,7 +45,7 @@ namespace SudokuLib.Rules
                 if (digit != 0) continue;
                 var row = rows.FirstOrDefault(row => row[position] == 1) ?? throw new NullReferenceException("rows 未包含 row[position] == 1");
                 var startIndex = RuleRowRange.Start.Value;
-                var endIndex = RuleRowRange.End.Value;
+                var endIndex = startIndex + /*rowCount*digitCount*/ 9 * 9;
                 var index = Array.FindIndex(row, startIndex, endIndex - startIndex, value => value == 1);
                 if (index < startIndex || index >= endIndex)
                 {
