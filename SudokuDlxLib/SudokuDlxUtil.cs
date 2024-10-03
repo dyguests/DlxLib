@@ -8,10 +8,15 @@ namespace SudokuDlxLib
     {
         public static int[,] ToMatrix(IPuzzle puzzle)
         {
-            var positionRows = CreatePositionRows(puzzle.Digits.Length);
-            return RowsToMatrix(positionRows);
+            var rows = puzzle.Rules.Aggregate(CreatePositionRows(puzzle.Digits.Length), (current, rule) => rule.ExpandRows(current, puzzle));
+            return RowsToMatrix(rows);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="size"></param>
+        /// <returns>按position升序的IEnumerable</returns>
         private static IEnumerable<int[]> CreatePositionRows(int size)
         {
             return Enumerable.Range(0, size).Select(i =>

@@ -181,3 +181,4 @@ Answer:
 - [taylorjg/DlxLib](https://github.com/taylorjg/DlxLib)
 - [Knuth's Algorithm X](https://en.wikipedia.org/wiki/Knuth%27s_Algorithm_X)
 - [Wiki Dancing Links](https://en.wikipedia.org/wiki/Dancing_Links)
+- [The New Sudoku Players' Forum](http://forum.enjoysudoku.com/)
