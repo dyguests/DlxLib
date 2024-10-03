@@ -49,6 +49,11 @@ namespace DlxLib
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="deep"></param>
+        /// <returns>IEnumerable.each is rowIndexes</returns>
         public IEnumerable<int[]> Solve(int deep = 0)
         {
             if (header.right == header)

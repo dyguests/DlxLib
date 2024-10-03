@@ -13,6 +13,15 @@ namespace SudokuLib.Rules
         /// <param name="puzzle"></param>
         /// <returns></returns>
         IEnumerable<int[]> ExpandRows(IEnumerable<int[]> rows, IPuzzle puzzle);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="solution">要填充的solution</param>
+        /// <param name="rows">rows 精确匹配（dlx） 后的结果就是 rowIndexes</param>
+        /// <param name="puzzle"></param>
+        /// <returns>是否填充完毕</returns>
+        bool FillSolution(int[] solution, List<int[]> rows, IPuzzle puzzle);
     }
 
     public abstract class Rule : IRule
@@ -20,6 +29,8 @@ namespace SudokuLib.Rules
         #region IRule
 
         public abstract IEnumerable<int[]> ExpandRows(IEnumerable<int[]> rows, IPuzzle puzzle);
+
+        public abstract bool FillSolution(int[] solution, List<int[]> rows, IPuzzle puzzle);
 
         #endregion
 

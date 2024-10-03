@@ -36,6 +36,27 @@ namespace SudokuLib.Rules
             return expandedRows;
         }
 
+        public override bool FillSolution(int[] solution, List<int[]> rows, IPuzzle puzzle)
+        {
+            var isAllFilled = true;
+            for (var position = 0; position < solution.Length; position++)
+            {
+                var digit = solution[position];
+                if (digit != 0) continue;
+                var row = rows.FirstOrDefault(row => row[position] == 1) ?? throw new NullReferenceException("rows 未包含 row[position] == 1");
+                var startIndex = RuleRowRange.Start.Value;
+                var endIndex = RuleRowRange.End.Value;
+                var index = Array.FindIndex(row, startIndex, endIndex - startIndex, value => value == 1);
+                if (index < startIndex || index >= endIndex)
+                {
+                    isAllFilled = false;
+                    continue;
+                }
+                solution[position] = (index - startIndex) % 9 + 1;
+            }
+            return isAllFilled;
+        }
+
         #endregion
 
         #region StandardRule
