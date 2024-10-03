@@ -18,7 +18,8 @@ namespace SudokuDlxLibTest
             var puzzle = PuzzleSketcher.FromSketch(sketch);
             Console.WriteLine($"sketch:{sketch}");
             Console.WriteLine($"puzzle:\n{puzzle.ToDisplay()}");
-            int[,] matrix = SudokuDlxUtil.ToMatrix(puzzle);
+            var matrix = SudokuDlxUtil.ToMatrix(puzzle);
+            Console.WriteLine($"matrix:\n{matrix.ToDisplay()}");
             Assert.Pass();
         }
     }
