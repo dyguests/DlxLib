@@ -18,4 +18,9 @@
         <PackageReference Include="coverlet.collector" Version="6.0.0"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\SudokuLibTest\SudokuLibTest.csproj" />
+      <ProjectReference Include="..\SudokuLib\SudokuLib.csproj" />
+    </ItemGroup>
+
 </Project>
