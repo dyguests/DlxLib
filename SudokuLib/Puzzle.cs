@@ -26,7 +26,7 @@ namespace SudokuLib
 
             Digits = digits;
             Solution = new int[digits.Length];
-            Rules = rules.Let(it => { return it.Any(rule => rule is IBaseRule) ? it : it.Append(StandardRule.Instance).ToArray(); });
+            Rules = rules.Any(rule => rule is IBaseRule) ? new[] { StandardRule.Instance }.Concat(rules).ToArray() : rules;
         }
     }
 }
