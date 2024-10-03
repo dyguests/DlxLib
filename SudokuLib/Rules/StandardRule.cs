@@ -10,16 +10,24 @@ namespace SudokuLib.Rules
 
         public override IEnumerable<int[]> ExpandRows(IEnumerable<int[]> rows, IPuzzle puzzle)
         {
-            var ruleRowStart = 0;
             const int ruleRowCount = /*rowCount*digitCount*/ 9 * 9 + /*colCount*digitCount*/9 * 9 + /*boxCount*digitCount*/9 * 9;
 
-            var expandedRows = rows.SelectMany((row, index) =>
+            return rows.SelectMany((row, index) =>
             {
-                if (index == 0) ruleRowStart = row.Length;
+                if (index == 0)
+                {
+                    var ruleRowStart = row.Length;
+                    RuleRowRange = new Range(ruleRowStart, ruleRowStart + ruleRowCount);
+                }
 
                 var position = GetPosition(row, puzzle);
                 var digit = puzzle.Digits[position];
-                var possibleDigits = digit == 0 ? Enumerable.Range(1, 9).ToArray() : new[] { digit };
+                var possibleDigits = digit == 0
+                    ? Enumerable.Range(1, 9).ToArray()
+                    : new[]
+                    {
+                        digit
+                    };
                 return possibleDigits.Select(possibleDigit =>
                 {
                     var standardRow = new int[ruleRowCount];
@@ -30,10 +38,6 @@ namespace SudokuLib.Rules
                     return row.Concat(standardRow).ToArray();
                 });
             });
-
-            RuleRowRange = new Range(ruleRowStart, ruleRowStart + ruleRowCount);
-
-            return expandedRows;
         }
 
         public override bool FillSolution(int[] solution, List<int[]> rows, IPuzzle puzzle)
@@ -52,7 +56,8 @@ namespace SudokuLib.Rules
                     isAllFilled = false;
                     continue;
                 }
-                solution[position] = (index - startIndex) % 9 + 1;
+                var indexInRule = index - startIndex;
+                solution[position] = indexInRule % 9 + 1;
             }
             return isAllFilled;
         }
