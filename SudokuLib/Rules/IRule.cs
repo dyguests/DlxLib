@@ -6,7 +6,8 @@ namespace SudokuLib.Rules
     public interface IRule
     {
         /// <summary>
-        /// 
+        /// 基于 dlx 的 rows，扩展IRule规则
+        /// 基于 dlx 的 rows，扩展IRule规则
         /// </summary>
         /// <param name="rows">dlx rows</param>
         /// <param name="puzzle"></param>

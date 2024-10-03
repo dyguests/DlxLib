@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SudokuLib;
 
@@ -6,6 +7,8 @@ namespace SudokuDlxLib
 {
     public static class SudokuDlxUtil
     {
+        #region ToMatrix
+
         public static int[,] ToMatrix(IPuzzle puzzle)
         {
             var rows = puzzle.Rules.Aggregate(CreatePositionRows(puzzle.Digits.Length), (current, rule) => rule.ExpandRows(current, puzzle));
@@ -41,5 +44,16 @@ namespace SudokuDlxLib
 
             return matrix;
         }
+
+        #endregion
+
+        #region ToSolution
+
+        public static int[] ToSolution(IPuzzle puzzle, int[,] matrix, int[] dlxResult)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

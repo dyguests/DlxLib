@@ -25,6 +25,7 @@ namespace SudokuDlxLibTest
             foreach (var result in dlx.Solve())
             {
                 Console.WriteLine("Solution:" + string.Join(",", result));
+                int[] solution = SudokuDlxUtil.ToSolution(puzzle, matrix, result);
             }
             Assert.Pass();
         }
