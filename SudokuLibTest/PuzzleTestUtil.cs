@@ -8,8 +8,8 @@ namespace SudokuLibTest
     {
         public static string ToDisplay(this IPuzzle puzzle)
         {
-            var digits = puzzle.Digits;
-            return DigitsToDisplay(digits);
+            return $"Digits:\n{DigitsToDisplay(puzzle.Digits)}\n"
+                   + $"Solution:\n{DigitsToDisplay(puzzle.Solution)}";
         }
 
         public static string DigitsToDisplay(this int[] digits)
