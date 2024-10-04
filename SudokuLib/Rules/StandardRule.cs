@@ -8,17 +8,13 @@ namespace SudokuLib.Rules
     {
         #region Rule
 
+        private int _ruleRowStart;
+
         public override IEnumerable<int[]> ExpandRows(IEnumerable<int[]> rows, IPuzzle puzzle)
         {
-            const int ruleRowCount = /*rowCount*digitCount*/ 9 * 9 + /*colCount*digitCount*/9 * 9 + /*boxCount*digitCount*/9 * 9;
-
             return rows.SelectMany((row, index) =>
             {
-                if (index == 0)
-                {
-                    var ruleRowStart = row.Length;
-                    RuleRowRange = new Range(ruleRowStart, ruleRowStart + ruleRowCount);
-                }
+                if (index == 0) _ruleRowStart = row.Length;
 
                 var position = GetPosition(row, puzzle);
                 var digit = puzzle.Digits[position];
@@ -30,7 +26,7 @@ namespace SudokuLib.Rules
                     };
                 return possibleDigits.Select(possibleDigit =>
                 {
-                    var standardRow = new int[ruleRowCount];
+                    var standardRow = new int[ /*rowCount*digitCount*/ 9 * 9 + /*colCount*digitCount*/9 * 9 + /*boxCount*digitCount*/9 * 9];
                     standardRow[ /*rowIndex*digitCount*/position / 9 * 9 + possibleDigit - 1] = 1;
                     standardRow[ /*rowCount*digitCount*/9 * 9 + /*columnIndex*digitCount*/position % 9 * 9 + possibleDigit - 1] = 1;
                     standardRow[ /*rowCount*digitCount*/
@@ -48,7 +44,7 @@ namespace SudokuLib.Rules
                 var digit = solution[position];
                 if (digit != 0) continue;
                 var row = rows.FirstOrDefault(row => row[position] == 1) ?? throw new NullReferenceException("rows 未包含 row[position] == 1");
-                var startIndex = RuleRowRange.Start.Value;
+                var startIndex = _ruleRowStart;
                 var endIndex = startIndex + /*rowCount*digitCount*/ 9 * 9;
                 var index = Array.FindIndex(row, startIndex, endIndex - startIndex, value => value == 1);
                 if (index < startIndex || index >= endIndex)
@@ -61,15 +57,6 @@ namespace SudokuLib.Rules
             }
             return isAllFilled;
         }
-
-        #endregion
-
-        #region StandardRule
-
-        /// <summary>
-        /// 当前rule负责的row中的range
-        /// </summary>
-        private Range RuleRowRange { get; set; }
 
         #endregion
     }
