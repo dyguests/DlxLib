@@ -175,10 +175,11 @@ Answer:
 -[ ] GetRuleDlxProcessor Singleton
 -[x] dlx is unique solution(可能存在行号一致结果一致的情况)
 
-## Reference
+## References
 
 - [用DLX解sudoku(数独)](http://blog.gssxgss.me/use-dlx-to-solve-sudoku-1/)
 - [taylorjg/DlxLib](https://github.com/taylorjg/DlxLib)
 - [Knuth's Algorithm X](https://en.wikipedia.org/wiki/Knuth%27s_Algorithm_X)
 - [Wiki Dancing Links](https://en.wikipedia.org/wiki/Dancing_Links)
 - [The New Sudoku Players' Forum](http://forum.enjoysudoku.com/)
+- [数独缩略词](http://forum.enjoysudoku.com/list-of-acronyms-t37137.html)

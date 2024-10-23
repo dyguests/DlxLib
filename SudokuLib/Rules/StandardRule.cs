@@ -29,12 +29,12 @@ namespace SudokuLib.Rules
                     };
                 return possibleDigits.Select(possibleDigit =>
                 {
-                    var standardRow = new int[ /*rowCount*digitCount*/ 9 * 9 + /*colCount*digitCount*/9 * 9 + /*boxCount*digitCount*/9 * 9];
-                    standardRow[ /*rowIndex*digitCount*/position / 9 * 9 + possibleDigit - 1] = 1;
-                    standardRow[ /*rowCount*digitCount*/9 * 9 + /*columnIndex*digitCount*/position % 9 * 9 + possibleDigit - 1] = 1;
-                    standardRow[ /*rowCount*digitCount*/
+                    var expandingRow = new int[ /*rowCount*digitCount*/ 9 * 9 + /*colCount*digitCount*/9 * 9 + /*boxCount*digitCount*/9 * 9];
+                    expandingRow[ /*rowIndex*digitCount*/position / 9 * 9 + possibleDigit - 1] = 1;
+                    expandingRow[ /*rowCount*digitCount*/9 * 9 + /*columnIndex*digitCount*/position % 9 * 9 + possibleDigit - 1] = 1;
+                    expandingRow[ /*rowCount*digitCount*/
                         9 * 9 + /*colCount*digitCount*/9 * 9 + /*boxIndex*digitCount*/(position / 9 / 3 * 3 + position % 9 / 3) * 9 + possibleDigit - 1] = 1;
-                    return row.Concat(standardRow).ToArray();
+                    return row.Concat(expandingRow).ToArray();
                 });
             });
         }
