@@ -29,14 +29,28 @@ namespace SudokuDlxLibTest
                 puzzle.SetSolution(solution);
                 Console.WriteLine($"sudoku Solution:\n{solution.DigitsToDisplay()}");
             }
+
             var sketch2 = PuzzleSketcher.ToSketch(puzzle, useMask: false);
             Console.WriteLine($"solution sketch:\n{sketch2}");
             Assert.Pass();
         }
+
         [Test]
         public void TestPuzzleWithSolution()
         {
             const string sketch = "32586719486914327571425936819368245764793581258271463925839674143157892697642158c";
+            TestPuzzle(sketch);
+        }
+
+        [Test]
+        public void TestPuzzleX()
+        {
+            const string sketch = "..1.....2....32..4.....5..1........3.2.....6.7........8..3.....1..69....9.....4..";
+            TestPuzzle(sketch);
+        }
+
+        private static void TestPuzzle(string sketch)
+        {
             var puzzle = PuzzleSketcher.FromSketch(sketch);
             Console.WriteLine($"sketch:\n{sketch}");
             Console.WriteLine($"puzzle:\n{puzzle.ToDisplay()}");
@@ -50,6 +64,7 @@ namespace SudokuDlxLibTest
                 puzzle.SetSolution(solution);
                 Console.WriteLine($"sudoku Solution:\n{solution.DigitsToDisplay()}");
             }
+
             var sketch2 = PuzzleSketcher.ToSketch(puzzle, useMask: false);
             Console.WriteLine($"solution sketch:\n{sketch2}");
             Assert.Pass();
