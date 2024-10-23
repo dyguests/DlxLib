@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using SudokuLib.Rules;
+using SudokuLib.Sketchers;
 
 namespace SudokuLib
 {
@@ -11,6 +11,11 @@ namespace SudokuLib
         private const char CharDigit9 = '9';
         private const char CharMask1 = 'a';
         private const char CharMask9 = 'i';
+
+        private static readonly IRuleSketcher[] RuleSketchers =
+        {
+            new DiagonalRuleSketcher()
+        };
 
         public static IPuzzle FromSketch(string sketch)
         {
@@ -25,7 +30,7 @@ namespace SudokuLib
                 while (queue.Count > 0)
                 {
                     var dequeue = queue.Dequeue();
-                    if (string.IsNullOrEmpty(dequeue)) continue;
+                    if (string.IsNullOrWhiteSpace(dequeue)) continue;
                     return dequeue; // 找到非空字符串时返回
                 }
 
@@ -46,7 +51,15 @@ namespace SudokuLib
                 }
             }
 
-            var puzzle = new Puzzle(digits);
+            var rules = lines.Where(line => !string.IsNullOrWhiteSpace(line))
+                .Select(line =>
+                    RuleSketchers.Select(rs => rs.FromSketch(line))
+                        .FirstOrDefault(result => result != null)
+                )
+                .Where(rule => rule != null)
+                .ToArray();
+
+            var puzzle = new Puzzle(digits, rules);
             puzzle.SetSolution(solution);
             return puzzle;
         }
@@ -56,8 +69,8 @@ namespace SudokuLib
         /// </summary>
         /// <param name="puzzle"></param>
         /// <param name="showSolution"></param>
-        /// <param name="useMask"></param>
-        /// <returns>是否加一层蒙层；是否区分迷题和迷底；是否区分digits/solution</returns>
+        /// <param name="useMask">是否加一层蒙层；是否区分迷题和迷底；是否区分digits/solution</param>
+        /// <returns></returns>
         public static string ToSketch(IPuzzle puzzle, bool showSolution = true, bool useMask = true)
         {
             var enumerable = Enumerable.Range(0, puzzle.Digits.Length).Select(i =>
@@ -67,6 +80,7 @@ namespace SudokuLib
                 {
                     return (char)(useMask ? CharMask1 : CharDigit1 + (puzzle.Solution[i] - 1));
                 }
+
                 return '.';
             });
             var digitsSketch = string.Join("", enumerable);
