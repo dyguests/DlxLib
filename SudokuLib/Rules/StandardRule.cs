@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace SudokuLib.Rules
 {
+    /// <summary>
+    /// 标准数独规则
+    /// </summary>
     public class StandardRule : BaseRule
     {
         #region Rule
@@ -52,9 +55,11 @@ namespace SudokuLib.Rules
                     isAllFilled = false;
                     continue;
                 }
+
                 var indexInRule = index - startIndex;
                 solution[position] = indexInRule % 9 + 1;
             }
+
             return isAllFilled;
         }
 
