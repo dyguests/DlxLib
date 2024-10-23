@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using SudokuLib.Rules;
 using SudokuLib.Sketchers;
 
 namespace SudokuLib
@@ -73,6 +75,8 @@ namespace SudokuLib
         /// <returns></returns>
         public static string ToSketch(IPuzzle puzzle, bool showSolution = true, bool useMask = true)
         {
+            var sb = new StringBuilder();
+
             var enumerable = Enumerable.Range(0, puzzle.Digits.Length).Select(i =>
             {
                 if (puzzle.Digits[i] != 0) return (char)(CharDigit1 + (puzzle.Digits[i] - 1));
@@ -83,8 +87,18 @@ namespace SudokuLib
 
                 return '.';
             });
-            var digitsSketch = string.Join("", enumerable);
-            return digitsSketch;
+            var digitSketch = string.Join("", enumerable);
+            sb.Append(digitSketch);
+
+            var rules = puzzle.Rules.Where(rule => rule is not StandardRule).ToArray();
+            foreach (var rule in rules)
+            {
+                var ruleSketch = RuleSketchers.Select(rs => rs.ToSketch(rule))
+                    .FirstOrDefault(result => result != null);
+                sb.AppendLine().Append(ruleSketch);
+            }
+
+            return sb.ToString();
         }
     }
 }
