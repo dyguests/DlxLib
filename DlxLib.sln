@@ -1,16 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DlxLibTest", "DlxLibTest\DlxLibTest.csproj", "{23EF6962-98AA-4736-B837-E50310655DD6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DlxTest", "DlxTest\DlxTest.csproj", "{23EF6962-98AA-4736-B837-E50310655DD6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DlxLib", "DlxLib\DlxLib.csproj", "{462AE67D-4700-4116-A441-2032FDE5352F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuLib", "SudokuLib\SudokuLib.csproj", "{EF9804A9-1517-48DC-8FBA-8B02FD5926AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuLibTest", "SudokuLibTest\SudokuLibTest.csproj", "{35EF9253-30B6-4595-8859-00CA183BC204}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuTest", "SudokuTest\SudokuTest.csproj", "{35EF9253-30B6-4595-8859-00CA183BC204}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuDlxLib", "SudokuDlxLib\SudokuDlxLib.csproj", "{FCFC394E-A561-43A6-A97F-460D83433FA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuDlxLibTest", "SudokuDlxLibTest\SudokuDlxLibTest.csproj", "{D17F343C-66F4-47F1-8CE8-A4CDAEA78BAB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuDlxTest", "SudokuDlxTest\SudokuDlxTest.csproj", "{D17F343C-66F4-47F1-8CE8-A4CDAEA78BAB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

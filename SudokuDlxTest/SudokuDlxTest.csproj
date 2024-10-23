@@ -8,6 +8,7 @@
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
         <LangVersion>9</LangVersion>
+        <RootNamespace>SudokuDlxLibTest</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -21,7 +22,7 @@
     <ItemGroup>
       <ProjectReference Include="..\DlxLib\DlxLib.csproj" />
       <ProjectReference Include="..\SudokuDlxLib\SudokuDlxLib.csproj" />
-      <ProjectReference Include="..\SudokuLibTest\SudokuLibTest.csproj" />
+      <ProjectReference Include="..\SudokuTest\SudokuTest.csproj" />
       <ProjectReference Include="..\SudokuLib\SudokuLib.csproj" />
     </ItemGroup>
 
