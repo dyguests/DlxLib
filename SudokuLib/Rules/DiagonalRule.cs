@@ -18,12 +18,7 @@ namespace SudokuLib.Rules
 
                 var position = GetPosition(row, puzzle);
                 var digit = puzzle.Digits[position];
-                var possibleDigits = digit == 0
-                    ? Enumerable.Range(1, 9).ToArray()
-                    : new[]
-                    {
-                        digit
-                    };
+                var possibleDigits = digit == 0 ? Enumerable.Range(1, 9).ToArray() : new[] { digit };
 
                 return possibleDigits.Select(possibleDigit =>
                 {

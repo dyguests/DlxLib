@@ -45,7 +45,7 @@ namespace SudokuDlxLibTest
         [Test]
         public void TestPuzzleX()
         {
-            const string sketch = @"..1.....2....32..4.....5..1........3.2.....6.7........8..3.....1..69....9.....4..
+             const string sketch = @"........1..2...........34......5.......2...3.....6.........47....6..............8
 Diagonal";
             TestPuzzle(sketch);
         }

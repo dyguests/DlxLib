@@ -1,8 +1,14 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=355489db_002Ddc2a_002D4f13_002D9334_002Dad1ed771a30a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="TestPuzzleX" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::D17F343C-66F4-47F1-8CE8-A4CDAEA78BAB::net8.0::SudokuDlxLibTest.SudokuDlxUtilTest.TestPuzzleX&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=72821c59_002D1d9a_002D43a8_002Db939_002D72e0f85e6e8f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Test1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::23EF6962-98AA-4736-B837-E50310655DD6::net8.0::DlxLibTest.DlxTest.TestEmpty&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::35EF9253-30B6-4595-8859-00CA183BC204::net8.0::SudokuLibTest.PuzzleSketcherTest.Test1&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::D17F343C-66F4-47F1-8CE8-A4CDAEA78BAB::net8.0::SudokuDlxLibTest.SudokuDlxUtilTest.TestPuzzleWithSolution&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::D17F343C-66F4-47F1-8CE8-A4CDAEA78BAB::net8.0::SudokuDlxLibTest.SudokuDlxUtilTest.TestPuzzleX&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
