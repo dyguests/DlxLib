@@ -94,7 +94,7 @@ namespace DlxLibTest
                 { 0, 1, 0, 1 },
                 { 0, 1, 0, 0 },
             };
-            Validate(matrix /*, new[] {2, 3}*/);
+            Validate(matrix, new[] { 2, 3 });
             Assert.True(true);
         }
 
@@ -143,7 +143,7 @@ namespace DlxLibTest
 
             var columnNames = new[] { "A", "B", "C", "D", "E", "F", "G" };
 
-            var dlx = new Dlx(matrix, columnNames: columnNames);
+            var dlx = new Dlx(matrix /*, columnNames: columnNames*/);
             dlx.Solve();
             Assert.Pass();
         }
@@ -173,7 +173,8 @@ namespace DlxLibTest
 
             Console.WriteLine("Solutions:");
 
-            var dlx = new Dlx(matrix, secondaryColumns);
+            var dlx = secondaryColumns == null ? new Dlx(matrix) : new Dlx(matrix, secondaryColumns);
+
             foreach (var result in dlx.Solve())
             {
                 Console.WriteLine("Solution:" + String.Join(",", result));
