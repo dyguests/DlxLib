@@ -11,7 +11,7 @@ namespace DlxLib
         public Dlx(
             int[,] matrix,
             IReadOnlyList<int>? secondaryColumns = null,
-            IReadOnlyList<string>? columnNames = null
+            /*todo remove*/ IReadOnlyList<string>? columnNames = null
         )
         {
             header = new Column("header");
