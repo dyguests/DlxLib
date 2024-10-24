@@ -2,6 +2,10 @@
 {
     public class IndexColumnsPredicate : ColumnPredicate
     {
+        private const int KeyPrimaryColumn = 0;
+        private const int KeySecondaryColumn = 1;
+        private const int KeyHintColumn = 2;
+
         /// <summary>
         /// sample: new[] { 1, 1, 0, 0 }
         /// </summary>
@@ -11,12 +15,12 @@
 
         public override bool IsPrimaryColumn(int column)
         {
-            return column < _columnPredicate.Length && _columnPredicate[column] == 1;
+            return column < _columnPredicate.Length && _columnPredicate[column] == KeyPrimaryColumn;
         }
 
         public override bool IsSecondaryColumn(int column)
         {
-            return column < _columnPredicate.Length && _columnPredicate[column] == 0;
+            return column < _columnPredicate.Length && _columnPredicate[column] == KeySecondaryColumn;
         }
 
         #endregion

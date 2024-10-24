@@ -11,9 +11,9 @@ namespace SudokuDlxLib
 
         public static Dlx ToDlx(IPuzzle puzzle)
         {
-            // 1:主列 0:副列 -1:提示列
+            // 0:主列 1:副列 2:提示列
             var rows = CreatePositionRows(puzzle.Digits.Length);
-            var columnPredicate = Enumerable.Repeat(1, puzzle.Digits.Length).ToArray();
+            var columnPredicate = new int[puzzle.Digits.Length];
             foreach (var rule in puzzle.Rules)
             {
                 (rows, columnPredicate) = rule.ExpandRows(rows, columnPredicate, puzzle);

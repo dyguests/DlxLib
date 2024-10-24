@@ -38,7 +38,7 @@ namespace SudokuLib.Rules
                     return row.Concat(expandingRow).ToArray();
                 });
             });
-            var expandColumnPredicate = columnPredicate.Concat(Enumerable.Repeat(0, 9 * 2)).ToArray();
+            var expandColumnPredicate = columnPredicate.Concat(Enumerable.Repeat(1, 9 * 2)).ToArray();
             return (expandRows, expandColumnPredicate);
         }
 
