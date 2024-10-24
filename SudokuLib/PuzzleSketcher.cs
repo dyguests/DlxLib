@@ -13,9 +13,11 @@ namespace SudokuLib
         private const char CharMask1 = 'a';
         private const char CharMask9 = 'i';
 
+        // todo 这里 创建 实例，然后再 FromSketch 是否不符合规范？？！
         private static readonly IRule[] RuleSketchers =
         {
-            new DiagonalRule()
+            new DiagonalRule(),
+            new KillerRule()
         };
 
         public static IPuzzle FromSketch(string sketch)
