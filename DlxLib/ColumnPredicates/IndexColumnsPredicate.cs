@@ -4,7 +4,7 @@
     {
         private const int KeyPrimaryColumn = 0;
         private const int KeySecondaryColumn = 1;
-        private const int KeyHintColumn = 2;
+        // private const int KeyHintColumn = 2;
 
         /// <summary>
         /// sample: new[] { 1, 1, 0, 0 }

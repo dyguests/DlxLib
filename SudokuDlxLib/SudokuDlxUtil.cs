@@ -11,9 +11,8 @@ namespace SudokuDlxLib
 
         public static Dlx ToDlx(IPuzzle puzzle)
         {
-            // 0:主列 1:副列 2:提示列
-            var rows = CreatePositionRows(puzzle.Digits.Length);
-            var columnPredicate = new int[puzzle.Digits.Length];
+            
+            var (rows, columnPredicate) = CreatePositionRows(puzzle.Digits.Length);
             foreach (var rule in puzzle.Rules)
             {
                 (rows, columnPredicate) = rule.ExpandRows(rows, columnPredicate, puzzle);
@@ -26,15 +25,18 @@ namespace SudokuDlxLib
         /// 
         /// </summary>
         /// <param name="size"></param>
-        /// <returns>按position升序的IEnumerable</returns>
-        private static IEnumerable<int[]> CreatePositionRows(int size)
+        /// <returns>(按position升序的IEnumerable, columnPredicate)</returns>
+        private static (IEnumerable<int[]>, int[]) CreatePositionRows(int size)
         {
-            return Enumerable.Range(0, size).Select(i =>
+            var rows = Enumerable.Range(0, size).Select(i =>
             {
                 var row = new int[size];
                 row[i] = 1;
                 return row;
             });
+            // 0:主列 1:副列 2:提示列
+            var columnPredicate = new int[size];
+            return (rows, columnPredicate);
         }
 
         #endregion
