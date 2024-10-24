@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using SudokuLib.Rules;
+using SudokuLib.Sketchers;
 
 namespace SudokuLib
 {
@@ -8,7 +8,7 @@ namespace SudokuLib
     {
         int[] Digits { get; }
         int[] Solution { get; }
-        IRule[] Rules { get; }
+        IRuleSketcher[] Rules { get; }
 
         void SetSolution(int[] solution);
     }
@@ -19,7 +19,7 @@ namespace SudokuLib
 
         public int[] Digits { get; }
         public int[] Solution { get; }
-        public IRule[] Rules { get; }
+        public IRuleSketcher[] Rules { get; }
 
         public void SetSolution(int[] solution)
         {
@@ -33,7 +33,7 @@ namespace SudokuLib
 
         #endregion
 
-        public Puzzle(int[] digits, params IRule[] rules)
+        public Puzzle(int[] digits, params IRuleSketcher[] rules)
         {
             if (digits == null || digits.Length == 0)
             {
@@ -42,7 +42,7 @@ namespace SudokuLib
 
             Digits = digits;
             Solution = new int[digits.Length];
-            Rules = rules.Any(rule => rule is IBaseRule) ? rules : new[] { new StandardRule() }.Concat(rules).ToArray();
+            Rules = rules.Any(rule => rule is IBaseRuleSketcher) ? rules : new[] { new StandardRuleSketcher() }.Concat(rules).ToArray();
         }
     }
 }

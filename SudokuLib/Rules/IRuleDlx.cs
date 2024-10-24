@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SudokuLib.Rules
 {
-    public interface IRule
+    public interface IRuleDlx
     {
         /// <summary>
         /// 基于 dlx 的 rows，扩展IRule规则
@@ -25,7 +25,7 @@ namespace SudokuLib.Rules
         bool FillSolution(int[] solution, List<int[]> rows, IPuzzle puzzle);
     }
 
-    public abstract class Rule : IRule
+    public abstract class RuleDlx : IRuleDlx
     {
         #region IRule
 

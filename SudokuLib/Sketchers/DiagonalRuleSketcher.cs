@@ -6,13 +6,13 @@ namespace SudokuLib.Sketchers
     {
         #region RuleSketcher
 
-        public override IRule FromSketch(string sketch)
+        public override IRuleSketcher? FromSketch(string sketch)
         {
             if (string.IsNullOrWhiteSpace(sketch)) return null;
-            return sketch.StartsWith(DiagonalRuleSketch) ? new DiagonalRule() : null;
+            return sketch.StartsWith(DiagonalRuleSketch) ? new DiagonalRuleSketcher() : null;
         }
 
-        public override string ToSketch(IRule rule) => rule is DiagonalRule ? DiagonalRuleSketch : null;
+        public override string ToSketch() => DiagonalRuleSketch;
 
         #endregion
 

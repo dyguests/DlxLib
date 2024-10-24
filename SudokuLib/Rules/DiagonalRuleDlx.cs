@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace SudokuLib.Rules
 {
-    public class DiagonalRule : Rule
+    public class DiagonalRuleDlx : RuleDlx
     {
         #region DiagonalRule
 

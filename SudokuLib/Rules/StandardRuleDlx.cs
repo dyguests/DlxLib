@@ -7,7 +7,7 @@ namespace SudokuLib.Rules
     /// <summary>
     /// 标准数独规则
     /// </summary>
-    public class StandardRule : BaseRule
+    public class StandardRuleDlx : BaseRuleDlx
     {
         #region Rule
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DlxLib;
+using SudokuDlxLib.Rules;
 using SudokuLib;
 
 namespace SudokuDlxLib
@@ -14,7 +15,7 @@ namespace SudokuDlxLib
             var (rows, columnPredicate) = CreatePositionRows(puzzle.Digits.Length);
             foreach (var rule in puzzle.Rules)
             {
-                (rows, columnPredicate) = rule.ExpandRows(rows, columnPredicate, puzzle);
+                (rows, columnPredicate) = RuleDlxUtil.GetDlx(rule).ExpandRows(rows, columnPredicate, puzzle);
             }
 
             return new Dlx(rows.RowsToMatrix(), columnPredicate);
@@ -56,7 +57,7 @@ namespace SudokuDlxLib
             var resultRows = rowIndexes.Select(rowIndex => rows[rowIndex]).ToList();
             foreach (var rule in puzzle.Rules)
             {
-                if (rule.FillSolution(solution, resultRows, puzzle)) break;
+                if (RuleDlxUtil.GetDlx(rule).FillSolution(solution, resultRows, puzzle)) break;
             }
 
             return solution;

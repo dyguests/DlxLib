@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using SudokuLib.Rules;
 using SudokuLib.Sketchers;
 
 namespace SudokuLib
@@ -90,11 +89,10 @@ namespace SudokuLib
             var digitSketch = string.Join("", enumerable);
             sb.Append(digitSketch);
 
-            var rules = puzzle.Rules.Where(rule => rule is not StandardRule).ToArray();
+            var rules = puzzle.Rules.Where(rule => rule is not IBaseRuleSketcher).ToArray();
             foreach (var rule in rules)
             {
-                var ruleSketch = RuleSketchers.Select(rs => rs.ToSketch(rule))
-                    .FirstOrDefault(result => result != null);
+                var ruleSketch = rule.ToSketch();
                 sb.AppendLine().Append(ruleSketch);
             }
 

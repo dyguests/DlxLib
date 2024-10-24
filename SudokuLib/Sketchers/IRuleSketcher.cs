@@ -4,16 +4,16 @@ namespace SudokuLib.Sketchers
 {
     public interface IRuleSketcher
     {
-        IRule FromSketch(string sketch);
-        string ToSketch(IRule rule);
+        IRuleSketcher? FromSketch(string sketch);
+        string ToSketch();
     }
 
     public abstract class RuleSketcher : IRuleSketcher
     {
         #region IRuleSketcher
 
-        public abstract IRule FromSketch(string sketch);
-        public abstract string ToSketch(IRule rule);
+        public abstract IRuleSketcher? FromSketch(string sketch);
+        public abstract string ToSketch();
 
         #endregion
     }
