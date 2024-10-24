@@ -44,11 +44,40 @@ namespace SudokuLib.Rules
             return index;
         }
 
-        protected int GetPossibleColumn(int[] row)
+        protected int GetPossibleColumn(int[] columnPredicate)
         {
-            var index = Array.IndexOf(row, ColumnPredicateEx.KeyPossibleColumn);
+            var index = Array.IndexOf(columnPredicate, ColumnPredicateEx.KeyPossibleColumn);
             if (index < 0) throw new ArgumentOutOfRangeException(nameof(index), "Possible column is not found.");
             return index;
+        }
+
+        /// <summary>
+        /// 更新 可能数字提示列，并返回可能的数字
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="columnPredicate">列规则</param>
+        /// <param name="puzzle"></param>
+        /// <returns>possibleDigits</returns>
+        protected IEnumerable<int> UpdatePossibleDigits(int[] row, int[] columnPredicate, IPuzzle puzzle)
+        {
+            var position = GetPosition(row, puzzle);
+            var possibleColumn = GetPossibleColumn(columnPredicate);
+            var digit = puzzle.Digits[position];
+            if (digit > 0)
+            {
+                row[possibleColumn] &= 0b1 << (digit - 1);
+            }
+            else
+            {
+                // todo 这里想办法加过滤算法
+                row[possibleColumn] &= 0b111_111_111;
+            }
+
+            for (var i = 0; i < 9; i++)
+            {
+                if ((row[possibleColumn] & (0b1 << i)) == 0) continue;
+                yield return i + 1;
+            }
         }
 
         #endregion

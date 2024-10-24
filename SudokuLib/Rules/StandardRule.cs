@@ -38,35 +38,6 @@ namespace SudokuLib.Rules
             return (expandRows, expandColumnPredicate);
         }
 
-        /// <summary>
-        /// 更新 可能数字提示列，并返回可能的数字
-        /// </summary>
-        /// <param name="row"></param>
-        /// <param name="columnPredicate">列规则</param>
-        /// <param name="puzzle"></param>
-        /// <returns></returns>
-        private IEnumerable<int> UpdatePossibleDigits(int[] row, int[] columnPredicate, IPuzzle puzzle)
-        {
-            var position = GetPosition(row, puzzle);
-            var possibleColumn = GetPossibleColumn(row);
-            var digit = puzzle.Digits[position];
-            if (digit > 0)
-            {
-                row[possibleColumn] &= 0b1 << (digit - 1);
-            }
-            else
-            {
-                // todo 这里想办法加过滤算法
-                row[possibleColumn] &= 0b111_111_111;
-            }
-
-            for (var i = 0; i < 9; i++)
-            {
-                if ((row[possibleColumn] & (0b1 << i)) == 0) continue;
-                yield return i + 1;
-            }
-        }
-
         public override bool FillSolution(int[] solution, List<int[]> rows, IPuzzle puzzle)
         {
             var isAllFilled = true;
