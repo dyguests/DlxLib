@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using DlxLib;
 using ExactCoverTest;
 using NUnit.Framework;
@@ -81,7 +80,7 @@ namespace DlxLibTest
                 { 0, 1, 0, 1 },
                 { 0, 1, 0, 0 },
             };
-            Validate(matrix, 2);
+            Validate(matrix, new[] { 2, 3 });
             Assert.True(true);
         }
 
@@ -142,9 +141,9 @@ namespace DlxLibTest
                 { 0, 1, 0, 0, 0, 0, 1 }
             };
 
-            var columnNames = new List<string> { "A", "B", "C", "D", "E", "F", "G" };
+            var columnNames = new[] { "A", "B", "C", "D", "E", "F", "G" };
 
-            var dlx = new Dlx(matrix, columnNames);
+            var dlx = new Dlx(matrix, columnNames: columnNames);
             dlx.Solve();
             Assert.Pass();
         }
@@ -155,29 +154,26 @@ namespace DlxLibTest
             // 确切覆盖问题矩阵
             var matrix = new[,]
             {
-                { 1, 0, 0, 1, 0, 0, 1 },
-                { 1, 0, 0, 1, 0, 0, 0 },
-                { 0, 0, 0, 1, 1, 0, 1 },
-                { 0, 0, 1, 0, 1, 1, 0 },
-                { 0, 1, 1, 0, 0, 1, 1 },
-                { 0, 1, 0, 0, 0, 0, 1 }
+                { 1, 0, 1, 0, },
+                { 0, 1, 0, 0, },
+                { 0, 1, 1, 0, },
             };
 
-            Validate(matrix);
+            Validate(matrix, new[] { 2, 3 });
         }
 
-        private static void Validate(int[,] matrix, int numPrimaryColumns = int.MaxValue)
+        private static void Validate(int[,] matrix, int[]? secondaryColumns = null)
         {
             Console.WriteLine("-------- begin --------");
             Console.WriteLine("matrix:\n" + matrix.MatrixToString());
-            if (numPrimaryColumns != int.MaxValue)
+            if (secondaryColumns != null)
             {
-                Console.WriteLine("numPrimaryColumns:" + numPrimaryColumns);
+                Console.WriteLine("secondaryColumns:\n" + string.Join(", ", secondaryColumns));
             }
 
             Console.WriteLine("Solutions:");
 
-            var dlx = new Dlx(matrix);
+            var dlx = new Dlx(matrix, secondaryColumns);
             foreach (var result in dlx.Solve())
             {
                 Console.WriteLine("Solution:" + String.Join(",", result));

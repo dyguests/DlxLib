@@ -8,7 +8,11 @@ namespace DlxLib
         private Column header;
         private List<Node> solution;
 
-        public Dlx(int[,] matrix, List<string>? columnNames = null)
+        public Dlx(
+            int[,] matrix,
+            IReadOnlyList<int>? secondaryColumns = null,
+            IReadOnlyList<string>? columnNames = null
+        )
         {
             header = new Column("header");
             solution = new List<Node>();
@@ -43,6 +47,7 @@ namespace DlxLib
                         {
                             firstNode.LinkRight(newNode);
                         }
+
                         columns[j].size++;
                     }
                 }
@@ -90,6 +95,7 @@ namespace DlxLib
                     node.column.Uncover();
                 }
             }
+
             column.Uncover();
         }
 
@@ -105,6 +111,7 @@ namespace DlxLib
                     minSize = column.size;
                 }
             }
+
             return best;
         }
     }
