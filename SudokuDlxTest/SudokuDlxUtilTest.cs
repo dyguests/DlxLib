@@ -36,6 +36,15 @@ Diagonal";
             TestPuzzle(sketch);
         }
 
+        [Test]
+        public void TestPuzzleKiller()
+        {
+            const string sketch = @"...867194869143275714259368193682457647935812582714639258396741431578926976421...
+Killer 5=0+1;11=79+80";
+            //                    "325867194869143275714259368193682457647935812582714639258396741431578926976421583";
+            TestPuzzle(sketch);
+        }
+
         private static void TestPuzzle(string sketch)
         {
             var puzzle = PuzzleSketcher.FromSketch(sketch);

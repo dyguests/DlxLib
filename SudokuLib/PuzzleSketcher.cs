@@ -32,7 +32,7 @@ namespace SudokuLib
                 {
                     var dequeue = queue.Dequeue();
                     if (string.IsNullOrWhiteSpace(dequeue)) continue;
-                    return dequeue; // 找到非空字符串时返回
+                    return dequeue.Trim(); // 找到非空字符串时返回
                 }
 
                 // 如果队列中全是空，返回 null
@@ -53,6 +53,7 @@ namespace SudokuLib
             }
 
             var rules = lines.Where(line => !string.IsNullOrWhiteSpace(line))
+                .Select(line => line.Trim())
                 .Select(line =>
                     RuleSketchers.Select(rs => rs.FromSketch(line))
                         .FirstOrDefault(result => result != null)

@@ -2,21 +2,21 @@
 {
     public class DiagonalRule : Rule
     {
-        #region RuleSketcher
+        #region Rule
 
         public override IRule? FromSketch(string sketch)
         {
             if (string.IsNullOrWhiteSpace(sketch)) return null;
-            return sketch.StartsWith(DiagonalRuleSketch) ? new DiagonalRule() : null;
+            return sketch.StartsWith(DiagonalRulePrefix) ? new DiagonalRule() : null;
         }
 
-        public override string ToSketch() => DiagonalRuleSketch;
+        public override string ToSketch() => DiagonalRulePrefix;
 
         #endregion
 
-        #region DiagonalRuleSketcher
+        #region DiagonalRule
 
-        private const string DiagonalRuleSketch = "Diagonal";
+        private const string DiagonalRulePrefix = "Diagonal";
 
         #endregion
     }
