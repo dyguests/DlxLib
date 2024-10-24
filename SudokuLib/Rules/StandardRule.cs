@@ -22,19 +22,23 @@ namespace SudokuLib.Rules
                 row = (int[])row.Clone();
 
                 var position = GetPosition(row, puzzle);
+                var possibleColumn = GetPossibleColumn(columnPredicate);
                 var possibleDigits = UpdatePossibleDigits(row, columnPredicate, puzzle);
 
                 return possibleDigits.Select(possibleDigit =>
                 {
-                    var expandingRow = new int[ /*rowCount*digitCount*/ 9 * 9 + /*colCount*digitCount*/9 * 9 + /*boxCount*digitCount*/9 * 9];
+                    var expandingRow = new int[9 * 9 + 9 * 9 + 9 * 9];
                     expandingRow[ /*rowIndex*digitCount*/position / 9 * 9 + possibleDigit - 1] = 1;
                     expandingRow[ /*rowCount*digitCount*/9 * 9 + /*columnIndex*digitCount*/position % 9 * 9 + possibleDigit - 1] = 1;
                     expandingRow[ /*rowCount*digitCount*/
                         9 * 9 + /*colCount*digitCount*/9 * 9 + /*boxIndex*digitCount*/(position / 9 / 3 * 3 + position % 9 / 3) * 9 + possibleDigit - 1] = 1;
-                    return row.Concat(expandingRow).ToArray();
+
+                    var expandRow = row.Concat(expandingRow).ToArray();
+                    expandRow[possibleColumn] = 0b1 << (possibleDigit - 1);
+                    return expandRow;
                 });
             });
-            var expandColumnPredicate = columnPredicate.Concat(new int[9 * 9 * 3]).ToArray();
+            var expandColumnPredicate = columnPredicate.Concat(new int[9 * 9 + 9 * 9 + 9 * 9]).ToArray();
             return (expandRows, expandColumnPredicate);
         }
 
