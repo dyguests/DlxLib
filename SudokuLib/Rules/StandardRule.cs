@@ -13,9 +13,9 @@ namespace SudokuLib.Rules
 
         private int _ruleRowStart;
 
-        public override IEnumerable<int[]> ExpandRows(IEnumerable<int[]> rows, IPuzzle puzzle)
+        public override (IEnumerable<int[]>, int[]) ExpandRows(IEnumerable<int[]> rows, int[] columnPredicate, IPuzzle puzzle)
         {
-            return rows.SelectMany((row, index) =>
+            var expandRows = rows.SelectMany((row, index) =>
             {
                 if (index == 0) _ruleRowStart = row.Length;
 
@@ -37,6 +37,8 @@ namespace SudokuLib.Rules
                     return row.Concat(expandingRow).ToArray();
                 });
             });
+            var expandColumnPredicate = columnPredicate.Concat(Enumerable.Repeat<int>(1, /*rowCount*digitCount*/ 9 * 9 + /*colCount*digitCount*/9 * 9 + /*boxCount*digitCount*/9 * 9)).ToArray();
+            return (expandRows, expandColumnPredicate);
         }
 
         public override bool FillSolution(int[] solution, List<int[]> rows, IPuzzle puzzle)

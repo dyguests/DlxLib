@@ -1,5 +1,4 @@
 using System;
-using DlxLib;
 using NUnit.Framework;
 using SudokuDlxLib;
 using SudokuLib;
@@ -11,29 +10,6 @@ namespace SudokuDlxLibTest
     {
         [SetUp]
         public void Setup() { }
-
-        [Test]
-        public void TestPuzzleOnly()
-        {
-            const string sketch = "...........91......1..5.36..9..82..7.4..35..2..27..63..5.....4...1...9.....421...";
-            var puzzle = PuzzleSketcher.FromSketch(sketch);
-            Console.WriteLine($"sketch:\n{sketch}");
-            Console.WriteLine($"puzzle:\n{puzzle.ToDisplay()}");
-            var matrix = SudokuDlxUtil.ToMatrix(puzzle);
-            // Console.WriteLine($"matrix:\n{matrix.ToDisplay()}");
-            var dlx = new Dlx(matrix);
-            foreach (var result in dlx.Solve())
-            {
-                Console.WriteLine("dlx Solution:" + string.Join(",", result));
-                var solution = SudokuDlxUtil.ToSolution(puzzle, matrix, result);
-                puzzle.SetSolution(solution);
-                Console.WriteLine($"sudoku Solution:\n{solution.DigitsToDisplay()}");
-            }
-
-            var sketch2 = PuzzleSketcher.ToSketch(puzzle, useMask: false);
-            Console.WriteLine($"solution sketch:\n{sketch2}");
-            Assert.Pass();
-        }
 
         [Test]
         public void TestPuzzleWithSolution()
@@ -57,13 +33,11 @@ Diagonal";
             var puzzle = PuzzleSketcher.FromSketch(sketch);
             Console.WriteLine($"sketch:\n{sketch}");
             Console.WriteLine($"puzzle:\n{puzzle.ToDisplay()}");
-            var matrix = SudokuDlxUtil.ToMatrix(puzzle);
-            // Console.WriteLine($"matrix:\n{matrix.ToDisplay()}");
-            var dlx = new Dlx(matrix);
+            var dlx = SudokuDlxUtil.ToDlx(puzzle);
             foreach (var result in dlx.Solve())
             {
                 Console.WriteLine("dlx Solution:" + string.Join(",", result));
-                var solution = SudokuDlxUtil.ToSolution(puzzle, matrix, result);
+                var solution = SudokuDlxUtil.ToSolution(puzzle, dlx.ReadonlyMatrix, result);
                 puzzle.SetSolution(solution);
                 Console.WriteLine($"sudoku Solution:\n{solution.DigitsToDisplay()}");
             }

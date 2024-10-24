@@ -1,7 +1,9 @@
+using System;
 using System.Linq;
 
 namespace DlxLib.ColumnPredicates
 {
+    [Obsolete]
     public class SecondaryColumnsPredicate : ColumnPredicate
     {
         private readonly int[] _secondaryColumns;

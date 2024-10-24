@@ -80,7 +80,7 @@ namespace DlxLibTest
                 { 0, 1, 0, 1 },
                 { 0, 1, 0, 0 },
             };
-            Validate(matrix, new[] { 2, 3 });
+            Validate(matrix, new[] { 1, 1, 0, 0 });
             Assert.True(true);
         }
 
@@ -94,7 +94,7 @@ namespace DlxLibTest
                 { 0, 1, 0, 1 },
                 { 0, 1, 0, 0 },
             };
-            Validate(matrix, new[] { 2, 3 });
+            Validate(matrix );
             Assert.True(true);
         }
 
@@ -108,7 +108,21 @@ namespace DlxLibTest
                 { 0, 1, 0, 1, 1 },
                 { 0, 1, 0, 0, 0 },
             };
-            Validate(matrix /*, new[] {2, 4}*/);
+            Validate(matrix );
+            Assert.True(true);
+        }
+
+        [Test]
+        public void TestSecondaryColumns3()
+        {
+            var matrix = new[,]
+            {
+                { 1, 0, 1, 0 },
+                { 0, 1, 1, 0 },
+                { 0, 1, 0, 0 },
+                { 0, 1, 0, 0 },
+            };
+            Validate(matrix );
             Assert.True(true);
         }
 
@@ -123,7 +137,7 @@ namespace DlxLibTest
                 { 0, 1, 1, 0, 1, 1 },
                 { 0, 1, 1, 0, 0, 0 },
             };
-            Validate(matrix /*, new[] {0, 1, 4}, new[] {3, 5}*/);
+            Validate(matrix );
             Assert.True(true);
         }
 
@@ -159,21 +173,21 @@ namespace DlxLibTest
                 { 0, 1, 1, 0, },
             };
 
-            Validate(matrix, new[] { 2, 3 });
+            Validate(matrix, new[] { 1, 1, 0, 0, });
         }
 
-        private static void Validate(int[,] matrix, int[]? secondaryColumns = null)
+        private static void Validate(int[,] matrix, int[]? columnPredicate = null)
         {
             Console.WriteLine("-------- begin --------");
             Console.WriteLine("matrix:\n" + matrix.MatrixToString());
-            if (secondaryColumns != null)
+            if (columnPredicate != null)
             {
-                Console.WriteLine("secondaryColumns:\n" + string.Join(", ", secondaryColumns));
+                Console.WriteLine("columnPredicate:\n" + string.Join(", ", columnPredicate));
             }
 
             Console.WriteLine("Solutions:");
 
-            var dlx = secondaryColumns == null ? new Dlx(matrix) : new Dlx(matrix, secondaryColumns);
+            var dlx = columnPredicate == null ? new Dlx(matrix) : new Dlx(matrix, columnPredicate);
 
             foreach (var result in dlx.Solve())
             {

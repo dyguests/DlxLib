@@ -12,22 +12,23 @@ namespace DlxLib
     public class Dlx
     {
         private readonly int[,] _matrix;
+        public int[,] ReadonlyMatrix => (int[,])_matrix.Clone();
         private readonly IColumnPredicate _columnPredicate;
         private readonly Instrumentation[] _instrumentations;
 
         public Dlx(int[,] matrix) : this(matrix, matrix.GetLength(0)) { }
         public Dlx(int[,] matrix, int numPrimaryColumns) : this(matrix, new NumPrimaryColumnsPredicate(numPrimaryColumns)) { }
 
-        public Dlx(int[,] matrix, int[] secondaryColumnIndexes) : this(matrix, new SecondaryColumnsPredicate(secondaryColumnIndexes))
-        {
-            ArgumentNullException.ThrowIfNull(secondaryColumnIndexes);
-        }
-
         public Dlx(int[,] matrix, int[] primaryColumnIndexes, int[] secondaryColumnIndexes) :
             this(matrix, new NormalColumnsPredicate(primaryColumnIndexes, secondaryColumnIndexes), new UpToTwoInstrumentation())
         {
             ArgumentNullException.ThrowIfNull(primaryColumnIndexes);
             ArgumentNullException.ThrowIfNull(secondaryColumnIndexes);
+        }
+
+        public Dlx(int[,] matrix, int[] columnPredicate) : this(matrix, new IndexColumnsPredicate(columnPredicate))
+        {
+            ArgumentNullException.ThrowIfNull(columnPredicate);
         }
 
         public Dlx(int[,] matrix, IColumnPredicate columnPredicate, params Instrumentation[] instrumentations)
