@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using SudokuLib.Sketchers;
+using SudokuLib.Rules;
 
 namespace SudokuDlxLib.Rules
 {
@@ -9,14 +9,14 @@ namespace SudokuDlxLib.Rules
         private static readonly Dictionary<Type, IRuleDlx> _ruleDlxDict = new()
         {
             // 示例: [typeof(StandardRuleSketcher)] = new StandardRuleDlx(),
-            [typeof(StandardRuleSketcher)] = new StandardRuleDlx(),
-            [typeof(DiagonalRuleSketcher)] = new DiagonalRuleDlx(),
+            [typeof(StandardRule)] = new StandardRuleDlx(),
+            [typeof(DiagonalRule)] = new DiagonalRuleDlx(),
         };
 
-        public static IRuleDlx GetDlx(IRuleSketcher rule)
+        public static IRuleDlx GetDlx(IRule rule)
         {
             var ruleType = rule.GetType();
-            if (!typeof(IRuleSketcher).IsAssignableFrom(ruleType))
+            if (!typeof(IRule).IsAssignableFrom(ruleType))
             {
                 throw new ArgumentException($"Type {ruleType.Name} is not a subclass of IRuleSketcher");
             }

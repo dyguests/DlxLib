@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace SudokuLib.Sketchers
+namespace SudokuLib.Rules
 {
-    public class StandardRuleSketcher : BaseRuleSketcher
+    public class StandardRule : BaseRule
     {
         #region RuleSketcher
 
-        public override IRuleSketcher? FromSketch(string sketch)
+        public override IRule? FromSketch(string sketch)
         {
             throw new NotImplementedException();
         }

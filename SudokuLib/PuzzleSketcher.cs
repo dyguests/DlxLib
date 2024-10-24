@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using SudokuLib.Sketchers;
+using SudokuLib.Rules;
 
 namespace SudokuLib
 {
@@ -13,9 +13,9 @@ namespace SudokuLib
         private const char CharMask1 = 'a';
         private const char CharMask9 = 'i';
 
-        private static readonly IRuleSketcher[] RuleSketchers =
+        private static readonly IRule[] RuleSketchers =
         {
-            new DiagonalRuleSketcher()
+            new DiagonalRule()
         };
 
         public static IPuzzle FromSketch(string sketch)
@@ -89,7 +89,7 @@ namespace SudokuLib
             var digitSketch = string.Join("", enumerable);
             sb.Append(digitSketch);
 
-            var rules = puzzle.Rules.Where(rule => rule is not IBaseRuleSketcher).ToArray();
+            var rules = puzzle.Rules.Where(rule => rule is not IBaseRule).ToArray();
             foreach (var rule in rules)
             {
                 var ruleSketch = rule.ToSketch();
