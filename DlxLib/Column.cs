@@ -1,6 +1,6 @@
 namespace DlxLib
 {
-    public class ColumnObject : DataObject
+    public class Column : Node
     {
         /// <summary>
         /// size
@@ -12,7 +12,7 @@ namespace DlxLib
         /// </summary>
         public int N { get; set; }
 
-        public ColumnObject(int name)
+        public Column(int name)
         {
             C = this;
 
@@ -22,13 +22,13 @@ namespace DlxLib
         /// <summary>
         /// 在列尾添加dataObject
         /// </summary>
-        /// <param name="dataObject"></param>
-        public void AppendToCol(DataObject dataObject)
+        /// <param name="node"></param>
+        public void AppendToCol(Node node)
         {
-            U.D = dataObject;
-            dataObject.D = this;
-            dataObject.U = U;
-            U = dataObject;
+            U.D = node;
+            node.D = this;
+            node.U = U;
+            U = node;
 
             S++;
         }

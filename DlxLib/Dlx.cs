@@ -44,7 +44,7 @@ namespace DlxLib
         public IEnumerable<int[]> Solve()
         {
             var header = BuildSparseMatrix(_matrix, _columnPredicate);
-            var o = new Stack<DataObject>();
+            var o = new Stack<Node>();
 
             return Search(0, header, o, _instrumentations);
         }
@@ -55,19 +55,19 @@ namespace DlxLib
         /// <param name="matrix"></param>
         /// <param name="columnPredicate"></param>
         /// <returns>list header</returns>
-        private static ColumnObject BuildSparseMatrix(int[,] matrix, IColumnPredicate columnPredicate)
+        private static Column BuildSparseMatrix(int[,] matrix, IColumnPredicate columnPredicate)
         {
-            var h = new ColumnObject(-1);
-            var listHeaders = new Dictionary<int, ColumnObject>();
+            var h = new Column(-1);
+            var listHeaders = new Dictionary<int, Column>();
             for (var row = 0; row < matrix.GetLength(0); row++)
             {
                 // var c = h;
-                DataObject r = null;
+                Node r = null;
                 for (var col = 0; col < matrix.GetLength(1); col++)
                 {
                     if (row == 0)
                     {
-                        var listHeader = new ColumnObject(col);
+                        var listHeader = new Column(col);
                         if (columnPredicate.IsPrimaryColumn(col))
                         {
                             h.AppendToRow(listHeader);
@@ -84,7 +84,7 @@ namespace DlxLib
                         var c = listHeaders[col];
                         if (matrix[row, col] == 1)
                         {
-                            c.AppendToCol(new DataObject(c, row));
+                            c.AppendToCol(new Node(c, row));
                             r?.AppendToRow(c.U);
                             r = c.U;
                         }
@@ -103,7 +103,7 @@ namespace DlxLib
         /// <param name="o"></param>
         /// <param name="instrumentations"></param>
         /// <returns></returns>
-        private static IEnumerable<int[]> Search(int deep, ColumnObject h, Stack<DataObject> o, Instrumentation[] instrumentations)
+        private static IEnumerable<int[]> Search(int deep, Column h, Stack<Node> o, Instrumentation[] instrumentations)
         {
             if (instrumentations?.Any(instrumentation => instrumentation.IsCancelled()) == true)
             {
@@ -173,12 +173,12 @@ namespace DlxLib
             }
         }
 
-        private static ColumnObject ChooseColumnC(ColumnObject h)
+        private static Column ChooseColumnC(Column h)
         {
             // return h.R as ColumnObject;
 
             var s = int.MaxValue;
-            var j = h.R as ColumnObject;
+            var j = h.R as Column;
             var c = j;
             while (j != h)
             {
@@ -188,13 +188,13 @@ namespace DlxLib
                     s = j.S;
                 }
 
-                j = j.R as ColumnObject;
+                j = j.R as Column;
             }
 
             return c;
         }
 
-        private static void CoverColumnC(ColumnObject c)
+        private static void CoverColumnC(Column c)
         {
             c.R.L = c.L;
             c.L.R = c.R;
@@ -210,7 +210,7 @@ namespace DlxLib
             }
         }
 
-        private static void UncoverColumnC(ColumnObject c)
+        private static void UncoverColumnC(Column c)
         {
             for (var i = c.U; i != c; i = i.U)
             {
