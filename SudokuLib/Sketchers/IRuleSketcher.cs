@@ -1,5 +1,3 @@
-using SudokuLib.Rules;
-
 namespace SudokuLib.Sketchers
 {
     public interface IRuleSketcher

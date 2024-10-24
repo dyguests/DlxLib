@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SudokuLib;
 
-namespace SudokuLib.Rules
+namespace SudokuDlxLib.Rules
 {
     /// <summary>
     /// 标准数独规则

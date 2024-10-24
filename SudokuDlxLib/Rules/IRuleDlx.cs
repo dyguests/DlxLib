@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using SudokuLib;
 
-namespace SudokuLib.Rules
+namespace SudokuDlxLib.Rules
 {
     public interface IRuleDlx
     {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using SudokuLib.Rules;
 using SudokuLib.Sketchers;
 
 namespace SudokuDlxLib.Rules

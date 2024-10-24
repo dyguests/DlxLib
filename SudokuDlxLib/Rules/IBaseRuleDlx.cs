@@ -1,4 +1,4 @@
-namespace SudokuLib.Rules
+namespace SudokuDlxLib.Rules
 {
     public interface IBaseRuleDlx : IRuleDlx { }
 

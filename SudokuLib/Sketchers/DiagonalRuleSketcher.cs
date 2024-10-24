@@ -1,6 +1,4 @@
-﻿using SudokuLib.Rules;
-
-namespace SudokuLib.Sketchers
+﻿namespace SudokuLib.Sketchers
 {
     public class DiagonalRuleSketcher : RuleSketcher
     {
