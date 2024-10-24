@@ -11,7 +11,6 @@ namespace SudokuDlxLib
 
         public static Dlx ToDlx(IPuzzle puzzle)
         {
-            
             var (rows, columnPredicate) = CreatePositionRows(puzzle.Digits.Length);
             foreach (var rule in puzzle.Rules)
             {
@@ -36,6 +35,11 @@ namespace SudokuDlxLib
             });
             // 0:主列 1:副列 2:提示列
             var columnPredicate = new int[size];
+
+            // 添加 possible 提示列
+            rows = rows.Select(row => row.Append(0b111_111_111).ToArray());
+            columnPredicate = columnPredicate.Append(ColumnPredicateEx.KeyPossibleColumn).ToArray();
+
             return (rows, columnPredicate);
         }
 

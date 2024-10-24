@@ -175,6 +175,7 @@ Answer:
 -[ ] GetRuleDlxProcessor Singleton
 -[x] dlx is unique solution(可能存在行号一致结果一致的情况)
 -[ ] 对角线 用 次要列：防重，但不需要填满
+-[ ] IRule 实际是 SudokuDlxLib 的一部分，IRuleSketcher 才是 SudokuLib 的一部分。
 
 ## References
 

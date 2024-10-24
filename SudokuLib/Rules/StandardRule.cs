@@ -23,10 +23,7 @@ namespace SudokuLib.Rules
                 var digit = puzzle.Digits[position];
                 var possibleDigits = digit == 0
                     ? Enumerable.Range(1, 9).ToArray()
-                    : new[]
-                    {
-                        digit
-                    };
+                    : new[] { digit };
                 return possibleDigits.Select(possibleDigit =>
                 {
                     var expandingRow = new int[ /*rowCount*digitCount*/ 9 * 9 + /*colCount*digitCount*/9 * 9 + /*boxCount*digitCount*/9 * 9];
