@@ -9,52 +9,45 @@ namespace DlxLib
     /// <summary>
     /// Dancing links
     /// </summary>
-    public static class Dlx
+    public class Dlx
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="matrix"></param>
-        /// <param name="numPrimaryColumns">It means 0~numPrimaryColumns are primary columns</param>
-        /// <returns></returns>
-        public static IEnumerable<int[]> Solve(int[,] matrix, int numPrimaryColumns = int.MaxValue)
+        private int[,] matrix;
+        private IColumnPredicate columnPredicate;
+        private Instrumentation[] instrumentations;
+
+        public Dlx(int[,] matrix) : this(matrix, matrix.GetLength(0)) { }
+        public Dlx(int[,] matrix, int numPrimaryColumns) : this(matrix, new NumPrimaryColumnsPredicate(numPrimaryColumns)) { }
+
+        public Dlx(int[,] matrix, int[] secondaryColumnIndexes) : this(matrix, new SecondaryColumnsPredicate(secondaryColumnIndexes))
         {
-            return Solve(matrix, new NumPrimaryColumnsPredicate(numPrimaryColumns));
+            ArgumentNullException.ThrowIfNull(secondaryColumnIndexes);
+        }
+
+        public Dlx(int[,] matrix, int[] primaryColumnIndexes, int[] secondaryColumnIndexes) :
+            this(matrix, new NormalColumnsPredicate(primaryColumnIndexes, secondaryColumnIndexes), new UpToTwoInstrumentation())
+        {
+            ArgumentNullException.ThrowIfNull(primaryColumnIndexes);
+            ArgumentNullException.ThrowIfNull(secondaryColumnIndexes);
+        }
+
+        public Dlx(int[,] matrix, IColumnPredicate columnPredicate, params Instrumentation[] instrumentations)
+        {
+            this.matrix = matrix ?? throw new ArgumentNullException(nameof(matrix));
+            this.columnPredicate = columnPredicate ?? throw new ArgumentNullException(nameof(columnPredicate));
+            this.instrumentations = instrumentations ?? throw new ArgumentNullException(nameof(instrumentations));
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="matrix"></param>
-        /// <param name="secondaryColumns">It means any col not in secondaryColumns is primary columns</param>
-        /// <returns></returns>
-        public static IEnumerable<int[]> Solve(int[,] matrix, int[] secondaryColumns)
+        /// <param name="deep"></param>
+        /// <returns>IEnumerable.each 是 rowIndexes</returns>
+        public IEnumerable<int[]> Solve(int deep = 0)
         {
-            return Solve(matrix, new SecondaryColumnsPredicate(secondaryColumns));
+            yield return null;
         }
 
-        /// <summary>
-        /// 一般用于除了主列、副列还有提示列的情况
-        /// 提示列：不参与DLX算法，参与matrix join。
-        /// </summary>
-        /// <param name="matrix"></param>
-        /// <param name="primaryColumns">主列</param>
-        /// <param name="secondaryColumns">副列</param>
-        /// <returns></returns>
-        public static IEnumerable<int[]> Solve(int[,] matrix, int[] primaryColumns, int[] secondaryColumns)
-        {
-            return Solve(matrix, new ColumnsPredicate(primaryColumns, secondaryColumns));
-        }
-
-        public static IEnumerable<int[]> Solve(int[,] matrix, int[] primaryColumns, int[] secondaryColumns, params Instrumentation[] instrumentations)
-        {
-            return Solve(matrix, new ColumnsPredicate(primaryColumns, secondaryColumns), instrumentations);
-        }
-
-        public static IEnumerable<int[]> Solve(int[,] matrix, IColumnPredicate columnPredicate)
-        {
-            return Solve(matrix, columnPredicate, new UpToTwoInstrumentation());
-        }
+        #region old
 
         public static IEnumerable<int[]> Solve(int[,] matrix, IColumnPredicate columnPredicate, params Instrumentation[] instrumentations)
         {
@@ -242,4 +235,6 @@ namespace DlxLib
             c.L.R = c;
         }
     }
+
+    #endregion
 }

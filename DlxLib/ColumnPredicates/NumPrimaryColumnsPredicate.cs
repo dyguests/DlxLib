@@ -1,16 +1,15 @@
 namespace DlxLib.ColumnPredicates
 {
-    public class NumPrimaryColumnsPredicate : IColumnPredicate
+    public class NumPrimaryColumnsPredicate : ColumnPredicate
     {
-        private readonly int numPrimaryColumns;
+        private readonly int _numPrimaryColumns;
 
         public NumPrimaryColumnsPredicate(int numPrimaryColumns)
         {
-            this.numPrimaryColumns = numPrimaryColumns;
+            this._numPrimaryColumns = numPrimaryColumns;
         }
 
-        public bool IsPrimaryColumn(int column) => column <= numPrimaryColumns;
-
-        public bool IsSecondaryColumn(int column) => column > numPrimaryColumns;
+        public override bool IsPrimaryColumn(int column) => column <= _numPrimaryColumns;
+        public override bool IsSecondaryColumn(int column) => column > _numPrimaryColumns;
     }
 }
