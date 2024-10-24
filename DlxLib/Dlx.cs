@@ -11,9 +11,9 @@ namespace DlxLib
     /// </summary>
     public class Dlx
     {
-        private int[,] matrix;
-        private IColumnPredicate columnPredicate;
-        private Instrumentation[] instrumentations;
+        private readonly int[,] _matrix;
+        private readonly IColumnPredicate _columnPredicate;
+        private readonly Instrumentation[] _instrumentations;
 
         public Dlx(int[,] matrix) : this(matrix, matrix.GetLength(0)) { }
         public Dlx(int[,] matrix, int numPrimaryColumns) : this(matrix, new NumPrimaryColumnsPredicate(numPrimaryColumns)) { }
@@ -32,30 +32,21 @@ namespace DlxLib
 
         public Dlx(int[,] matrix, IColumnPredicate columnPredicate, params Instrumentation[] instrumentations)
         {
-            this.matrix = matrix ?? throw new ArgumentNullException(nameof(matrix));
-            this.columnPredicate = columnPredicate ?? throw new ArgumentNullException(nameof(columnPredicate));
-            this.instrumentations = instrumentations ?? throw new ArgumentNullException(nameof(instrumentations));
+            this._matrix = matrix ?? throw new ArgumentNullException(nameof(matrix));
+            this._columnPredicate = columnPredicate ?? throw new ArgumentNullException(nameof(columnPredicate));
+            this._instrumentations = instrumentations ?? throw new ArgumentNullException(nameof(instrumentations));
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="deep"></param>
         /// <returns>IEnumerable.each 是 rowIndexes</returns>
-        public IEnumerable<int[]> Solve(int deep = 0)
+        public IEnumerable<int[]> Solve()
         {
-            yield return null;
-        }
-
-        #region old
-
-        public static IEnumerable<int[]> Solve(int[,] matrix, IColumnPredicate columnPredicate, params Instrumentation[] instrumentations)
-        {
-            if (matrix == null) throw new ArgumentNullException(nameof(matrix));
-
-            var h = BuildSparseMatrix(matrix, columnPredicate);
+            var header = BuildSparseMatrix(_matrix, _columnPredicate);
             var o = new Stack<DataObject>();
-            return Search(0, h, o, instrumentations);
+
+            return Search(0, header, o, _instrumentations);
         }
 
         /// <summary>
@@ -107,12 +98,12 @@ namespace DlxLib
         /// <summary>
         /// Our nondeterministic algorithm to find all exact covers can now be cast in the following explicit, deterministic form as a recursive procedure search(k), which is invoked initially with k = 0
         /// </summary>
-        /// <param name="k">递归层次</param>
+        /// <param name="deep">递归层次</param>
         /// <param name="h"></param>
         /// <param name="o"></param>
         /// <param name="instrumentations"></param>
         /// <returns></returns>
-        private static IEnumerable<int[]> Search(int k, ColumnObject h, Stack<DataObject> o, Instrumentation[] instrumentations)
+        private static IEnumerable<int[]> Search(int deep, ColumnObject h, Stack<DataObject> o, Instrumentation[] instrumentations)
         {
             if (instrumentations?.Any(instrumentation => instrumentation.IsCancelled()) == true)
             {
@@ -158,7 +149,7 @@ namespace DlxLib
                     }
 
                     // search(k + 1);
-                    var solutions = Search(k + 1, h, o, instrumentations);
+                    var solutions = Search(deep + 1, h, o, instrumentations);
                     foreach (var solution in solutions)
                     {
                         yield return solution;
@@ -235,6 +226,4 @@ namespace DlxLib
             c.L.R = c;
         }
     }
-
-    #endregion
 }
