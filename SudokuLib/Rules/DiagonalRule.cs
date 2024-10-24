@@ -16,10 +16,11 @@ namespace SudokuLib.Rules
             {
                 // if (index == 0) _ruleRowStart = row.Length;
 
+                row = (int[])row.Clone();
+
                 var position = GetPosition(row, puzzle);
-                var digit = puzzle.Digits[position];
-                // Enumerable.Range(1, 9) 这里应该可以优化
-                var possibleDigits = digit == 0 ? Enumerable.Range(1, 9).ToArray() : new[] { digit };
+                var possibleColumn = GetPossibleColumn(columnPredicate);
+                var possibleDigits = UpdatePossibleDigits(row, columnPredicate, puzzle);
 
                 return possibleDigits.Select(possibleDigit =>
                 {
@@ -35,7 +36,9 @@ namespace SudokuLib.Rules
                         expandingRow[9 + possibleDigit - 1] = 1;
                     }
 
-                    return row.Concat(expandingRow).ToArray();
+                    var expandRow = row.Concat(expandingRow).ToArray();
+                    expandRow[possibleColumn] = 0b1 << (possibleDigit - 1);
+                    return expandRow;
                 });
             });
             var expandColumnPredicate = columnPredicate.Concat(Enumerable.Repeat(1, 9 * 2)).ToArray();
