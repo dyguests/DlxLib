@@ -40,6 +40,8 @@ namespace SudokuDlxLib
             rows = rows.Select(row => row.Append(0b111_111_111).ToArray());
             columnPredicate = columnPredicate.Append(ColumnPredicateEx.KeyPossibleColumn).ToArray();
 
+            // todo 后续先对 possible 进行一次过滤
+
             return (rows, columnPredicate);
         }
 

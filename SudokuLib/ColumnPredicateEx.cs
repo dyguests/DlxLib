@@ -3,6 +3,8 @@
     public static class ColumnPredicateEx
     {
         /// <summary>
+        /// 可能数字提示列
+        /// 
         /// 用来表示 当前行 可能的输入数字 1~9
         /// 用 0b111_111_111 来表示
         /// 例如

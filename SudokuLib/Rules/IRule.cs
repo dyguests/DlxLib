@@ -10,7 +10,7 @@ namespace SudokuLib.Rules
         /// 基于 dlx 的 rows，扩展IRule规则
         /// </summary>
         /// <param name="rows">dlx rows</param>
-        /// <param name="columnPredicate">列说明：主/副/提示列</param>
+        /// <param name="columnPredicate">列规则：主/副/提示列</param>
         /// <param name="puzzle"></param>
         /// <returns>(rows, columnPredicate)</returns>
         (IEnumerable<int[]>, int[]) ExpandRows(IEnumerable<int[]> rows, int[] columnPredicate, IPuzzle puzzle);
@@ -39,9 +39,16 @@ namespace SudokuLib.Rules
 
         protected static int GetPosition(int[] row, IPuzzle puzzle)
         {
-            var position = Array.IndexOf(row, 1);
-            if (position < 0 || position >= puzzle.Digits.Length) throw new ArgumentOutOfRangeException(nameof(position), "Position is out of range.");
-            return position;
+            var index = Array.IndexOf(row, 1);
+            if (index < 0 || index >= puzzle.Digits.Length) throw new ArgumentOutOfRangeException(nameof(index), "Position is out of range.");
+            return index;
+        }
+
+        protected int GetPossibleColumn(int[] row)
+        {
+            var index = Array.IndexOf(row, ColumnPredicateEx.KeyPossibleColumn);
+            if (index < 0) throw new ArgumentOutOfRangeException(nameof(index), "Possible column is not found.");
+            return index;
         }
 
         #endregion
