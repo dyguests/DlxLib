@@ -8,6 +8,12 @@ namespace DlxLib
         private Column header;
         private List<Node> solution;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <param name="secondaryColumns">禁止重复，但不要求完全覆盖的列</param>
+        /// <param name="columnNames"></param>
         public Dlx(
             int[,] matrix,
             IReadOnlyList<int>? secondaryColumns = null,
