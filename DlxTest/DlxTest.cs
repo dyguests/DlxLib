@@ -85,7 +85,7 @@ namespace DlxLibTest
         }
 
         [Test]
-        public void TestSecondaryColumns()
+        public void TestColumns()
         {
             var matrix = new[,]
             {
@@ -94,12 +94,12 @@ namespace DlxLibTest
                 { 0, 1, 0, 1 },
                 { 0, 1, 0, 0 },
             };
-            Validate(matrix );
+            Validate(matrix);
             Assert.True(true);
         }
 
         [Test]
-        public void TestSecondaryColumns2()
+        public void TestColumns2()
         {
             var matrix = new[,]
             {
@@ -108,12 +108,12 @@ namespace DlxLibTest
                 { 0, 1, 0, 1, 1 },
                 { 0, 1, 0, 0, 0 },
             };
-            Validate(matrix );
+            Validate(matrix);
             Assert.True(true);
         }
 
         [Test]
-        public void TestSecondaryColumns3()
+        public void TestColumns3()
         {
             var matrix = new[,]
             {
@@ -122,7 +122,7 @@ namespace DlxLibTest
                 { 0, 1, 0, 0 },
                 { 0, 1, 0, 0 },
             };
-            Validate(matrix );
+            Validate(matrix);
             Assert.True(true);
         }
 
@@ -137,7 +137,7 @@ namespace DlxLibTest
                 { 0, 1, 1, 0, 1, 1 },
                 { 0, 1, 1, 0, 0, 0 },
             };
-            Validate(matrix );
+            Validate(matrix);
             Assert.True(true);
         }
 
