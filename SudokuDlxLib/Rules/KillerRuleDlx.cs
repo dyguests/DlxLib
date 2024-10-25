@@ -83,6 +83,7 @@ namespace SudokuDlxLib.Rules
                     for (var i = start; i < combination.Length; i++)
                     {
                         // includePossibleDigits 过滤
+                        // todo KillerRuleDlxTest.Test_GetPossiblePermutations4 还有问题，过滤不全。等下查
                         if (!indexesIncludePossibleDigits[i].Contains(combination[i])) continue;
 
                         // 交换元素
