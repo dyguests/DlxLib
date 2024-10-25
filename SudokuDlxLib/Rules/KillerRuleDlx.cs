@@ -20,10 +20,14 @@ namespace SudokuDlxLib.Rules
             var allPositions = cages.SelectMany(cage => cage.Indexes).Order();
 
             // gen position -> possibleDigits
-            var pos2possibleDigits = rows.GroupBy(row => GetPosition(row, puzzle))
-                .ToDictionary(
+            var pos2possibleDigits = rows.Select(row => (position: GetPosition(row, puzzle), row))
+                .Where(tuple => allPositions.Contains(tuple.position))
+                .GroupBy<(int position, int[] row), int>(tuple => tuple.position)
+                // .GroupBy(row => GetPosition(row, puzzle))
+                .ToDictionary<IGrouping<int, (int position, int[] row)>, int, int[]>(
                     group => group.Key,
                     group => group.AsEnumerable()
+                        .Select(tuple => tuple.row)
                         .Select(row => row[possibleDigitsIndex])
                         .Aggregate((a, b) => a | b)
                         .PossibleDigitsFromBinaryToEnumerable()
