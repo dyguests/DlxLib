@@ -14,6 +14,9 @@ namespace SudokuDlxLib.Rules
         public override (IEnumerable<int[]>, int[]) ExpandRows(IEnumerable<int[]> rows, int[] columnPredicate, IPuzzle puzzle)
         {
             var rule = puzzle.Rules.OfType<KillerRule>().FirstOrDefault() ?? throw new Exception("KillerRule not found");
+            var cages = rule.ReadonlyCages;
+            var allPositions = cages.SelectMany(cage => cage.Indexes).Order();
+            // rows.Select(row => GetPosition())
 
             var expandRows = rows.SelectMany((row, index) =>
             {

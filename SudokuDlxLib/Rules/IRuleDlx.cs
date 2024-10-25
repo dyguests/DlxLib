@@ -45,7 +45,13 @@ namespace SudokuDlxLib.Rules
             return index;
         }
 
-        protected int GetPossibleColumn(int[] columnPredicate)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="columnPredicate"></param>
+        /// <returns>用来记录possibleDigits的辅助列的索引</returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        protected int GetPossibleDigitsIndex(int[] columnPredicate)
         {
             var index = Array.IndexOf(columnPredicate, ColumnPredicateEx.KeyPossibleColumn);
             if (index < 0) throw new ArgumentOutOfRangeException(nameof(index), "Possible column is not found.");
@@ -62,7 +68,7 @@ namespace SudokuDlxLib.Rules
         protected IEnumerable<int> UpdatePossibleDigits(int[] row, int[] columnPredicate, IPuzzle puzzle)
         {
             var position = GetPosition(row, puzzle);
-            var possibleColumn = GetPossibleColumn(columnPredicate);
+            var possibleColumn = GetPossibleDigitsIndex(columnPredicate);
             var digit = puzzle.Digits[position];
             if (digit > 0)
             {
