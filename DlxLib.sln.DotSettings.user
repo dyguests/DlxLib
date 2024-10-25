@@ -25,5 +25,7 @@
     &lt;TestId&gt;NUnit3x::23EF6962-98AA-4736-B837-E50310655DD6::net8.0::DlxLibTest.DlxTest.TestSecondary&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::23EF6962-98AA-4736-B837-E50310655DD6::net8.0::DlxLibTest.DlxTest.TestPrint&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::23EF6962-98AA-4736-B837-E50310655DD6::net8.0::DlxLibTest.DlxTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::35EF9253-30B6-4595-8859-00CA183BC204::net8.0::SudokuLibTest.Rules.KillerRuleTest.TestCage&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::35EF9253-30B6-4595-8859-00CA183BC204::net8.0::SudokuLibTest.Rules.KillerRuleTest&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

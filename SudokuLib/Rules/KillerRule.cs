@@ -18,6 +18,7 @@ namespace SudokuLib.Rules
             var cagesSketch = sketch.Substring(KillerRulePrefix.Length).Trim();
             var cages = cagesSketch.Split(CageSeparator)
                 .Select(cageSketch => cageSketch.Trim())
+                .SkipWhile(string.IsNullOrEmpty)
                 .Select(Cage.FormSketch)
                 .Where(cage => cage != null)
                 .ToArray();
