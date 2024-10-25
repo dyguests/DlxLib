@@ -44,6 +44,13 @@ namespace SudokuLibTest.Helpers
         }
 
         [Test]
+        public void Test_GetPossibleCombinations6()
+        {
+            var cage = new KillerRule.Cage(5, new[] { 1, 2, });
+            ValidateCage(cage, 2);
+        }
+
+        [Test]
         public void Test_GetPossibleCombinations20()
         {
             var cage = new KillerRule.Cage(10, new[] { 1, 2, });
