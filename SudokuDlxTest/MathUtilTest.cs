@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Linq;
 using NUnit.Framework;
+using SudokuDlxLib;
 using SudokuDlxLib.Rules;
 
-namespace SudokuDlxLibTest.Rules
+namespace SudokuDlxLibTest
 {
     [Obsolete]
     public class MathUtilTest

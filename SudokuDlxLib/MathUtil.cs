@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SudokuDlxLib.Rules
+namespace SudokuDlxLib
 {
     [Obsolete]
     public class MathUtil

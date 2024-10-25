@@ -8,7 +8,7 @@ using SudokuLib.Rules;
 
 namespace SudokuDlxLib.Rules
 {
-    internal class KillerRuleDlx : RuleDlx
+    public class KillerRuleDlx : RuleDlx
     {
         #region RuleDlx
 
@@ -103,7 +103,11 @@ namespace SudokuDlxLib.Rules
             static void Swap(ref int a, ref int b) => (a, b) = (b, a);
         }
 
-        // 获取所有排列的函数
+        [Obsolete]
+        public static IEnumerable<int[]> TestGetPossiblePermutations(int[] combination, int[][] indexesIncludePossibleDigits)
+        {
+            return new KillerRuleDlx().GetPossiblePermutations(combination, indexesIncludePossibleDigits);
+        }
 
         #endregion
     }
