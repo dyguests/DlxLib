@@ -7,7 +7,7 @@ namespace SudokuLib.Helpers
 {
     public static class KillerRuleHelper
     {
-        public static int[] GetPossibleNumbers(KillerRule.Cage cage)
+        public static int[] GetPossibleDigits(KillerRule.Cage cage)
         {
             return GetPossibleCombinations(cage).SelectMany(x => x).Distinct().Order().ToArray();
         }

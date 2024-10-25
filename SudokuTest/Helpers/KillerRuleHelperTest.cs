@@ -57,6 +57,26 @@ namespace SudokuLibTest.Helpers
             ValidateCage(cage, new[] { 1, 2, 6, 7 }, 0);
         }
 
+        [Test]
+        public void Test_GetPossibleNumbers()
+        {
+            var cage = new KillerRule.Cage(10, new[] { 1, 2, });
+            var possibleDigits = KillerRuleHelper.GetPossibleDigits(cage);
+
+            var expectedDigits = new[] { 1, 2, 3, 4, 6, 7, 8, 9 };
+            Assert.That(possibleDigits, Is.EqualTo(expectedDigits));
+        }
+
+        [Test]
+        public void Test_GetPossibleNumbers2()
+        {
+            var cage = new KillerRule.Cage(10, new[] { 1, 2, 3, 4, 5 });
+            var possibleDigits = KillerRuleHelper.GetPossibleDigits(cage);
+
+            var expectedDigits = Array.Empty<int>();
+            Assert.That(possibleDigits, Is.EqualTo(expectedDigits));
+        }
+
         private static void ValidateCage(KillerRule.Cage cage, int expected)
         {
             Console.WriteLine($"cage:{cage}");
