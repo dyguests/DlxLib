@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Text;
 
 namespace SudokuLib.Rules
 {
@@ -15,7 +16,7 @@ namespace SudokuLib.Rules
             if (string.IsNullOrWhiteSpace(sketch)) return null;
             if (!sketch.StartsWith(KillerRulePrefix)) return null;
             var cagesSketch = sketch.Substring(KillerRulePrefix.Length).Trim();
-            var cages = cagesSketch.Split(";")
+            var cages = cagesSketch.Split(CageSeparator)
                 .Select(cageSketch => cageSketch.Trim())
                 .Select(Cage.FormSketch)
                 .Where(cage => cage != null)
@@ -25,7 +26,19 @@ namespace SudokuLib.Rules
 
         public override string ToSketch()
         {
-            return KillerRulePrefix; // todo + ...
+            var sb = new StringBuilder();
+            sb.Append(KillerRulePrefix).Append(" ");
+            for (var i = 0; i < _cages.Length; i++)
+            {
+                var cage = _cages[i];
+                sb.Append(cage.ToSketch());
+                if (i < _cages.Length - 1)
+                {
+                    sb.Append(CageSeparator);
+                }
+            }
+
+            return sb.ToString();
         }
 
         #endregion
@@ -33,6 +46,7 @@ namespace SudokuLib.Rules
         #region KillerRule
 
         private const string KillerRulePrefix = "Killer";
+        private const string CageSeparator = ";";
 
         private readonly Cage[] _cages;
         public Cage[] ReadonlyCages => (Cage[])_cages.Clone();
@@ -74,6 +88,11 @@ namespace SudokuLib.Rules
                     .ToArray();
                 if (indexes.Length < 1) return null;
                 return new Cage(sum, indexes);
+            }
+
+            public string ToSketch()
+            {
+                return Sum + "=" + string.Join("+", Indexes);
             }
         }
 
