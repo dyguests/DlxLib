@@ -13,6 +13,10 @@ namespace DlxLib.ColumnPredicates
 
     public abstract class ColumnPredicate : IColumnPredicate
     {
+        public const int KeyPrimaryColumn = 0;
+        public const int KeySecondaryColumn = 1;
+        // private const int KeyHintColumn = 2;
+
         #region IColumnPredicate
 
         public virtual string? Name => null;

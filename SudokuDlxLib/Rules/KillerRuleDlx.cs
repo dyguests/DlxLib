@@ -23,7 +23,7 @@ namespace SudokuDlxLib.Rules
                 return new[] { 1 }.Select(i => { return row; });
             });
             //todo impl
-            var expandColumnPredicate = columnPredicate.Concat(Enumerable.Repeat(IndexColumnsPredicate.KeySecondaryColumn, 9 * 2)).ToArray();
+            var expandColumnPredicate = columnPredicate.Concat(Enumerable.Repeat(ColumnPredicate.KeySecondaryColumn, 9 * 2)).ToArray();
             return (expandRows, expandColumnPredicate);
         }
 

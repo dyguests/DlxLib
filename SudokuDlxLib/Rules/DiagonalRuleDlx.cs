@@ -43,7 +43,7 @@ namespace SudokuDlxLib.Rules
                     return expandRow;
                 });
             });
-            var expandColumnPredicate = columnPredicate.Concat(Enumerable.Repeat(IndexColumnsPredicate.KeyPrimaryColumn, 9 * 2)).ToArray();
+            var expandColumnPredicate = columnPredicate.Concat(Enumerable.Repeat(ColumnPredicate.KeyPrimaryColumn, 9 * 2)).ToArray();
             return (expandRows, expandColumnPredicate);
         }
 
