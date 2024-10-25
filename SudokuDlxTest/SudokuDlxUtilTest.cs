@@ -45,6 +45,15 @@ Killer 5=0+1;11=79+80";
             TestPuzzle(sketch);
         }
 
+        [Test]
+        public void TestPuzzleKiller2()
+        {
+            const string sketch = @"........3.7.....5...418.2....1..6.....7..5.48...41..62..5.......6..32...3...9....
+Killer 10=76+77";
+            //                    "325867194869143275714259368193682457647935812582714639258396741431578926976421583";
+            TestPuzzle(sketch);
+        }
+
         private static void TestPuzzle(string sketch)
         {
             var puzzle = PuzzleSketcher.FromSketch(sketch);

@@ -26,7 +26,7 @@ namespace DlxLib
             ArgumentNullException.ThrowIfNull(secondaryColumnIndexes);
         }
 
-        public Dlx(int[,] matrix, int[] columnPredicate) : this(matrix, new IndexColumnsPredicate(columnPredicate))
+        public Dlx(int[,] matrix, int[] columnPredicate) : this(matrix, new IndexColumnsPredicate(columnPredicate), new UpToTwoInstrumentation())
         {
             ArgumentNullException.ThrowIfNull(columnPredicate);
         }
