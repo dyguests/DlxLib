@@ -2,8 +2,8 @@
 {
     public class IndexColumnsPredicate : ColumnPredicate
     {
-        private const int KeyPrimaryColumn = 0;
-        private const int KeySecondaryColumn = 1;
+        public const int KeyPrimaryColumn = 0;
+        public const int KeySecondaryColumn = 1;
         // private const int KeyHintColumn = 2;
 
         /// <summary>

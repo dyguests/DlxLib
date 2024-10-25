@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DlxLib.ColumnPredicates;
 using SudokuLib;
 
 namespace SudokuDlxLib.Rules
 {
     public class DiagonalRuleDlx : RuleDlx
     {
-        #region DiagonalRule
+        #region RuleDlx
 
         // private int _ruleRowStart;
 
@@ -42,7 +43,7 @@ namespace SudokuDlxLib.Rules
                     return expandRow;
                 });
             });
-            var expandColumnPredicate = columnPredicate.Concat(Enumerable.Repeat(1, 9 * 2)).ToArray();
+            var expandColumnPredicate = columnPredicate.Concat(Enumerable.Repeat(IndexColumnsPredicate.KeyPrimaryColumn, 9 * 2)).ToArray();
             return (expandRows, expandColumnPredicate);
         }
 

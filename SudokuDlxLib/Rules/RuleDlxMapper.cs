@@ -4,13 +4,14 @@ using SudokuLib.Rules;
 
 namespace SudokuDlxLib.Rules
 {
-    public static class RuleDlxUtil
+    public static class RuleDlxMapper
     {
-        private static readonly Dictionary<Type, IRuleDlx> _ruleDlxDict = new()
+        private static readonly Dictionary<Type, IRuleDlx> RuleDlxDict = new()
         {
             // 示例: [typeof(StandardRuleSketcher)] = new StandardRuleDlx(),
             [typeof(StandardRule)] = new StandardRuleDlx(),
             [typeof(DiagonalRule)] = new DiagonalRuleDlx(),
+            [typeof(KillerRule)] = new KillerRuleDlx(),
         };
 
         public static IRuleDlx GetDlx(IRule rule)
@@ -21,7 +22,7 @@ namespace SudokuDlxLib.Rules
                 throw new ArgumentException($"Type {ruleType.Name} is not a subclass of IRuleSketcher");
             }
 
-            if (_ruleDlxDict.TryGetValue(ruleType, out var ruleDlx))
+            if (RuleDlxDict.TryGetValue(ruleType, out var ruleDlx))
             {
                 return ruleDlx;
             }
