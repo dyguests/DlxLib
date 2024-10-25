@@ -23,7 +23,7 @@ namespace SudokuDlxLib.Rules
                 row = (int[])row.Clone();
 
                 var position = GetPosition(row, puzzle);
-                var possibleColumn = GetPossibleDigitsIndex(columnPredicate);
+                var possibleDigitsIndex = GetPossibleDigitsIndex(columnPredicate);
                 var possibleDigits = UpdatePossibleDigits(row, columnPredicate, puzzle);
 
                 return possibleDigits.Select(possibleDigit =>
@@ -35,7 +35,7 @@ namespace SudokuDlxLib.Rules
                         9 * 9 + /*colCount*digitCount*/9 * 9 + /*boxIndex*digitCount*/(position / 9 / 3 * 3 + position % 9 / 3) * 9 + possibleDigit - 1] = 1;
 
                     var expandRow = row.Concat(expandingRow).ToArray();
-                    expandRow[possibleColumn] = 0b1 << (possibleDigit - 1);
+                    expandRow[possibleDigitsIndex] = 0b1 << (possibleDigit - 1);
                     return expandRow;
                 });
             });

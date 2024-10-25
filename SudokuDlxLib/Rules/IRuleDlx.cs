@@ -68,23 +68,19 @@ namespace SudokuDlxLib.Rules
         protected IEnumerable<int> UpdatePossibleDigits(int[] row, int[] columnPredicate, IPuzzle puzzle)
         {
             var position = GetPosition(row, puzzle);
-            var possibleColumn = GetPossibleDigitsIndex(columnPredicate);
+            var possibleDigitsIndex = GetPossibleDigitsIndex(columnPredicate);
             var digit = puzzle.Digits[position];
             if (digit > 0)
             {
-                row[possibleColumn] &= 0b1 << (digit - 1);
+                row[possibleDigitsIndex] &= 0b1 << (digit - 1);
             }
             else
             {
                 // todo 这里想办法加过滤算法
-                row[possibleColumn] &= 0b111_111_111;
+                row[possibleDigitsIndex] &= 0b111_111_111;
             }
 
-            for (var i = 0; i < 9; i++)
-            {
-                if ((row[possibleColumn] & (0b1 << i)) == 0) continue;
-                yield return i + 1;
-            }
+            foreach (var possibleDigit in row[possibleDigitsIndex].PossibleDigitsFromBinaryToEnumerable()) yield return possibleDigit;
         }
 
         #endregion

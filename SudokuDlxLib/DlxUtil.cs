@@ -29,8 +29,39 @@ namespace SudokuDlxLib
                 {
                     row[j] = matrix[i, j];
                 }
+
                 yield return row;
             }
+        }
+
+        /// <summary>
+        /// 0b000_000_111 to [1, 2, 3]
+        /// </summary>
+        /// <param name="possibleDigitsBinary"></param>
+        /// <returns></returns>
+        public static IEnumerable<int> PossibleDigitsFromBinaryToEnumerable(this int possibleDigitsBinary)
+        {
+            for (var i = 0; i < 9; i++)
+            {
+                if ((possibleDigitsBinary & (0b1 << i)) == 0) continue;
+                yield return i + 1;
+            }
+        }
+
+        /// <summary>
+        /// [1, 2, 3] to 0b000_000_111
+        /// </summary>
+        /// <param name="possibleDigits"></param>
+        /// <returns></returns>
+        public static int PossibleDigitsFromEnumerableToBinary(this IEnumerable<int> possibleDigits)
+        {
+            var possibleDigitsBinary = 0;
+            foreach (var digit in possibleDigits)
+            {
+                possibleDigitsBinary |= 0b1 << (digit - 1);
+            }
+
+            return possibleDigitsBinary;
         }
     }
 }
