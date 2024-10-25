@@ -59,10 +59,12 @@ namespace SudokuLib.Rules
 
         public class Cage
         {
+            #region Cage
+
             public int Sum { get; }
             public int[] Indexes { get; }
 
-            private Cage(int sum, int[] indexes)
+            public Cage(int sum, int[] indexes)
             {
                 Sum = sum;
                 Indexes = indexes;
@@ -95,6 +97,10 @@ namespace SudokuLib.Rules
             {
                 return Sum + "=" + string.Join("+", Indexes);
             }
+
+            #endregion
+
+            public override string ToString() => $"Cage({Sum}={string.Join("+", Indexes)})";
         }
 
         #endregion
