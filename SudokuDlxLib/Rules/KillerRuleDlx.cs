@@ -65,11 +65,11 @@ namespace SudokuDlxLib.Rules
         private IEnumerable<int[]> GetPossiblePermutations(int[] combination, int[][] indexesIncludePossibleDigits)
         {
             if (combination.Length != indexesIncludePossibleDigits.Length) throw new Exception("combination.Length != indexes.Length");
-            
-            return Permute(combination, 0);
+
+            return Permute(combination, 0, indexesIncludePossibleDigits);
 
             // 递归生成排列，使用 IEnumerable<int[]>
-            static IEnumerable<int[]> Permute(int[] combination, int start)
+            static IEnumerable<int[]> Permute(int[] combination, int start, int[][] includePossibleDigits)
             {
                 if (start >= combination.Length)
                 {
@@ -83,7 +83,7 @@ namespace SudokuDlxLib.Rules
                         // 交换元素
                         Swap(ref combination[start], ref combination[i]);
                         // 递归生成排列
-                        foreach (var perm in Permute(combination, start + 1))
+                        foreach (var perm in Permute(combination, start + 1, includePossibleDigits))
                         {
                             yield return perm;
                         }
