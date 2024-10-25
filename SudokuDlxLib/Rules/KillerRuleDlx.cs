@@ -39,10 +39,12 @@ namespace SudokuDlxLib.Rules
             var cageCombinationPermutations = cages.Select(cage => (cage, combinations: KillerRuleHelper.GetPossibleCombinations(cage)))
                     .SelectMany(tuple => tuple.combinations.Select(combination => (tuple.cage, combination)))
                     .SelectMany(tuple =>
-                    {
-                        IEnumerable<int[]> possiblePermutations = GetPossiblePermutations(tuple.combination, tuple.cage.Indexes.Select(position => pos2possibleDigits[position]).ToArray());
-                        return possiblePermutations.Select(permutation => (tuple.cage, tuple.combination, permutation));
-                    })
+                        GetPossiblePermutations(
+                                tuple.combination,
+                                tuple.cage.Indexes.Select(position => pos2possibleDigits[position]).ToArray()
+                            )
+                            .Select(permutation => (tuple.cage, tuple.combination, permutation))
+                    )
                 ;
 
             var expandRows = rowArray.SelectMany((row, index) =>
@@ -66,10 +68,10 @@ namespace SudokuDlxLib.Rules
         {
             if (combination.Length != indexesIncludePossibleDigits.Length) throw new Exception("combination.Length != indexes.Length");
 
-            return Permute(combination, 0, indexesIncludePossibleDigits);
+            return Permute((int[])combination.Clone(), 0);
 
             // 递归生成排列，使用 IEnumerable<int[]>
-            static IEnumerable<int[]> Permute(int[] combination, int start, int[][] includePossibleDigits)
+            IEnumerable<int[]> Permute(int[] combination, int start)
             {
                 if (start >= combination.Length)
                 {
@@ -80,10 +82,13 @@ namespace SudokuDlxLib.Rules
                 {
                     for (var i = start; i < combination.Length; i++)
                     {
+                        // includePossibleDigits 过滤
+                        if (!indexesIncludePossibleDigits[i].Contains(combination[i])) continue;
+
                         // 交换元素
                         Swap(ref combination[start], ref combination[i]);
                         // 递归生成排列
-                        foreach (var perm in Permute(combination, start + 1, includePossibleDigits))
+                        foreach (var perm in Permute(combination, start + 1))
                         {
                             yield return perm;
                         }

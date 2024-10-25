@@ -5,6 +5,7 @@ using SudokuDlxLib.Rules;
 
 namespace SudokuDlxLibTest.Rules
 {
+    [Obsolete]
     public class MathUtilTest
     {
         [Test]
