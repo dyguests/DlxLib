@@ -64,6 +64,18 @@ namespace SudokuDlxLib.Rules
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// 返回组合可能的排列
+        ///
+        /// 例：组合{1,2,3}，每个位置上可能的取值为{{2,3},{2},{1,2,3}}
+        /// 即第一个位置只能取1或2，第二个位置只能取2，第三个位置只能取1或2或3
+        /// 最终返回的排列也只能是 {3,2,1}
+        /// 
+        /// </summary>
+        /// <param name="combination">组合</param>
+        /// <param name="indexesIncludePossibleDigits">排列的每个位置上可能的取值</param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         private IEnumerable<int[]> GetPossiblePermutations(int[] combination, int[][] indexesIncludePossibleDigits)
         {
             if (combination.Length != indexesIncludePossibleDigits.Length) throw new Exception("combination.Length != indexes.Length");
