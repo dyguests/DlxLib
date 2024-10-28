@@ -14,8 +14,8 @@ namespace SudokuLib.Rules
         public override IRule? FromSketch(string sketch)
         {
             if (string.IsNullOrWhiteSpace(sketch)) return null;
-            if (!sketch.StartsWith(KillerRulePrefix)) return null;
-            var cagesSketch = sketch.Substring(KillerRulePrefix.Length).Trim();
+            if (!sketch.StartsWith(RulePrefix)) return null;
+            var cagesSketch = sketch.Substring(RulePrefix.Length).Trim();
             var cages = cagesSketch.Split(CageSeparator)
                 .Select(cageSketch => cageSketch.Trim())
                 .SkipWhile(string.IsNullOrEmpty)
@@ -28,7 +28,7 @@ namespace SudokuLib.Rules
         public override string ToSketch()
         {
             var sb = new StringBuilder();
-            sb.Append(KillerRulePrefix).Append(" ");
+            sb.Append(RulePrefix).Append(" ");
             for (var i = 0; i < _cages.Length; i++)
             {
                 var cage = _cages[i];
@@ -46,7 +46,7 @@ namespace SudokuLib.Rules
 
         #region KillerRule
 
-        private const string KillerRulePrefix = "Killer";
+        private const string RulePrefix = "Killer";
         private const string CageSeparator = ";";
 
         private readonly Cage[] _cages;

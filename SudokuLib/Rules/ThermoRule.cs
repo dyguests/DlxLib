@@ -18,8 +18,8 @@ namespace SudokuLib.Rules
         public override IRule? FromSketch(string sketch)
         {
             if (string.IsNullOrWhiteSpace(sketch)) return null;
-            if (!sketch.StartsWith(ThermoRulePrefix)) return null;
-            var thermosSketch = sketch.Substring(ThermoRulePrefix.Length).Trim();
+            if (!sketch.StartsWith(RulePrefix)) return null;
+            var thermosSketch = sketch.Substring(RulePrefix.Length).Trim();
             var thermos = thermosSketch.Split(ThermoSeparator)
                 .Select(thermo => thermo.Trim())
                 .SkipWhile(string.IsNullOrEmpty)
@@ -33,7 +33,7 @@ namespace SudokuLib.Rules
         public override string ToSketch()
         {
             var sb = new StringBuilder();
-            sb.Append(ThermoRulePrefix).Append(" ");
+            sb.Append(RulePrefix).Append(" ");
             for (var i = 0; i < _thermos.Length; i++)
             {
                 var thermo = _thermos[i];
@@ -51,7 +51,7 @@ namespace SudokuLib.Rules
 
         #region ThermoRule
 
-        private const string ThermoRulePrefix = "Thermo";
+        private const string RulePrefix = "Thermo";
         private const string ThermoSeparator = ";";
 
         private readonly Thermo[] _thermos;

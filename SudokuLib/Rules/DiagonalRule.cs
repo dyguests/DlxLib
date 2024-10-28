@@ -7,16 +7,16 @@
         public override IRule? FromSketch(string sketch)
         {
             if (string.IsNullOrWhiteSpace(sketch)) return null;
-            return sketch.StartsWith(DiagonalRulePrefix) ? new DiagonalRule() : null;
+            return sketch.StartsWith(RulePrefix) ? new DiagonalRule() : null;
         }
 
-        public override string ToSketch() => DiagonalRulePrefix;
+        public override string ToSketch() => RulePrefix;
 
         #endregion
 
         #region DiagonalRule
 
-        private const string DiagonalRulePrefix = "Diagonal";
+        private const string RulePrefix = "Diagonal";
 
         #endregion
     }
