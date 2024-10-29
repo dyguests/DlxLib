@@ -15,12 +15,12 @@ namespace SudokuLib.Rules
         {
             if (string.IsNullOrWhiteSpace(sketch)) return null;
             if (!sketch.StartsWith(RulePrefix)) return null;
-            var cagesSketch = sketch.Substring(RulePrefix.Length).Trim();
-            var cages = cagesSketch.Split(CageSeparator)
-                .Select(cageSketch => cageSketch.Trim())
+            var contentSketch = sketch.Substring(RulePrefix.Length).Trim();
+            var cages = contentSketch.Split(CageSeparator)
+                .Select(str => str.Trim())
                 .SkipWhile(string.IsNullOrEmpty)
                 .Select(Cage.FormSketch)
-                .Where(cage => cage != null)
+                .Where(item => item != null)
                 .ToArray();
             return new KillerRule(cages);
         }

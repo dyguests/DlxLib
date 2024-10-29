@@ -17,12 +17,12 @@ namespace SudokuLib.Rules
         {
             if (string.IsNullOrWhiteSpace(sketch)) return null;
             if (!sketch.StartsWith(RulePrefix)) return null;
-            var arrowsSketch = sketch.Substring(RulePrefix.Length).Trim();
-            var arrows = arrowsSketch.Split(ArrowSeparator)
-                .Select(arrowSketch => arrowSketch.Trim())
+            var contentSketch = sketch.Substring(RulePrefix.Length).Trim();
+            var arrows = contentSketch.Split(ArrowSeparator)
+                .Select(str => str.Trim())
                 .SkipWhile(string.IsNullOrEmpty)
                 .Select(Arrow.FormSketch)
-                .Where(arrow => arrow != null)
+                .Where(item => item != null)
                 .ToArray();
             return new ArrowRule(arrows);
         }

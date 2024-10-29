@@ -19,12 +19,12 @@ namespace SudokuLib.Rules
         {
             if (string.IsNullOrWhiteSpace(sketch)) return null;
             if (!sketch.StartsWith(RulePrefix)) return null;
-            var thermosSketch = sketch.Substring(RulePrefix.Length).Trim();
-            var thermos = thermosSketch.Split(ThermoSeparator)
-                .Select(thermo => thermo.Trim())
+            var contentSketch = sketch.Substring(RulePrefix.Length).Trim();
+            var thermos = contentSketch.Split(ThermoSeparator)
+                .Select(str => str.Trim())
                 .SkipWhile(string.IsNullOrEmpty)
                 .Select(Thermo.FromSketch)
-                .Where(cage => cage != null)
+                .Where(item => item != null)
                 .ToArray();
 
             return new ThermoRule(thermos);
