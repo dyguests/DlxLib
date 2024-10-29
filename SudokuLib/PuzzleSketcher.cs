@@ -16,8 +16,8 @@ namespace SudokuLib
         // todo 这里 创建 实例，然后再 FromSketch 是否不符合规范？？！
         private static readonly IRule[] RuleSketchers =
         {
-            new DiagonalRule(),
-            new KillerRule()
+            DiagonalRule.Default,
+            KillerRule.Default,
         };
 
         public static IPuzzle FromSketch(string sketch)

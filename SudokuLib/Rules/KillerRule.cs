@@ -49,6 +49,8 @@ namespace SudokuLib.Rules
         private const string RulePrefix = "Killer";
         private const string CageSeparator = ";";
 
+        public static KillerRule Default => new();
+        
         private readonly Cage[] _cages;
         public Cage[] ReadonlyCages => (Cage[])_cages.Clone();
 

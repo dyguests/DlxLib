@@ -18,6 +18,8 @@
 
         private const string RulePrefix = "Diagonal";
 
+        public static DiagonalRule Default { get; } = new();
+
         #endregion
     }
 }
