@@ -63,8 +63,8 @@ namespace SudokuLibTest.Rules
 
         private static void ValidateCageSketch(string input)
         {
-            var cage = KillerRule.Cage.FormSketch(input);
-            var actual = cage.ToSketch();
+            var cage = KillerRule.Cage.Instance.FromSketch(input);
+            var actual = cage?.ToSketch();
             Assert.That(actual, Is.EqualTo(input));
         }
     }

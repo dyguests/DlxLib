@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text;
 
 namespace SudokuLib.Rules
@@ -19,8 +20,10 @@ namespace SudokuLib.Rules
             var cages = contentSketch.Split(CageSeparator)
                 .Select(str => str.Trim())
                 .SkipWhile(string.IsNullOrEmpty)
-                .Select(Cage.FormSketch)
+                .Select(Cage.Instance.FromSketch)
                 .Where(item => item != null)
+                .Select(rule => rule as Cage)
+                .Select(rule => rule!)
                 .ToArray();
             return new KillerRule(cages);
         }
@@ -50,7 +53,7 @@ namespace SudokuLib.Rules
         private const string CageSeparator = ";";
 
         public static KillerRule Default => new();
-        
+
         private readonly Cage[] _cages;
         public Cage[] ReadonlyCages => (Cage[])_cages.Clone();
 
@@ -59,9 +62,11 @@ namespace SudokuLib.Rules
             _cages = cages;
         }
 
-        public class Cage
+        public class Cage : Rule
         {
             #region Cage
+
+            public static Cage Instance { get; } = new(0, Array.Empty<int>());
 
             public int Sum { get; }
             public int[] Indexes { get; }
@@ -79,7 +84,7 @@ namespace SudokuLib.Rules
             /// </summary>
             /// <param name="sketch"></param>
             /// <returns></returns>
-            public static Cage FormSketch(string sketch)
+            public override IRule? FromSketch(string sketch)
             {
                 var parts = sketch.Split("=");
                 if (parts.Length != 2) return null;
@@ -89,13 +94,13 @@ namespace SudokuLib.Rules
                 var indexes = indexStrings
                     .Select(indexString => int.TryParse(indexString, out var index) ? index : (int?)null)
                     .Where(index => index.HasValue)
-                    .Select(index => index.Value)
+                    .Select(index => index!.Value)
                     .ToArray();
                 if (indexes.Length < 1) return null;
                 return new Cage(sum, indexes);
             }
 
-            public string ToSketch()
+            public override string ToSketch()
             {
                 return Sum + "=" + string.Join("+", Indexes);
             }
