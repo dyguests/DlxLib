@@ -5,7 +5,6 @@ using NUnit.Framework;
 
 namespace DlxLibTest
 {
-    [TestFixture]
     public class DlxTest
     {
         [SetUp]
