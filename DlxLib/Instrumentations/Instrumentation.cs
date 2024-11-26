@@ -9,7 +9,7 @@ namespace DlxLib.Instrumentations
     {
         private bool isCancelled;
 
-        public void Cancel()
+        protected void Cancel()
         {
             isCancelled = true;
         }

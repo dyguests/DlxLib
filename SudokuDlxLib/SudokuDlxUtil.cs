@@ -10,7 +10,7 @@ namespace SudokuDlxLib
     {
         #region ToMatrix
 
-        public static Dlx ToDlx(IPuzzle puzzle)
+        public static Dlx ToDlx(IPuzzle puzzle, ExpandRowType expandRowType = ExpandRowType.Sequence)
         {
             var (rows, columnPredicate) = CreatePositionRows(puzzle.Digits.Length);
             foreach (var rule in puzzle.Rules)

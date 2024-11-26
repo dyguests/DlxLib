@@ -10,7 +10,7 @@ public static class SudokuGenerator
     {
         var puzzle = new Puzzle(new int[9 * 9]);
         Console.WriteLine($"puzzle:\n{puzzle.ToDisplay()}");
-        var dlx = SudokuDlxUtil.ToDlx(puzzle);
+        var dlx = SudokuDlxUtil.ToDlx(puzzle, ExpandRowType.Random);
         var result = dlx.Solve().Take(1).FirstOrDefault();
         if (result == null) return null;
         Console.WriteLine("dlx Solution:" + string.Join(",", result));
