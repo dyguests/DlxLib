@@ -7,7 +7,7 @@ namespace SudokuGeneratorLib
 {
     public static class SudokuGenerator
     {
-        public static IPuzzle? GenerateRandomFill()
+        public static IPuzzle GenerateRandomFill()
         {
             var puzzle = new Puzzle(new int[9 * 9]);
             // Console.WriteLine($"puzzle:\n{puzzle.ToDisplay()}");

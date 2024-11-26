@@ -2,14 +2,15 @@
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>disable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>9</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\DlxLib\DlxLib.csproj" />
-      <ProjectReference Include="..\SudokuDlxLib\SudokuDlxLib.csproj" />
-      <ProjectReference Include="..\SudokuLib\SudokuLib.csproj" />
+        <ProjectReference Include="..\DlxLib\DlxLib.csproj"/>
+        <ProjectReference Include="..\SudokuDlxLib\SudokuDlxLib.csproj"/>
+        <ProjectReference Include="..\SudokuLib\SudokuLib.csproj"/>
     </ItemGroup>
 
 </Project>
