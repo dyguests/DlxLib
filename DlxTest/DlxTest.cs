@@ -15,7 +15,7 @@ namespace DlxLibTest
         {
             var matrix = new int[0, 0];
             Validate(matrix);
-            Assert.True(true);
+            Assert.Pass();
         }
 
         [Test]
@@ -26,7 +26,7 @@ namespace DlxLibTest
                 { 1 },
             };
             Validate(matrix);
-            Assert.True(true);
+            Assert.Pass();
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace DlxLibTest
                 { 0 },
             };
             Validate(matrix);
-            Assert.True(true);
+            Assert.Pass();
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace DlxLibTest
                 { 0, 0 },
             };
             Validate(matrix);
-            Assert.True(true);
+            Assert.Pass();
         }
 
         [Test]
@@ -67,7 +67,7 @@ namespace DlxLibTest
                 { 0, 1, 0, 0, 0, 0, 1 },
             };
             Validate(matrix);
-            Assert.True(true);
+            Assert.Pass();
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace DlxLibTest
                 { 0, 1, 0, 0 },
             };
             Validate(matrix, new[] { 1, 1, 0, 0 });
-            Assert.True(true);
+            Assert.Pass();
         }
 
         [Test]
@@ -95,7 +95,7 @@ namespace DlxLibTest
                 { 0, 1, 0, 0 },
             };
             Validate(matrix);
-            Assert.True(true);
+            Assert.Pass();
         }
 
         [Test]
@@ -109,7 +109,7 @@ namespace DlxLibTest
                 { 0, 1, 0, 0, 0 },
             };
             Validate(matrix);
-            Assert.True(true);
+            Assert.Pass();
         }
 
         [Test]
@@ -123,7 +123,7 @@ namespace DlxLibTest
                 { 0, 1, 0, 0 },
             };
             Validate(matrix);
-            Assert.True(true);
+            Assert.Pass();
         }
 
         [Test]
@@ -138,7 +138,7 @@ namespace DlxLibTest
                 { 0, 1, 1, 0, 0, 0 },
             };
             Validate(matrix);
-            Assert.True(true);
+            Assert.Pass();
         }
 
         [Test]
