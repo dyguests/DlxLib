@@ -14,7 +14,7 @@ namespace SudokuDlxLib.Rules
 
         private int _ruleRowStart;
 
-        public override (IEnumerable<int[]>, int[]) ExpandRows(IPuzzle puzzle, IEnumerable<int[]> rows, int[] columnPredicate)
+        public override (IEnumerable<int[]>, int[]) ExpandRows(IPuzzle puzzle, IEnumerable<int[]> rows, int[] columnPredicate, ExpandRowType expandRowType = ExpandRowType.Sequence)
         {
             var expandRows = rows.SelectMany((row, index) =>
             {

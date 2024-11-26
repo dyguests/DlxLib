@@ -13,8 +13,9 @@ namespace SudokuDlxLib.Rules
         /// <param name="puzzle"></param>
         /// <param name="rows">dlx rows</param>
         /// <param name="columnPredicate">列规则：主/副/提示列</param>
+        /// <param name="expandRowType"></param>
         /// <returns>(rows, columnPredicate)</returns>
-        (IEnumerable<int[]>, int[]) ExpandRows(IPuzzle puzzle, IEnumerable<int[]> rows, int[] columnPredicate);
+        (IEnumerable<int[]>, int[]) ExpandRows(IPuzzle puzzle, IEnumerable<int[]> rows, int[] columnPredicate, ExpandRowType expandRowType = ExpandRowType.Sequence);
 
         /// <summary>
         /// 
@@ -30,7 +31,7 @@ namespace SudokuDlxLib.Rules
     {
         #region IRule
 
-        public abstract (IEnumerable<int[]>, int[]) ExpandRows(IPuzzle puzzle, IEnumerable<int[]> rows, int[] columnPredicate);
+        public abstract (IEnumerable<int[]>, int[]) ExpandRows(IPuzzle puzzle, IEnumerable<int[]> rows, int[] columnPredicate, ExpandRowType expandRowType = ExpandRowType.Sequence);
 
         public abstract bool FillSolution(int[] solution, List<int[]> rows, IPuzzle puzzle);
 
