@@ -1,11 +1,24 @@
-﻿using SudokuLib;
+﻿using SudokuDlxLib;
+using SudokuLib;
+using SudokuLibTest;
 
 namespace SudokuGeneratorLib;
 
 public static class SudokuGenerator
 {
-    public static IPuzzle GenerateRandom()
+    public static IPuzzle? GenerateRandomFill()
     {
-        return new Puzzle(Enumerable.Range(0, 81).ToArray());
+        var puzzle = new Puzzle(new int[9 * 9]);
+        Console.WriteLine($"puzzle:\n{puzzle.ToDisplay()}");
+        var dlx = SudokuDlxUtil.ToDlx(puzzle);
+        var result = dlx.Solve().Take(1).FirstOrDefault();
+        if (result == null) return null;
+        Console.WriteLine("dlx Solution:" + string.Join(",", result));
+        var solution = SudokuDlxUtil.ToSolution(puzzle, dlx.ReadonlyMatrix, result);
+        puzzle.SetSolution(solution);
+        Console.WriteLine($"puzzle:\n{puzzle.ToDisplay()}");
+        var sketch2 = PuzzleSketcher.ToSketch(puzzle, useMask: false);
+        Console.WriteLine($"solution sketch:\n{sketch2}");
+        return puzzle;
     }
 }

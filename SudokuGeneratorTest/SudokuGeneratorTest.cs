@@ -9,9 +9,10 @@ namespace SudokuGeneratorTest
         public void Setup() { }
 
         [Test]
-        public void GenerateRandom()
+        public void GenerateRandomFill()
         {
-            var puzzle = SudokuGenerator.GenerateRandom();
+            var puzzle = SudokuGenerator.GenerateRandomFill();
+            Assert.Pass();
         }
     }
 }
