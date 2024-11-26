@@ -32,7 +32,7 @@ namespace SudokuDlxLib.Rules
                         .Select(tuple => tuple.row)
                         .Select(row => row[possibleDigitsIndex])
                         .Aggregate((a, b) => a | b)
-                        .PossibleDigitsFromBinaryToEnumerable()
+                        .PossibleDigitsFromBinaryToEnumerable(expandRowType != ExpandRowType.Sequence)
                         .ToArray()
                 );
 

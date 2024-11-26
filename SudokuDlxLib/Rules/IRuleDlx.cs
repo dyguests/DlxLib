@@ -65,8 +65,9 @@ namespace SudokuDlxLib.Rules
         /// <param name="puzzle"></param>
         /// <param name="row"></param>
         /// <param name="columnPredicate">列规则</param>
+        /// <param name="expandRowType"></param>
         /// <returns>possibleDigits</returns>
-        protected IEnumerable<int> UpdatePossibleDigits(IPuzzle puzzle, int[] row, int[] columnPredicate)
+        protected IEnumerable<int> UpdatePossibleDigits(IPuzzle puzzle, int[] row, int[] columnPredicate, ExpandRowType expandRowType)
         {
             var position = GetPosition(row, puzzle);
             var possibleDigitsIndex = GetPossibleDigitsIndex(columnPredicate);
@@ -81,7 +82,7 @@ namespace SudokuDlxLib.Rules
                 row[possibleDigitsIndex] &= 0b111_111_111;
             }
 
-            foreach (var possibleDigit in row[possibleDigitsIndex].PossibleDigitsFromBinaryToEnumerable()) yield return possibleDigit;
+            foreach (var possibleDigit in row[possibleDigitsIndex].PossibleDigitsFromBinaryToEnumerable(expandRowType != ExpandRowType.Sequence)) yield return possibleDigit;
         }
 
         #endregion

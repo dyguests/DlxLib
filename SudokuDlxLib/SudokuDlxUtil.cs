@@ -15,7 +15,7 @@ namespace SudokuDlxLib
             var (rows, columnPredicate) = CreatePositionRows(puzzle.Digits.Length);
             foreach (var rule in puzzle.Rules)
             {
-                (rows, columnPredicate) = RuleDlxMapper.GetDlx(rule).ExpandRows(puzzle, rows, columnPredicate);
+                (rows, columnPredicate) = RuleDlxMapper.GetDlx(rule).ExpandRows(puzzle, rows, columnPredicate, expandRowType);
             }
 
             return new Dlx(rows.RowsToMatrix(), columnPredicate);

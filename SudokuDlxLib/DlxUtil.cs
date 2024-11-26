@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SudokuDlxLib
 {
     public static class DlxUtil
     {
+        private static readonly Random Rand = new();
+
         public static int[,] RowsToMatrix(this IEnumerable<int[]> rows)
         {
             var rowList = rows.ToList();
@@ -38,10 +41,13 @@ namespace SudokuDlxLib
         /// 0b000_000_111 to [1, 2, 3]
         /// </summary>
         /// <param name="possibleDigitsBinary"></param>
+        /// <param name="randomOrder">随机顺序</param>
         /// <returns></returns>
-        public static IEnumerable<int> PossibleDigitsFromBinaryToEnumerable(this int possibleDigitsBinary)
+        public static IEnumerable<int> PossibleDigitsFromBinaryToEnumerable(this int possibleDigitsBinary, bool randomOrder = false)
         {
-            for (var i = 0; i < 9; i++)
+            var range = randomOrder ? Enumerable.Range(0, 9).OrderBy(_ => Rand.Next()) : Enumerable.Range(0, 9);
+
+            foreach (var i in range)
             {
                 if ((possibleDigitsBinary & (0b1 << i)) == 0) continue;
                 yield return i + 1;

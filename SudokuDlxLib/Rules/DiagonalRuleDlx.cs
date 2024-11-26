@@ -22,7 +22,7 @@ namespace SudokuDlxLib.Rules
 
                 var position = GetPosition(row, puzzle);
                 var possibleColumn = GetPossibleDigitsIndex(columnPredicate);
-                var possibleDigits = UpdatePossibleDigits(puzzle, row, columnPredicate);
+                var possibleDigits = UpdatePossibleDigits(puzzle, row, columnPredicate, expandRowType);
 
                 return possibleDigits.Select(possibleDigit =>
                 {
