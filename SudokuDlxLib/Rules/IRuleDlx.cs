@@ -62,11 +62,11 @@ namespace SudokuDlxLib.Rules
         /// <summary>
         /// 更新 可能数字提示列，并返回可能的数字
         /// </summary>
+        /// <param name="puzzle"></param>
         /// <param name="row"></param>
         /// <param name="columnPredicate">列规则</param>
-        /// <param name="puzzle"></param>
         /// <returns>possibleDigits</returns>
-        protected IEnumerable<int> UpdatePossibleDigits(int[] row, int[] columnPredicate, IPuzzle puzzle)
+        protected IEnumerable<int> UpdatePossibleDigits(IPuzzle puzzle, int[] row, int[] columnPredicate)
         {
             var position = GetPosition(row, puzzle);
             var possibleDigitsIndex = GetPossibleDigitsIndex(columnPredicate);

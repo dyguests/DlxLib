@@ -23,7 +23,7 @@ namespace SudokuDlxLib.Rules
             var rowArray = rows.ToArray();
 
             // gen position -> possibleDigits
-            var pos2possibleDigits = rowArray.Select(row => (position: GetPosition(row, puzzle), row))
+            var pos2PossibleDigits = rowArray.Select(row => (position: GetPosition(row, puzzle), row))
                 .Where(tuple => allPositions.Contains(tuple.position))
                 .GroupBy(tuple => tuple.position)
                 .ToDictionary(
@@ -41,7 +41,7 @@ namespace SudokuDlxLib.Rules
                     .SelectMany(tuple =>
                         GetPossiblePermutations(
                                 tuple.combination,
-                                tuple.cage.Indexes.Select(position => pos2possibleDigits[position]).ToArray()
+                                tuple.cage.Indexes.Select(position => pos2PossibleDigits[position]).ToArray()
                             )
                             .Select(permutation => (tuple.cage, tuple.combination, permutation))
                     )
