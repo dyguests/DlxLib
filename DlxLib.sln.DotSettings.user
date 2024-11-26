@@ -42,5 +42,6 @@
     &lt;TestId&gt;NUnit3x::D17F343C-66F4-47F1-8CE8-A4CDAEA78BAB::net8.0::SudokuDlxLibTest.Rules.KillerRuleDlxTest.Test_GetPossiblePermutations4&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::D17F343C-66F4-47F1-8CE8-A4CDAEA78BAB::net8.0::SudokuDlxLibTest.Rules.KillerRuleDlxTest.Test_GetPossiblePermutations3&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::D17F343C-66F4-47F1-8CE8-A4CDAEA78BAB::net8.0::SudokuDlxLibTest.MathUtilTest.Test_GetPermutations&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::D2A341E1-33EC-4BF8-861D-6B6A447DB35F::net8.0::SudokuGeneratorTest.SudokuGeneratorTest.GenerateRandomFill&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
