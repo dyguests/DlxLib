@@ -12,7 +12,7 @@ namespace SudokuDlxLib.Rules
     {
         #region RuleDlx
 
-        public override (IEnumerable<int[]>, int[]) ExpandRows(IEnumerable<int[]> rows, int[] columnPredicate, IPuzzle puzzle)
+        public override (IEnumerable<int[]>, int[]) ExpandRows(IPuzzle puzzle, IEnumerable<int[]> rows, int[] columnPredicate)
         {
             var possibleDigitsIndex = GetPossibleDigitsIndex(columnPredicate);
 

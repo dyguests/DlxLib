@@ -10,11 +10,11 @@ namespace SudokuDlxLib.Rules
         /// 基于 dlx 的 rows，扩展IRule规则
         /// 基于 dlx 的 rows，扩展IRule规则
         /// </summary>
+        /// <param name="puzzle"></param>
         /// <param name="rows">dlx rows</param>
         /// <param name="columnPredicate">列规则：主/副/提示列</param>
-        /// <param name="puzzle"></param>
         /// <returns>(rows, columnPredicate)</returns>
-        (IEnumerable<int[]>, int[]) ExpandRows(IEnumerable<int[]> rows, int[] columnPredicate, IPuzzle puzzle);
+        (IEnumerable<int[]>, int[]) ExpandRows(IPuzzle puzzle, IEnumerable<int[]> rows, int[] columnPredicate);
 
         /// <summary>
         /// 
@@ -30,7 +30,7 @@ namespace SudokuDlxLib.Rules
     {
         #region IRule
 
-        public abstract (IEnumerable<int[]>, int[]) ExpandRows(IEnumerable<int[]> rows, int[] columnPredicate, IPuzzle puzzle);
+        public abstract (IEnumerable<int[]>, int[]) ExpandRows(IPuzzle puzzle, IEnumerable<int[]> rows, int[] columnPredicate);
 
         public abstract bool FillSolution(int[] solution, List<int[]> rows, IPuzzle puzzle);
 
