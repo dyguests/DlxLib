@@ -1,5 +1,7 @@
+using System;
 using NUnit.Framework;
 using SudokuGeneratorLib;
+using SudokuLibTest;
 
 namespace SudokuGeneratorTest
 {
@@ -12,6 +14,7 @@ namespace SudokuGeneratorTest
         public void GenerateRandomFill()
         {
             var puzzle = SudokuGenerator.GenerateRandomFill();
+            Console.WriteLine($"puzzle:\n{puzzle?.ToDisplay()}");
             Assert.Pass();
         }
     }
