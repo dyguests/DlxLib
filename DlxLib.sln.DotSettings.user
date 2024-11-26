@@ -21,6 +21,8 @@
     &lt;TestId&gt;NUnit3x::D17F343C-66F4-47F1-8CE8-A4CDAEA78BAB::net8.0::SudokuDlxLibTest.Rules.MathUtilTest.Test_GetPermutations&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::D17F343C-66F4-47F1-8CE8-A4CDAEA78BAB::net8.0::SudokuDlxLibTest.Rules.KillerRuleDlxTest.Test_GetPossiblePermutations&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::D17F343C-66F4-47F1-8CE8-A4CDAEA78BAB::net8.0::SudokuDlxLibTest.Rules.KillerRuleDlxTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::35EF9253-30B6-4595-8859-00CA183BC204::net8.0::SudokuLibTest.Rules.KillerRuleTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::D17F343C-66F4-47F1-8CE8-A4CDAEA78BAB::net8.0::SudokuDlxLibTest.MathUtilTest.Test_GetPermutations&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c64f1dda_002D5efe_002D496c_002Dbfde_002Dd3ba2917c996/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="TestPuzzleX #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
