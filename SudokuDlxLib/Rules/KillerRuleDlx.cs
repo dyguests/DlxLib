@@ -18,7 +18,7 @@ namespace SudokuDlxLib.Rules
 
             var rule = puzzle.Rules.OfType<KillerRule>().FirstOrDefault() ?? throw new Exception("KillerRule not found");
             var cages = rule.ReadonlyCages;
-            var allPositions = cages.SelectMany(cage => cage.Indexes).Order();
+            var allPositions = cages.SelectMany(cage => cage.Indexes).OrderBy(i => i);
 
             var rowArray = rows.ToArray();
 

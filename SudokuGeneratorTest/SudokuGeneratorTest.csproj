@@ -19,6 +19,7 @@
     </ItemGroup>
     
     <ItemGroup>
+        <ProjectReference Include="..\SudokuGeneratorLib\SudokuGeneratorLib.csproj" />
         <ProjectReference Include="..\SudokuTest\SudokuTest.csproj" />
     </ItemGroup>
 
