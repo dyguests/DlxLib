@@ -8,7 +8,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\DlxLib\DlxLib.csproj"/>
         <ProjectReference Include="..\SudokuDlxLib\SudokuDlxLib.csproj"/>
         <ProjectReference Include="..\SudokuLib\SudokuLib.csproj"/>
     </ItemGroup>

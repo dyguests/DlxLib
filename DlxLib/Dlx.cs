@@ -22,13 +22,13 @@ namespace DlxLib
         public Dlx(int[,] matrix, int[] primaryColumnIndexes, int[] secondaryColumnIndexes) :
             this(matrix, new NormalColumnsPredicate(primaryColumnIndexes, secondaryColumnIndexes), new UpToTwoInstrumentation())
         {
-            ArgumentNullException.ThrowIfNull(primaryColumnIndexes);
-            ArgumentNullException.ThrowIfNull(secondaryColumnIndexes);
+            if (primaryColumnIndexes == null) throw new ArgumentNullException(nameof(primaryColumnIndexes));
+            if (secondaryColumnIndexes == null) throw new ArgumentNullException(nameof(secondaryColumnIndexes));
         }
 
         public Dlx(int[,] matrix, int[] columnPredicate) : this(matrix, new IndexColumnsPredicate(columnPredicate), new UpToTwoInstrumentation())
         {
-            ArgumentNullException.ThrowIfNull(columnPredicate);
+            if (columnPredicate == null) throw new ArgumentNullException(nameof(columnPredicate));
         }
 
         public Dlx(int[,] matrix, IColumnPredicate columnPredicate, params Instrumentation[] instrumentations)
