@@ -20,9 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\SudokuDlxLib\SudokuDlxLib.csproj" />
       <ProjectReference Include="..\SudokuTest\SudokuTest.csproj" />
-      <ProjectReference Include="..\SudokuLib\SudokuLib.csproj" />
     </ItemGroup>
 
 </Project>
