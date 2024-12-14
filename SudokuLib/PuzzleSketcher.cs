@@ -84,7 +84,7 @@ namespace SudokuLib
                 if (puzzle.Digits[i] != 0) return (char)(CharDigit1 + (puzzle.Digits[i] - 1));
                 if (showSolution && puzzle.Solution[i] != 0)
                 {
-                    return (char)(useMask ? CharMask1 : CharDigit1 + (puzzle.Solution[i] - 1));
+                    return (char)((useMask ? CharMask1 : CharDigit1) + (puzzle.Solution[i] - 1));
                 }
 
                 return '.';
