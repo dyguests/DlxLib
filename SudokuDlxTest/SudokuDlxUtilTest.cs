@@ -57,10 +57,12 @@ Killer 10=76+77";
         [Test]
         public void TestWorkshopKiller1()
         {
-            const string sketch = @"abcdefghighiabcdefdefghiabccabh.eifgfigcabhdehde..gcabbcaegdfihifhbcaegdegd..hbca
-Killer 20=23+32+41";
+            const string sketch = @".................................................................................
+Killer 20=0+1+2";
             //                    "325867194869143275714259368193682457647935812582714639258396741431578926976421583";
             TestPuzzle(sketch);
+            
+            Assert.Pass();
         }
 
         private static void TestPuzzle(string sketch)
