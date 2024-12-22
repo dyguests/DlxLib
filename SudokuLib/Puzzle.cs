@@ -11,6 +11,7 @@ namespace SudokuLib
         IRule[] Rules { get; }
 
         void SetSolution(int[] solution);
+        void SetRules(IRule[] rules);
     }
 
     public class Puzzle : IPuzzle
@@ -19,7 +20,7 @@ namespace SudokuLib
 
         public int[] Digits { get; }
         public int[] Solution { get; }
-        public IRule[] Rules { get; }
+        public IRule[] Rules { get; private set; } = null!;
 
         public void SetSolution(int[] solution)
         {
@@ -29,6 +30,11 @@ namespace SudokuLib
             }
 
             Array.Copy(solution, Solution, solution.Length);
+        }
+
+        public void SetRules(IRule[] rules)
+        {
+            Rules = rules.Any(rule => rule is IBaseRule) ? rules : new[] { new StandardRule() }.Concat(rules).ToArray();
         }
 
         #endregion
@@ -42,7 +48,7 @@ namespace SudokuLib
 
             Digits = digits;
             Solution = new int[digits.Length];
-            Rules = rules.Any(rule => rule is IBaseRule) ? rules : new[] { new StandardRule() }.Concat(rules).ToArray();
+            SetRules(rules);
         }
     }
 }
