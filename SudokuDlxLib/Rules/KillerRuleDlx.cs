@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DlxLib.ColumnPredicates;
+using SudokuDlxLib.Utils;
 using SudokuLib;
 using SudokuLib.Helpers;
 using SudokuLib.Rules;
@@ -57,14 +58,41 @@ namespace SudokuDlxLib.Rules
             {
                 if (index == 0) _ruleRowStart = row.Length;
 
-                // cageCombinationPermutations.Where(tuple => tuple.cage.Indexes.Any(row))
-                var expandingRow = new int[9];
+                var position = SudokuDlxUtil.GetPosition(row, columnPredicate);
 
-                //todo impl
-                return new[] { 1 }.Select(i => { return row; });
+                return cageCombinationPermutations
+                    .Select(tuple => (
+                        cage: tuple.cage,
+                        combination: tuple.combination,
+                        permutation: tuple.permutation,
+                        /*position在tuple.cage.Indexes中的位置*/index: Array.IndexOf(tuple.cage.Indexes, position)
+                    ))
+                    .Select(tuple =>
+                    {
+                        var expandingRow = new int[9];
+                        if (tuple.index < 0)
+                        {
+                            // just return empty.
+                        }
+                        else if (tuple.index == 0)
+                        {
+                            foreach (var digit in Enumerable.Range(1, 9).Except(tuple.permutation.Skip(1)))
+                            {
+                                expandingRow[digit - 1] = 1;
+                            }
+                        }
+                        else
+                        {
+                            var digit = tuple.permutation[tuple.index];
+                            expandingRow[digit - 1] = 1;
+                        }
+
+                        return expandingRow;
+                    })
+                    .Distinct(new IntArrayComparer())
+                    .Select(expandingRow => row.Concat(expandingRow).ToArray());
             });
-            //todo impl
-            var expandColumnPredicate = columnPredicate.Concat(Enumerable.Repeat(ColumnPredicate.KeySecondaryColumn, 9 * 2)).ToArray();
+            var expandColumnPredicate = columnPredicate.Concat(Enumerable.Repeat(ColumnPredicate.KeyPrimaryColumn, 9)).ToArray();
             return (expandRows, expandColumnPredicate);
         }
 
