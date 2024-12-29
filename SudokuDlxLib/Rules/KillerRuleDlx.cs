@@ -12,6 +12,11 @@ namespace SudokuDlxLib.Rules
     {
         #region RuleDlx
 
+        /// <summary>
+        /// ExpandRows 之前的 row.Length，也是新的 rule 的 row 开始位置
+        /// </summary>
+        private int _ruleRowStart;
+
         public override (IEnumerable<int[]>, int[]) ExpandRows(IPuzzle puzzle, IEnumerable<int[]> rows, int[] columnPredicate, ExpandRowType expandRowType = ExpandRowType.Sequence)
         {
             var possibleDigitsIndex = GetPossibleDigitsIndex(columnPredicate);
@@ -36,6 +41,7 @@ namespace SudokuDlxLib.Rules
                         .ToArray()
                 );
 
+            // gen cage, combination, permutation
             var cageCombinationPermutations = cages.Select(cage => (cage, combinations: KillerRuleHelper.GetPossibleCombinations(cage)))
                     .SelectMany(tuple => tuple.combinations.Select(combination => (tuple.cage, combination)))
                     .SelectMany(tuple =>
@@ -49,7 +55,10 @@ namespace SudokuDlxLib.Rules
 
             var expandRows = rowArray.SelectMany((row, index) =>
             {
-                // if (index == 0) _ruleRowStart = row.Length;
+                if (index == 0) _ruleRowStart = row.Length;
+
+                // cageCombinationPermutations.Where(tuple => tuple.cage.Indexes.Any(row))
+                var expandingRow = new int[9];
 
                 //todo impl
                 return new[] { 1 }.Select(i => { return row; });
