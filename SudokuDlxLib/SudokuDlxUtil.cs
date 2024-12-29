@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DlxLib;
 using SudokuDlxLib.Rules;
@@ -12,7 +13,7 @@ namespace SudokuDlxLib
 
         public static Dlx ToDlx(IPuzzle puzzle, ExpandRowType expandRowType = ExpandRowType.Sequence)
         {
-            var (rows, columnPredicate) = CreatePositionRows(puzzle.Digits.Length);
+            var (rows, columnPredicate) = CreatePositionRows(puzzle);
             foreach (var rule in puzzle.Rules)
             {
                 (rows, columnPredicate) = RuleDlxMapper.GetDlx(rule).ExpandRows(puzzle, rows, columnPredicate, expandRowType);
@@ -24,18 +25,22 @@ namespace SudokuDlxLib
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="size"></param>
+        /// <param name="puzzle"></param>
         /// <returns>(按position升序的IEnumerable, columnPredicate)</returns>
-        private static (IEnumerable<int[]>, int[]) CreatePositionRows(int size)
+        private static (IEnumerable<int[]>, int[]) CreatePositionRows(IPuzzle puzzle)
         {
-            var rows = Enumerable.Range(0, size).Select(i =>
+            var rows = Enumerable.Range(0, puzzle.Digits.Length).Select(i =>
             {
-                var row = new int[size];
+                var row = new int[puzzle.Digits.Length];
                 row[i] = 1;
                 return row;
             });
             // 0:主列 1:副列 2:提示列
-            var columnPredicate = new int[size];
+            var columnPredicate = new int[puzzle.Digits.Length];
+
+            // 添加 position 提示列
+            rows = rows.Select(row => row.Append(GetPosition(row, puzzle)).ToArray());
+            columnPredicate = columnPredicate.Append(ColumnPredicateEx.KeyPosition).ToArray();
 
             // 添加 possible 提示列
             rows = rows.Select(row => row.Append(0b111_111_111).ToArray());
@@ -44,6 +49,13 @@ namespace SudokuDlxLib
             // todo 后续先对 possible 进行一次过滤
 
             return (rows, columnPredicate);
+        }
+
+        public static int GetPosition(int[] row, IPuzzle puzzle)
+        {
+            var index = Array.IndexOf(row, 1);
+            if (index < 0 || index >= puzzle.Digits.Length) throw new ArgumentOutOfRangeException(nameof(index), "Position is out of range.");
+            return index;
         }
 
         #endregion

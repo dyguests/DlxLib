@@ -39,13 +39,6 @@ namespace SudokuDlxLib.Rules
 
         #region Rule
 
-        protected static int GetPosition(int[] row, IPuzzle puzzle)
-        {
-            var index = Array.IndexOf(row, 1);
-            if (index < 0 || index >= puzzle.Digits.Length) throw new ArgumentOutOfRangeException(nameof(index), "Position is out of range.");
-            return index;
-        }
-
         /// <summary>
         /// 
         /// </summary>
@@ -69,7 +62,7 @@ namespace SudokuDlxLib.Rules
         /// <returns>possibleDigits</returns>
         protected IEnumerable<int> UpdatePossibleDigits(IPuzzle puzzle, int[] row, int[] columnPredicate, ExpandRowType expandRowType)
         {
-            var position = GetPosition(row, puzzle);
+            var position = SudokuDlxUtil.GetPosition(row, puzzle);
             var possibleDigitsIndex = GetPossibleDigitsIndex(columnPredicate);
             var digit = puzzle.Digits[position];
             if (digit > 0)

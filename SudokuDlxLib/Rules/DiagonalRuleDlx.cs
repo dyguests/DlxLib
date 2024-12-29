@@ -20,7 +20,7 @@ namespace SudokuDlxLib.Rules
 
                 row = (int[])row.Clone();
 
-                var position = GetPosition(row, puzzle);
+                var position = SudokuDlxUtil.GetPosition(row, puzzle);
                 var possibleColumn = GetPossibleDigitsIndex(columnPredicate);
                 var possibleDigits = UpdatePossibleDigits(puzzle, row, columnPredicate, expandRowType);
 
