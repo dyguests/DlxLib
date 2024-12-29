@@ -28,7 +28,7 @@ namespace SudokuDlxLib.Rules
             var rowArray = rows.ToArray();
 
             // gen position -> possibleDigits
-            var pos2PossibleDigits = rowArray.Select(row => (position: SudokuDlxUtil.GetPosition(row, puzzle), row))
+            var pos2PossibleDigits = rowArray.Select(row => (position: SudokuDlxUtil.GetPosition(row, columnPredicate), row))
                 .Where(tuple => allPositions.Contains(tuple.position))
                 .GroupBy(tuple => tuple.position)
                 .ToDictionary(

@@ -51,11 +51,18 @@ namespace SudokuDlxLib
             return (rows, columnPredicate);
         }
 
-        public static int GetPosition(int[] row, IPuzzle puzzle)
+        private static int GetPosition(int[] row, IPuzzle puzzle)
         {
             var index = Array.IndexOf(row, 1);
             if (index < 0 || index >= puzzle.Digits.Length) throw new ArgumentOutOfRangeException(nameof(index), "Position is out of range.");
             return index;
+        }
+
+        public static int GetPosition(int[] row, int[] columnPredicate)
+        {
+            var index = Array.IndexOf(columnPredicate, ColumnPredicateEx.KeyPosition);
+            if (index < 0) throw new ArgumentOutOfRangeException(nameof(index), "Position is not found.");
+            return row[index];
         }
 
         #endregion
