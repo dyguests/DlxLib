@@ -21,7 +21,7 @@ namespace SudokuDlxLib.Rules
         public override (IEnumerable<int[]>, int[]) ExpandRows(IPuzzle puzzle, IEnumerable<int[]> rows, int[] columnPredicate, ExpandRowType expandRowType = ExpandRowType.Sequence)
         {
             var possibleDigitsIndex = GetPossibleDigitsIndex(columnPredicate);
-            // todo possibleDigitsIndex 这里用完要收缩
+            // todo possibleDigitsIndex 这里用完要收缩 ; 目前 StandardRuleDlx 已经 收缩过了，所以这里不用处理
 
             var rule = puzzle.Rules.OfType<KillerRule>().FirstOrDefault() ?? throw new Exception("KillerRule not found");
             var cages = rule.ReadonlyCages;
@@ -89,7 +89,7 @@ namespace SudokuDlxLib.Rules
                             expandingRow[digit - 1] = 1;
                         }
 
-                        Console.WriteLine($"index:{tuple.index} permutation:{string.Join(",", tuple.permutation)} expandingRow:{string.Join(",", expandingRow)}");
+                        // Console.WriteLine($"index:{tuple.index} permutation:{string.Join(",", tuple.permutation)} expandingRow:{string.Join(",", expandingRow)}");
                         return expandingRow;
                     })
                     .Distinct(new IntArrayComparer())
