@@ -9,7 +9,7 @@ namespace DlxLib.ColumnPredicates
             this._numPrimaryColumns = numPrimaryColumns;
         }
 
-        public override bool IsPrimaryColumn(int column) => column <= _numPrimaryColumns;
+        public override bool IsPrimaryColumn(int column) => column < _numPrimaryColumns;
         public override bool IsSecondaryColumn(int column) => column > _numPrimaryColumns;
     }
 }

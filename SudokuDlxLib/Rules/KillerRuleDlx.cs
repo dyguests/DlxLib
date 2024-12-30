@@ -69,6 +69,7 @@ namespace SudokuDlxLib.Rules
                     ))
                     .Select(tuple =>
                     {
+                        // todo 多个 cages 好像不能这么干
                         var expandingRow = new int[9];
                         if (tuple.index < 0)
                         {
@@ -87,6 +88,7 @@ namespace SudokuDlxLib.Rules
                             expandingRow[digit - 1] = 1;
                         }
 
+                        // Console.WriteLine($"index:{tuple.index} permutation:{string.Join(",", tuple.permutation)} expandingRow:{string.Join(",", expandingRow)}");
                         return expandingRow;
                     })
                     .Distinct(new IntArrayComparer())

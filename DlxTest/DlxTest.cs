@@ -8,7 +8,9 @@ namespace DlxLibTest
     public class DlxTest
     {
         [SetUp]
-        public void Setup() { }
+        public void Setup()
+        {
+        }
 
         [Test]
         public void TestEmpty()
@@ -80,7 +82,7 @@ namespace DlxLibTest
                 { 0, 1, 0, 1 },
                 { 0, 1, 0, 0 },
             };
-            Validate(matrix, new[] { 1, 1, 0, 0 });
+            Validate(matrix, new[] { 0, 0, 1, 1 });
             Assert.Pass();
         }
 
@@ -174,6 +176,48 @@ namespace DlxLibTest
             };
 
             Validate(matrix, new[] { 1, 1, 0, 0, });
+        }
+
+        [Test]
+        public void TestIgnoreColumn()
+        {
+            // 确切覆盖问题矩阵
+            var matrix = new[,]
+            {
+                { 1, 0, 1, 0, },
+                { 0, 1, 0, 0, },
+                { 0, 1, 1, 0, },
+            };
+
+            Validate(matrix, new[] { 0, 0, 9, 1, });
+        }
+
+        [Test]
+        public void TestIgnoreColumn2()
+        {
+            // 确切覆盖问题矩阵
+            var matrix = new[,]
+            {
+                { 1, 0, 1, 1, },
+                { 0, 1, 0, 1, },
+                { 0, 1, 1, 0, },
+            };
+
+            Validate(matrix, new[] { 0, 0, 9, 0, });
+        }
+
+        [Test]
+        public void TestIgnoreColumn3()
+        {
+            // 确切覆盖问题矩阵
+            var matrix = new[,]
+            {
+                { 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, },
+                { 0, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1, },
+                { 0, 1, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, },
+            };
+
+            Validate(matrix, new[] { 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, });
         }
 
         private static void Validate(int[,] matrix, int[]? columnPredicate = null)
