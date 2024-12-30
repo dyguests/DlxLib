@@ -9,7 +9,9 @@ namespace SudokuDlxLibTest
     public class SudokuDlxUtilTest
     {
         [SetUp]
-        public void Setup() { }
+        public void Setup()
+        {
+        }
 
         [Test]
         public void TestPuzzleWithSolution()
@@ -61,7 +63,7 @@ Killer 10=76+77";
 Killer 20=0+1+2";
             //                    "325867194869143275714259368193682457647935812582714639258396741431578926976421583";
             TestPuzzle(sketch);
-            
+
             Assert.Pass();
         }
 
@@ -71,6 +73,7 @@ Killer 20=0+1+2";
             Console.WriteLine($"sketch:\n{sketch}");
             Console.WriteLine($"puzzle:\n{puzzle.ToDisplay()}");
             var dlx = SudokuDlxUtil.ToDlx(puzzle);
+            dlx.Display();
             foreach (var result in dlx.Solve())
             {
                 Console.WriteLine("dlx Solution:" + string.Join(",", result));

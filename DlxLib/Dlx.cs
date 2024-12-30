@@ -16,8 +16,13 @@ namespace DlxLib
         private readonly IColumnPredicate _columnPredicate;
         private readonly Instrumentation[] _instrumentations;
 
-        public Dlx(int[,] matrix) : this(matrix, matrix.GetLength(0)) { }
-        public Dlx(int[,] matrix, int numPrimaryColumns) : this(matrix, new NumPrimaryColumnsPredicate(numPrimaryColumns)) { }
+        public Dlx(int[,] matrix) : this(matrix, matrix.GetLength(0))
+        {
+        }
+
+        public Dlx(int[,] matrix, int numPrimaryColumns) : this(matrix, new NumPrimaryColumnsPredicate(numPrimaryColumns))
+        {
+        }
 
         public Dlx(int[,] matrix, int[] primaryColumnIndexes, int[] secondaryColumnIndexes) :
             this(matrix, new NormalColumnsPredicate(primaryColumnIndexes, secondaryColumnIndexes), new UpToTwoInstrumentation())
@@ -225,6 +230,43 @@ namespace DlxLib
 
             c.R.L = c;
             c.L.R = c;
+        }
+
+        public void Display()
+        {
+            Console.WriteLine("Dlx:");
+            for (var i = 0; i < _matrix.GetLength(0); i++)
+            {
+                if (i == 0)
+                {
+                    Console.Write("C:");
+                    for (var j = 0; j < _matrix.GetLength(1); j++)
+                    {
+                        if (_columnPredicate.IsPrimaryColumn(j))
+                        {
+                            Console.Write("0" + ",");
+                        }
+                        else if (_columnPredicate.IsSecondaryColumn(j))
+                        {
+                            Console.Write("1" + ",");
+                        }
+                        else
+                        {
+                            Console.Write("?" + ",");
+                        }
+                    }
+
+                    Console.WriteLine();
+                }
+
+                Console.Write($"{i}:");
+                for (var j = 0; j < _matrix.GetLength(1); j++)
+                {
+                    Console.Write(_matrix[i, j] + ",");
+                }
+
+                Console.WriteLine();
+            }
         }
     }
 }

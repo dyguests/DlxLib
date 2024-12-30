@@ -31,6 +31,7 @@
     &lt;TestId&gt;NUnit3x::23EF6962-98AA-4736-B837-E50310655DD6::net8.0::DlxLibTest.DlxTest.TestSecondary&lt;/TestId&gt;
     &lt;TestId&gt;NUnit3x::23EF6962-98AA-4736-B837-E50310655DD6::net8.0::DlxLibTest.DlxTest.TestIgnoreColumn2&lt;/TestId&gt;
     &lt;TestId&gt;NUnit3x::23EF6962-98AA-4736-B837-E50310655DD6::net8.0::DlxLibTest.DlxTest.TestIgnoreColumn3&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::23EF6962-98AA-4736-B837-E50310655DD6::net8.0::DlxLibTest.DlxTest.TestIgnoreColumn4&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c64f1dda_002D5efe_002D496c_002Dbfde_002Dd3ba2917c996/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="TestPuzzleX #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;

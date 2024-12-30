@@ -21,6 +21,7 @@ namespace SudokuDlxLib.Rules
         public override (IEnumerable<int[]>, int[]) ExpandRows(IPuzzle puzzle, IEnumerable<int[]> rows, int[] columnPredicate, ExpandRowType expandRowType = ExpandRowType.Sequence)
         {
             var possibleDigitsIndex = GetPossibleDigitsIndex(columnPredicate);
+            // todo possibleDigitsIndex 这里用完要收缩
 
             var rule = puzzle.Rules.OfType<KillerRule>().FirstOrDefault() ?? throw new Exception("KillerRule not found");
             var cages = rule.ReadonlyCages;
@@ -88,11 +89,16 @@ namespace SudokuDlxLib.Rules
                             expandingRow[digit - 1] = 1;
                         }
 
-                        // Console.WriteLine($"index:{tuple.index} permutation:{string.Join(",", tuple.permutation)} expandingRow:{string.Join(",", expandingRow)}");
+                        Console.WriteLine($"index:{tuple.index} permutation:{string.Join(",", tuple.permutation)} expandingRow:{string.Join(",", expandingRow)}");
                         return expandingRow;
                     })
                     .Distinct(new IntArrayComparer())
-                    .Select(expandingRow => row.Concat(expandingRow).ToArray());
+                    .Select(expandingRow =>
+                    {
+                        var array = row.Concat(expandingRow).ToArray();
+                        // Console.WriteLine($"expandingRow:{string.Join(",", array.Skip(_ruleRowStart))}");
+                        return array;
+                    });
             });
             var expandColumnPredicate = columnPredicate.Concat(Enumerable.Repeat(ColumnPredicate.KeyPrimaryColumn, 9)).ToArray();
             return (expandRows, expandColumnPredicate);
