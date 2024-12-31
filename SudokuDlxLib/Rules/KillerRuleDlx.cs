@@ -74,6 +74,8 @@ namespace SudokuDlxLib.Rules
                 return row[possibleDigitsIndex].PossibleDigitsFromBinaryToEnumerable()
                     .SelectMany(digit =>
                     {
+                        // 这里宽度不一定要用9，后续再优化
+
                         if (
                             !pos2PossibleDigits.TryGetValue(position, out var possibleDigits) || possibleDigits == null ||
                             Array.IndexOf(possibleDigits, digit) < 0
@@ -109,8 +111,11 @@ namespace SudokuDlxLib.Rules
                     .Select(expandingRow =>
                     {
                         var array = new int[9 * cagesLength];
-                        var cageIndex = position2cageIndex[position];
-                        Array.Copy(expandingRow, 0, array, 9 * cageIndex, expandingRow.Length);
+                        if (position2cageIndex.TryGetValue(position, out var cageIndex))
+                        {
+                            Array.Copy(expandingRow, 0, array, 9 * cageIndex, expandingRow.Length);
+                        }
+
                         return array;
                     })
                     .Distinct(new IntArrayComparer())
