@@ -48,15 +48,19 @@ namespace SudokuDlxLib.Rules
 
             // gen cage, combination, permutation
             var cageCombinationPermutations = cages.Select(cage => (cage, combinations: KillerRuleHelper.GetPossibleCombinations(cage)))
-                    .SelectMany(tuple => tuple.combinations.Select(combination => (tuple.cage, combination)))
-                    .SelectMany(tuple =>
-                        GetPossiblePermutations(
-                                tuple.combination,
-                                tuple.cage.Indexes.Select(position => pos2PossibleDigits[position]).ToArray()
-                            )
-                            .Select(permutation => (tuple.cage, tuple.combination, permutation))
-                    )
-                ;
+                .SelectMany(tuple => tuple.combinations.Select(combination => (tuple.cage, combination)))
+                .SelectMany(tuple =>
+                    GetPossiblePermutations(
+                            tuple.combination,
+                            tuple.cage.Indexes.Select(position => pos2PossibleDigits[position]).ToArray()
+                        )
+                        .Select(permutation => (tuple.cage, tuple.combination, permutation))
+                );
+            var firstPosition2Permutation = cageCombinationPermutations.GroupBy(tuple => tuple.cage.Indexes.First())
+                .ToDictionary(
+                    group => group.Key,
+                    group => group.Select(tuple => tuple.permutation).ToArray()
+                );
 
             var expandRows = rowArray.SelectMany((row, index) =>
             {
@@ -65,70 +69,41 @@ namespace SudokuDlxLib.Rules
                 var position = SudokuDlxUtil.GetPosition(row, columnPredicate);
 
                 return row[possibleDigitsIndex].PossibleDigitsFromBinaryToEnumerable()
-                    .Select(digit =>
+                    .SelectMany(digit =>
                     {
                         // todo 后续多个cage要错开
 
-                        var expandingRow = new int[9];
-
-                        if (!pos2PossibleDigits.TryGetValue(position, out var possibleDigits) || possibleDigits == null)
+                        if (
+                            !pos2PossibleDigits.TryGetValue(position, out var possibleDigits) || possibleDigits == null ||
+                            Array.IndexOf(possibleDigits, digit) < 0
+                        )
                         {
-                            return expandingRow;
+                            return new[] { new int[9], };
                         }
 
-                        if (Array.IndexOf(possibleDigits, digit) < 0)
+                        if (!allCageFirstPositions.Contains(position))
                         {
-                            return expandingRow;
-                        }
-
-                        if (allCageFirstPositions.Contains(position))
-                        {
-                        }
-                        else
-                        {
+                            // 对于cage中的非第一个位置，只需要标1就行
+                            // 例： cage(20:0+1+2) 中的可能排列 (3,8,9) 时，若当前的position=1，则标记为 000000010
+                            var expandingRow = new int[9];
                             expandingRow[digit - 1] = 1;
+                            return new[] { expandingRow, };
                         }
 
-                        return expandingRow;
-                    })
-                    .Distinct(new IntArrayComparer())
-                    .Select(expandingRow =>
-                    {
-                        var array = row.Concat(expandingRow).ToArray();
-                        // Console.WriteLine($"expandingRow:{string.Join(",", array.Skip(_ruleRowStart))}");
-                        return array;
-                    });
-
-                return cageCombinationPermutations
-                    .Select(tuple => (
-                        cage: tuple.cage,
-                        combination: tuple.combination,
-                        permutation: tuple.permutation,
-                        /*position在tuple.cage.Indexes中的位置*/index: Array.IndexOf(tuple.cage.Indexes, position)
-                    ))
-                    .Select(tuple =>
-                    {
-                        // todo 多个 cages 好像不能这么干
-                        var expandingRow = new int[9];
-                        if (tuple.index < 0)
-                        {
-                            // just return empty.
-                        }
-                        else if (tuple.index == 0)
-                        {
-                            foreach (var digit in Enumerable.Range(1, 9).Except(tuple.permutation.Skip(1)))
+                        // 对于cage中的第一个位置，需要将除cage中其它位置全标1
+                        // 例： cage(20:0+1+2) 中的可能排列 (3,8,9) 时，若当前的position=0，则标记为 111111100
+                        return firstPosition2Permutation[position]
+                            .Where(permutation => digit == permutation[0])
+                            .Select(permutation =>
                             {
-                                expandingRow[digit - 1] = 1;
-                            }
-                        }
-                        else
-                        {
-                            var digit = tuple.permutation[tuple.index];
-                            expandingRow[digit - 1] = 1;
-                        }
+                                int[] expandingRow = Enumerable.Repeat(1, 9).ToArray();
+                                foreach (var aDigit in permutation.Skip(1))
+                                {
+                                    expandingRow[aDigit - 1] = 0;
+                                }
 
-                        // Console.WriteLine($"index:{tuple.index} permutation:{string.Join(",", tuple.permutation)} expandingRow:{string.Join(",", expandingRow)}");
-                        return expandingRow;
+                                return expandingRow;
+                            });
                     })
                     .Distinct(new IntArrayComparer())
                     .Select(expandingRow =>
