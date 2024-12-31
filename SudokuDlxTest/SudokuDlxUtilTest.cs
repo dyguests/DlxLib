@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using NUnit.Framework;
 using SudokuDlxLib;
 using SudokuLib;
@@ -77,6 +78,25 @@ Killer 20=0+1+2";
             foreach (var result in dlx.Solve())
             {
                 Console.WriteLine("dlx Solution:" + string.Join(",", result));
+                Console.WriteLine("dlx Solution rows:");
+                foreach (var row in dlx.ReadonlyMatrix.MatrixToRows().Where((row, index) => Array.IndexOf(result, index) >= 0))
+                {
+                    Console.WriteLine(string.Join(",", row));
+                }
+
+                var mergeRow = dlx.ReadonlyMatrix.MatrixToRows()
+                    .Where((row, index) => Array.IndexOf(result, index) >= 0)
+                    .Aggregate((a, b) =>
+                    {
+                        var result = new int[a.Length];
+                        for (var i = 0; i < a.Length; i++)
+                        {
+                            result[i] = a[i] + b[i];
+                        }
+
+                        return result;
+                    });
+                Console.WriteLine($"mergeRow:\n{string.Join(",", mergeRow)}");
                 var solution = SudokuDlxUtil.ToSolution(puzzle, dlx.ReadonlyMatrix, result);
                 puzzle.SetSolution(solution);
                 Console.WriteLine($"sudoku Solution:\n{solution.DigitsToDisplay()}");

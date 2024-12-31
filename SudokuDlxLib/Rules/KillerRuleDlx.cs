@@ -20,18 +20,21 @@ namespace SudokuDlxLib.Rules
 
         public override (IEnumerable<int[]>, int[]) ExpandRows(IPuzzle puzzle, IEnumerable<int[]> rows, int[] columnPredicate, ExpandRowType expandRowType = ExpandRowType.Sequence)
         {
-            var possibleDigitsIndex = GetPossibleDigitsIndex(columnPredicate);
+            var possibleDigitsIndex = GetPossibleDigitsIndex(columnPredicate); //问题出在这里，应该， 数字 和 expandingRow 对不上
             // todo possibleDigitsIndex 这里用完要收缩 ; 目前 StandardRuleDlx 已经 收缩过了，所以这里不用处理
 
             var rule = puzzle.Rules.OfType<KillerRule>().FirstOrDefault() ?? throw new Exception("KillerRule not found");
             var cages = rule.ReadonlyCages;
-            var allPositions = cages.SelectMany(cage => cage.Indexes).OrderBy(i => i);
+            // 所有cage中的位置
+            var allCagePositions = cages.SelectMany(cage => cage.Indexes).OrderBy(i => i);
+            // 每个cage中的第一个位置
+            var allCageFirstPositions = cages.Select(cage => cage.Indexes.First()).OrderBy(i => i);
 
             var rowArray = rows.ToArray();
 
-            // gen position -> possibleDigits
+            // gen position : possibleDigits
             var pos2PossibleDigits = rowArray.Select(row => (position: SudokuDlxUtil.GetPosition(row, columnPredicate), row))
-                .Where(tuple => allPositions.Contains(tuple.position))
+                .Where(tuple => allCagePositions.Contains(tuple.position))
                 .GroupBy(tuple => tuple.position)
                 .ToDictionary(
                     group => group.Key,
@@ -60,6 +63,41 @@ namespace SudokuDlxLib.Rules
                 if (index == 0) _ruleRowStart = row.Length;
 
                 var position = SudokuDlxUtil.GetPosition(row, columnPredicate);
+
+                return row[possibleDigitsIndex].PossibleDigitsFromBinaryToEnumerable()
+                    .Select(digit =>
+                    {
+                        // todo 后续多个cage要错开
+
+                        var expandingRow = new int[9];
+
+                        if (!pos2PossibleDigits.TryGetValue(position, out var possibleDigits) || possibleDigits == null)
+                        {
+                            return expandingRow;
+                        }
+
+                        if (Array.IndexOf(possibleDigits, digit) < 0)
+                        {
+                            return expandingRow;
+                        }
+
+                        if (allCageFirstPositions.Contains(position))
+                        {
+                        }
+                        else
+                        {
+                            expandingRow[digit - 1] = 1;
+                        }
+
+                        return expandingRow;
+                    })
+                    .Distinct(new IntArrayComparer())
+                    .Select(expandingRow =>
+                    {
+                        var array = row.Concat(expandingRow).ToArray();
+                        // Console.WriteLine($"expandingRow:{string.Join(",", array.Skip(_ruleRowStart))}");
+                        return array;
+                    });
 
                 return cageCombinationPermutations
                     .Select(tuple => (
