@@ -25,6 +25,9 @@ namespace SudokuDlxLib.Rules
 
             var rule = puzzle.Rules.OfType<KillerRule>().FirstOrDefault() ?? throw new Exception("KillerRule not found");
             var cages = rule.ReadonlyCages;
+            var cagesLength = cages.Length;
+            var position2cageIndex = cages.SelectMany((cage, cageIndex) => cage.Indexes.Select(position => (position, cageIndex)))
+                .ToDictionary(tuple => tuple.position, tuple => tuple.cageIndex);
             // 所有cage中的位置
             var allCagePositions = cages.SelectMany(cage => cage.Indexes).OrderBy(i => i);
             // 每个cage中的第一个位置
@@ -71,8 +74,6 @@ namespace SudokuDlxLib.Rules
                 return row[possibleDigitsIndex].PossibleDigitsFromBinaryToEnumerable()
                     .SelectMany(digit =>
                     {
-                        // todo 后续多个cage要错开
-
                         if (
                             !pos2PossibleDigits.TryGetValue(position, out var possibleDigits) || possibleDigits == null ||
                             Array.IndexOf(possibleDigits, digit) < 0
@@ -105,6 +106,13 @@ namespace SudokuDlxLib.Rules
                                 return expandingRow;
                             });
                     })
+                    .Select(expandingRow =>
+                    {
+                        var array = new int[9 * cagesLength];
+                        var cageIndex = position2cageIndex[position];
+                        Array.Copy(expandingRow, 0, array, 9 * cageIndex, expandingRow.Length);
+                        return array;
+                    })
                     .Distinct(new IntArrayComparer())
                     .Select(expandingRow =>
                     {
@@ -113,7 +121,7 @@ namespace SudokuDlxLib.Rules
                         return array;
                     });
             });
-            var expandColumnPredicate = columnPredicate.Concat(Enumerable.Repeat(ColumnPredicate.KeyPrimaryColumn, 9)).ToArray();
+            var expandColumnPredicate = columnPredicate.Concat(Enumerable.Repeat(ColumnPredicate.KeyPrimaryColumn, 9 * cagesLength)).ToArray();
             return (expandRows, expandColumnPredicate);
         }
 
