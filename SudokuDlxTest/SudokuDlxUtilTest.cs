@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using NUnit.Framework;
 using SudokuDlxLib;
 using SudokuLib;
@@ -9,10 +8,7 @@ namespace SudokuDlxLibTest
 {
     public class SudokuDlxUtilTest
     {
-        [SetUp]
-        public void Setup()
-        {
-        }
+        [SetUp] public void Setup() { }
 
         [Test]
         public void TestPuzzleWithSolution()
@@ -86,9 +82,9 @@ Killer 20=0+1+2;9=3+4";
             Console.WriteLine($"puzzle:\n{puzzle.ToDisplay()}");
             var dlx = SudokuDlxUtil.ToDlx(puzzle);
             // dlx.Display();
-            foreach (var result in dlx.Solve())
+            foreach (var dlxSolution in dlx.Solve())
             {
-                Console.WriteLine("dlx Solution:" + string.Join(",", result));
+                Console.WriteLine("dlx Solution:" + string.Join(",", dlxSolution.RowIndexes));
                 // Console.WriteLine("dlx Solution rows:");
                 // foreach (var row in dlx.ReadonlyMatrix.MatrixToRows().Where((row, index) => Array.IndexOf(result, index) >= 0))
                 // {
@@ -108,7 +104,7 @@ Killer 20=0+1+2;9=3+4";
                 //         return result;
                 //     });
                 // Console.WriteLine($"mergeRow:\n{string.Join(",", mergeRow)}");
-                var solution = SudokuDlxUtil.ToSolution(puzzle, dlx.ReadonlyMatrix, result);
+                var solution = SudokuDlxUtil.ToSolution(puzzle, dlx.ReadonlyMatrix, dlxSolution.RowIndexes);
                 puzzle.SetSolution(solution);
                 Console.WriteLine($"sudoku Solution:\n{solution.DigitsToDisplay()}");
             }

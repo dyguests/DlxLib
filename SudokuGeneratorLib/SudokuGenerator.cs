@@ -12,7 +12,7 @@ namespace SudokuGeneratorLib
             var puzzle = new Puzzle(new int[9 * 9]);
             // Console.WriteLine($"puzzle:\n{puzzle.ToDisplay()}");
             var dlx = SudokuDlxUtil.ToDlx(puzzle, ExpandRowType.Random);
-            var result = dlx.Solve().Take(1).FirstOrDefault();
+            var result = dlx.Solve().Take(1).FirstOrDefault().RowIndexes;
             if (result == null) return null;
             // Console.WriteLine("dlx Solution:" + string.Join(",", result));
             var solution = SudokuDlxUtil.ToSolution(puzzle, dlx.ReadonlyMatrix, result);

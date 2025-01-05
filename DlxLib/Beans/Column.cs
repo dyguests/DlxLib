@@ -1,4 +1,4 @@
-namespace DlxLib
+namespace DlxLib.Beans
 {
     public class Column : Node
     {

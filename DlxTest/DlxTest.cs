@@ -7,10 +7,7 @@ namespace DlxLibTest
 {
     public class DlxTest
     {
-        [SetUp]
-        public void Setup()
-        {
-        }
+        [SetUp] public void Setup() { }
 
         [Test]
         public void TestEmpty()
@@ -233,9 +230,9 @@ namespace DlxLibTest
 
             var dlx = columnPredicate == null ? new Dlx(matrix) : new Dlx(matrix, columnPredicate);
 
-            foreach (var result in dlx.Solve())
+            foreach (var solution in dlx.Solve())
             {
-                Console.WriteLine("Solution:" + String.Join(",", result));
+                Console.WriteLine($"Solution:{string.Join(",", solution.RowIndexes)} deep:{solution.Deep}");
             }
 
             Console.WriteLine("-------- end --------");

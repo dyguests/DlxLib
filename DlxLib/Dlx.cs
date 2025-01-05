@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DlxLib.Beans;
 using DlxLib.ColumnPredicates;
 using DlxLib.Instrumentations;
 
@@ -43,7 +44,7 @@ namespace DlxLib
         /// 
         /// </summary>
         /// <returns>IEnumerable.each 是 rowIndexes</returns>
-        public IEnumerable<int[]> Solve()
+        public IEnumerable<Solution> Solve()
         {
             var header = BuildSparseMatrix(_matrix, _columnPredicate);
             var o = new Stack<Node>();
@@ -105,7 +106,7 @@ namespace DlxLib
         /// <param name="o"></param>
         /// <param name="instrumentations"></param>
         /// <returns></returns>
-        private static IEnumerable<int[]> Search(int deep, Column h, Stack<Node> o, Instrumentation[] instrumentations)
+        private static IEnumerable<Solution> Search(int deep, Column h, Stack<Node> o, Instrumentation[] instrumentations)
         {
             if (instrumentations?.Any(instrumentation => instrumentation.IsCancelled()) == true)
             {
@@ -120,8 +121,11 @@ namespace DlxLib
                     instrumentation.NotifySolutionIncrease();
                 }
 
-                Console.WriteLine($"sudoku Solution deep:{deep}");
-                yield return o.Select(dataObject => dataObject.Row).Reverse().ToArray();
+                yield return new Solution
+                {
+                    RowIndexes = o.Select(node => node.Row).ToArray(),
+                    Deep = deep
+                };
                 yield break;
             }
 
