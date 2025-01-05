@@ -16,13 +16,9 @@ namespace DlxLib
         private readonly IColumnPredicate _columnPredicate;
         private readonly Instrumentation[] _instrumentations;
 
-        public Dlx(int[,] matrix) : this(matrix, matrix.GetLength(0))
-        {
-        }
+        public Dlx(int[,] matrix) : this(matrix, matrix.GetLength(0)) { }
 
-        public Dlx(int[,] matrix, int numPrimaryColumns) : this(matrix, new NumPrimaryColumnsPredicate(numPrimaryColumns))
-        {
-        }
+        public Dlx(int[,] matrix, int numPrimaryColumns) : this(matrix, new NumPrimaryColumnsPredicate(numPrimaryColumns)) { }
 
         public Dlx(int[,] matrix, int[] primaryColumnIndexes, int[] secondaryColumnIndexes) :
             this(matrix, new NormalColumnsPredicate(primaryColumnIndexes, secondaryColumnIndexes), new UpToTwoInstrumentation())
@@ -124,6 +120,7 @@ namespace DlxLib
                     instrumentation.NotifySolutionIncrease();
                 }
 
+                Console.WriteLine($"sudoku Solution deep:{deep}");
                 yield return o.Select(dataObject => dataObject.Row).Reverse().ToArray();
                 yield break;
             }
