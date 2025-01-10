@@ -51,7 +51,12 @@ namespace SudokuDlxLib.Rules
                 );
 
             // gen cage, combination, permutation
-            var cageCombinationPermutations = cages.Select(cage => (cage, combinations: KillerRuleHelper.GetPossibleCombinations(cage)))
+            var cageCombinationPermutations = cages
+                .Select(cage =>
+                {
+                    var possibleDigits = cage.Indexes.SelectMany(position => pos2PossibleDigits[position]).Distinct().OrderBy(i => i).ToArray();
+                    return (cage, combinations: KillerRuleHelper.GetPossibleCombinations(cage, possibleDigits));
+                })
                 .SelectMany(tuple => tuple.combinations.Select(combination => (tuple.cage, combination)))
                 .SelectMany(tuple =>
                     GetPossiblePermutations(

@@ -30,7 +30,7 @@ namespace SudokuLib.Helpers
             if (count == 0) throw new Exception("Cage has no indexes");
 
             possibleDigits = possibleDigits.OrderBy(i => i).ToArray();
-            if (possibleDigits.Length < count) throw new Exception("Possible digits count is less than cage count");
+            if (possibleDigits.Length < count) yield break;
 
             var sum = cage.Sum;
             if (possibleDigits.Take(count).Sum() > sum) yield break;
