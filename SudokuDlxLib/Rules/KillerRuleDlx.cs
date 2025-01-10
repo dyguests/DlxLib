@@ -26,7 +26,8 @@ namespace SudokuDlxLib.Rules
             var rule = puzzle.Rules.OfType<KillerRule>().FirstOrDefault() ?? throw new Exception("KillerRule not found");
             var cages = rule.ReadonlyCages;
             var cagesLength = cages.Length;
-            var position2cageIndex = cages.SelectMany((cage, cageIndex) => cage.Indexes.Select(position => (position, cageIndex)))
+            // position to cage 的对应关系
+            var position2CageIndex = cages.SelectMany((cage, cageIndex) => cage.Indexes.Select(position => (position, cageIndex)))
                 .ToDictionary(tuple => tuple.position, tuple => tuple.cageIndex);
             // 所有cage中的位置
             var allCagePositions = cages.SelectMany(cage => cage.Indexes).OrderBy(i => i);
@@ -111,7 +112,7 @@ namespace SudokuDlxLib.Rules
                     .Select(expandingRow =>
                     {
                         var array = new int[9 * cagesLength];
-                        if (position2cageIndex.TryGetValue(position, out var cageIndex))
+                        if (position2CageIndex.TryGetValue(position, out var cageIndex))
                         {
                             Array.Copy(expandingRow, 0, array, 9 * cageIndex, expandingRow.Length);
                         }
