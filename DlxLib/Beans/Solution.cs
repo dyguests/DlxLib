@@ -11,5 +11,9 @@
         /// 搜索深度
         /// </summary>
         public int Deep { get; set; }
+        /// <summary>
+        /// 搜索次数
+        /// </summary>
+        public int Step { get; set; }
     }
 }

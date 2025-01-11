@@ -49,7 +49,7 @@ namespace DlxLib
             var header = BuildSparseMatrix(_matrix, _columnPredicate);
             var o = new Stack<Node>();
 
-            return Search(0, header, o, _instrumentations);
+            return Search(header, o, _instrumentations, 0, new int[] { 0 });
         }
 
         /// <summary>
@@ -101,12 +101,19 @@ namespace DlxLib
         /// <summary>
         /// Our nondeterministic algorithm to find all exact covers can now be cast in the following explicit, deterministic form as a recursive procedure search(k), which is invoked initially with k = 0
         /// </summary>
-        /// <param name="deep">递归层次</param>
         /// <param name="h"></param>
         /// <param name="o"></param>
         /// <param name="instrumentations"></param>
+        /// <param name="deep">递归层次</param>
+        /// <param name="step">计算次数 new int[1]</param>
         /// <returns></returns>
-        private static IEnumerable<Solution> Search(int deep, Column h, Stack<Node> o, Instrumentation[] instrumentations)
+        private static IEnumerable<Solution> Search(
+            Column h,
+            Stack<Node> o,
+            Instrumentation[] instrumentations,
+            int deep,
+            int[] step
+        )
         {
             if (instrumentations?.Any(instrumentation => instrumentation.IsCancelled()) == true)
             {
@@ -124,7 +131,8 @@ namespace DlxLib
                 yield return new Solution
                 {
                     RowIndexes = o.Select(node => node.Row).ToArray(),
-                    Deep = deep
+                    Deep = deep,
+                    Step = step[0],
                 };
                 yield break;
             }
@@ -156,7 +164,8 @@ namespace DlxLib
                     }
 
                     // search(k + 1);
-                    var solutions = Search(deep + 1, h, o, instrumentations);
+                    step[0]++;
+                    var solutions = Search(h, o, instrumentations, deep + 1, step);
                     foreach (var solution in solutions)
                     {
                         yield return solution;
