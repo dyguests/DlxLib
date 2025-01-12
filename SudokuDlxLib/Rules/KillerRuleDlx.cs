@@ -30,7 +30,6 @@ namespace SudokuDlxLib.Rules
 
             var rule = puzzle.Rules.OfType<KillerRule>().FirstOrDefault() ?? throw new Exception("KillerRule not found");
             var cages = rule.ReadonlyCages;
-            var cagesLength = cages.Length;
 
             // position to cage在Cages中的索引 的对应关系
             var position2CageIndex = cages.SelectMany((cage, cageIndex) => cage.Indexes.Select(position => (position, cageIndex)))
@@ -43,7 +42,7 @@ namespace SudokuDlxLib.Rules
 
             var rowArray = rows.ToArray();
 
-            // poisiton to possibleDigits 的对应关系
+            // poisiton to possibleDigits 的对应关系，这个还未基于cage过滤
             var position2PossibleDigits = rowArray.Select(row => (position: SudokuDlxUtil.GetPosition(row, columnPredicate), row))
                 .Where(tuple => positionsInCages.Contains(tuple.position))
                 .GroupBy(tuple => tuple.position)
@@ -57,26 +56,20 @@ namespace SudokuDlxLib.Rules
                         .ToArray()
                 );
 
-            // gen cage, combination
-            var cageCombinationPermutations = cages
-                .Select(cage =>
+            // cage to combinations 的对应关系
+            var cage2Combinations = cages.ToDictionary(
+                cage => cage,
+                cage =>
                 {
                     var possibleDigits = cage.Indexes.SelectMany(position => position2PossibleDigits[position]).Distinct().OrderBy(i => i).ToArray();
-                    return (cage, combinations: KillerRuleHelper.GetPossibleCombinations(cage, possibleDigits));
-                })
-                .SelectMany(tuple => tuple.combinations.Select(combination => (tuple.cage, combination)))
-                .SelectMany(tuple =>
-                    GetPossiblePermutations(
-                            tuple.combination,
-                            tuple.cage.Indexes.Select(position => position2PossibleDigits[position]).ToArray()
-                        )
-                        .Select(permutation => (tuple.cage, tuple.combination, permutation))
-                );
-            var firstPosition2Permutation = cageCombinationPermutations.GroupBy(tuple => tuple.cage.Indexes.First())
-                .ToDictionary(
-                    group => group.Key,
-                    group => group.Select(tuple => tuple.permutation).ToArray()
-                );
+                    return KillerRuleHelper.GetPossibleCombinations(cage, possibleDigits).ToArray();
+                }
+            );
+
+            var cage2PossibleDigits = cage2Combinations.ToDictionary(
+                pair => pair.Key,
+                pair => pair.Value.SelectMany(combination => combination).Distinct().OrderBy(digit => digit).ToArray()
+            );
 
             var expandRows = rowArray.SelectMany((row, index) =>
             {
@@ -84,46 +77,59 @@ namespace SudokuDlxLib.Rules
 
                 var position = SudokuDlxUtil.GetPosition(row, columnPredicate);
 
-                return row[possibleDigitsIndex].PossibleDigitsFromBinaryToEnumerable()
-                    .SelectMany(digit =>
+                IEnumerable<int[]> GenerateExpandRow(int digit)
+                {
+                    // todo 这里宽度不一定要用9，后续再优化
+
+                    // 若当前row的position不在任何一个cage中，则直接返回一个空约束
+                    if (!position2CageIndex.TryGetValue(position, out var cageIndex))
                     {
-                        // todo 这里宽度不一定要用9，后续再优化
+                        yield return new int[9];
+                        yield break;
+                    }
 
-                        if (
-                            !position2PossibleDigits.TryGetValue(position, out var possibleDigits) || possibleDigits == null ||
-                            Array.IndexOf(possibleDigits, digit) < 0
-                        )
+                    var possibleDigitsInCage = cage2PossibleDigits.TryGetValue(cages[cageIndex], out var possibleDigits);
+                    if (!possibleDigitsInCage) throw new Exception("possibleDigitsInCage is null，不应到达的分支");
+                    if (possibleDigits == null) throw new Exception("possibleDigits is null，不应到达的分支");
+
+                    // 若当前digit不在所在的cage的可能排列中，则直接返回0个约束
+                    if (Array.IndexOf(possibleDigits, digit) < 0)
+                    {
+                        yield break;
+                    }
+
+                    // 若当前position是cage中的第一个位置，则需要将除cage中其它位置全标1
+                    if (firstPositionsInCages.Contains(position))
+                    {
+                        cage2Combinations.TryGetValue(cages[cageIndex], out var combinations);
+                        if (combinations == null) throw new Exception("combinations is null，不应到达的分支");
+                        foreach (var combination in combinations)
                         {
-                            return new[] { new int[9], };
-                        }
-
-                        if (!firstPositionsInCages.Contains(position))
-                        {
-                            // 对于cage中的非第一个位置，只需要标1就行
-                            // 例： cage(20:0+1+2) 中的可能排列 (3,8,9) 时，若当前的position=1，则标记为 000000010
-                            var expandingRow = new int[9];
-                            expandingRow[digit - 1] = 1;
-                            return new[] { expandingRow, };
-                        }
-
-                        // 对于cage中的第一个位置，需要将除cage中其它位置全标1
-                        // 例： cage(20:0+1+2) 中的可能排列 (3,8,9) 时，若当前的position=0，则标记为 111111100
-                        return firstPosition2Permutation[position]
-                            .Where(permutation => digit == permutation[0])
-                            .Select(permutation =>
+                            if (Array.IndexOf(combination, digit) < 0) continue;
+                            var expandingRow = Enumerable.Repeat(1, 9).ToArray();
+                            foreach (var aDigit in combination)
                             {
-                                int[] expandingRow = Enumerable.Repeat(1, 9).ToArray();
-                                foreach (var aDigit in permutation.Skip(1))
-                                {
-                                    expandingRow[aDigit - 1] = 0;
-                                }
+                                expandingRow[aDigit - 1] = 0;
+                            }
+                            expandingRow[digit - 1] = 1;
+                            yield return expandingRow;
+                        }
+                        yield break;
+                    }
 
-                                return expandingRow;
-                            });
-                    })
+                    // 对于cage中的非第一个位置，只需要标1就行
+                    {
+                        var expandingRow = new int[9];
+                        expandingRow[digit - 1] = 1;
+                        yield return expandingRow;
+                    }
+                }
+
+                return row[possibleDigitsIndex].PossibleDigitsFromBinaryToEnumerable()
+                    .SelectMany(GenerateExpandRow)
                     .Select(expandingRow =>
                     {
-                        var array = new int[9 * cagesLength];
+                        var array = new int[9 * cages.Length];
                         if (position2CageIndex.TryGetValue(position, out var cageIndex))
                         {
                             Array.Copy(expandingRow, 0, array, 9 * cageIndex, expandingRow.Length);
@@ -139,7 +145,7 @@ namespace SudokuDlxLib.Rules
                         return array;
                     });
             });
-            var expandColumnPredicate = columnPredicate.Concat(Enumerable.Repeat(ColumnPredicate.KeyPrimaryColumn, 9 * cagesLength)).ToArray();
+            var expandColumnPredicate = columnPredicate.Concat(Enumerable.Repeat(ColumnPredicate.KeyPrimaryColumn, 9 * cages.Length)).ToArray();
             return (expandRows, expandColumnPredicate);
         }
 
