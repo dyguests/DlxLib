@@ -18,27 +18,34 @@ namespace SudokuDlxLib.Rules
         /// </summary>
         private int _ruleRowStart;
 
-        public override (IEnumerable<int[]>, int[]) ExpandRows(IPuzzle puzzle, IEnumerable<int[]> rows, int[] columnPredicate, ExpandRowType expandRowType = ExpandRowType.Sequence)
+        public override (IEnumerable<int[]>, int[]) ExpandRows(
+            IPuzzle puzzle,
+            IEnumerable<int[]> rows,
+            int[] columnPredicate,
+            ExpandRowType expandRowType = ExpandRowType.Sequence
+        )
         {
-            var possibleDigitsIndex = GetPossibleDigitsIndex(columnPredicate); //问题出在这里，应该， 数字 和 expandingRow 对不上
-            // todo possibleDigitsIndex 这里用完要收缩 ; 目前 StandardRuleDlx 已经 收缩过了，所以这里不用处理
+            // 取得 possibleDigits 在 row 中的 index
+            var possibleDigitsIndex = GetPossibleDigitsIndex(columnPredicate);
 
             var rule = puzzle.Rules.OfType<KillerRule>().FirstOrDefault() ?? throw new Exception("KillerRule not found");
             var cages = rule.ReadonlyCages;
             var cagesLength = cages.Length;
-            // position to cage 的对应关系
+
+            // position to cage在Cages中的索引 的对应关系
             var position2CageIndex = cages.SelectMany((cage, cageIndex) => cage.Indexes.Select(position => (position, cageIndex)))
                 .ToDictionary(tuple => tuple.position, tuple => tuple.cageIndex);
-            // 所有cage中的位置
-            var allCagePositions = cages.SelectMany(cage => cage.Indexes).OrderBy(i => i);
-            // 每个cage中的第一个位置
-            var allCageFirstPositions = cages.Select(cage => cage.Indexes.First()).OrderBy(i => i);
+
+            // 所有cage中的所有位置
+            var positionsInCages = cages.SelectMany(cage => cage.Indexes).OrderBy(i => i);
+            // 每个cage中的第一个位置的集合
+            var firstPositionsInCages = cages.Select(cage => cage.Indexes.First()).OrderBy(i => i);
 
             var rowArray = rows.ToArray();
 
-            // gen position : possibleDigits
-            var pos2PossibleDigits = rowArray.Select(row => (position: SudokuDlxUtil.GetPosition(row, columnPredicate), row))
-                .Where(tuple => allCagePositions.Contains(tuple.position))
+            // poisiton to possibleDigits 的对应关系
+            var position2PossibleDigits = rowArray.Select(row => (position: SudokuDlxUtil.GetPosition(row, columnPredicate), row))
+                .Where(tuple => positionsInCages.Contains(tuple.position))
                 .GroupBy(tuple => tuple.position)
                 .ToDictionary(
                     group => group.Key,
@@ -50,18 +57,18 @@ namespace SudokuDlxLib.Rules
                         .ToArray()
                 );
 
-            // gen cage, combination, permutation
+            // gen cage, combination
             var cageCombinationPermutations = cages
                 .Select(cage =>
                 {
-                    var possibleDigits = cage.Indexes.SelectMany(position => pos2PossibleDigits[position]).Distinct().OrderBy(i => i).ToArray();
+                    var possibleDigits = cage.Indexes.SelectMany(position => position2PossibleDigits[position]).Distinct().OrderBy(i => i).ToArray();
                     return (cage, combinations: KillerRuleHelper.GetPossibleCombinations(cage, possibleDigits));
                 })
                 .SelectMany(tuple => tuple.combinations.Select(combination => (tuple.cage, combination)))
                 .SelectMany(tuple =>
                     GetPossiblePermutations(
                             tuple.combination,
-                            tuple.cage.Indexes.Select(position => pos2PossibleDigits[position]).ToArray()
+                            tuple.cage.Indexes.Select(position => position2PossibleDigits[position]).ToArray()
                         )
                         .Select(permutation => (tuple.cage, tuple.combination, permutation))
                 );
@@ -80,17 +87,17 @@ namespace SudokuDlxLib.Rules
                 return row[possibleDigitsIndex].PossibleDigitsFromBinaryToEnumerable()
                     .SelectMany(digit =>
                     {
-                        // 这里宽度不一定要用9，后续再优化
+                        // todo 这里宽度不一定要用9，后续再优化
 
                         if (
-                            !pos2PossibleDigits.TryGetValue(position, out var possibleDigits) || possibleDigits == null ||
+                            !position2PossibleDigits.TryGetValue(position, out var possibleDigits) || possibleDigits == null ||
                             Array.IndexOf(possibleDigits, digit) < 0
                         )
                         {
                             return new[] { new int[9], };
                         }
 
-                        if (!allCageFirstPositions.Contains(position))
+                        if (!firstPositionsInCages.Contains(position))
                         {
                             // 对于cage中的非第一个位置，只需要标1就行
                             // 例： cage(20:0+1+2) 中的可能排列 (3,8,9) 时，若当前的position=1，则标记为 000000010
