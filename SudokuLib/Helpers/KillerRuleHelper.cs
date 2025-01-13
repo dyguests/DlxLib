@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SudokuLib.Entities;
 using SudokuLib.Rules;
 
 namespace SudokuLib.Helpers
@@ -9,10 +10,15 @@ namespace SudokuLib.Helpers
     {
         public static int[] GetPossibleDigits(KillerRule.Cage cage)
         {
-            return GetPossibleCombinations(cage).SelectMany(x => x).Distinct().OrderBy(i => i).ToArray();
+            if (cage.Sum == 0)
+            {
+                return Enumerable.Range(1, 9).ToArray();
+            }
+
+            return GetPossibleCombinations(cage).SelectMany(x => x.Array).Distinct().OrderBy(i => i).ToArray();
         }
 
-        public static IEnumerable<int[]> GetPossibleCombinations(KillerRule.Cage cage)
+        public static IEnumerable<Combination> GetPossibleCombinations(KillerRule.Cage cage)
         {
             return GetPossibleCombinations(cage, Enumerable.Range(1, 9).ToArray());
         }
@@ -24,7 +30,7 @@ namespace SudokuLib.Helpers
         /// <param name="possibleDigits">建议升序</param>
         /// <returns></returns>
         /// <exception cref="Exception">非法</exception>
-        public static IEnumerable<int[]> GetPossibleCombinations(KillerRule.Cage cage, int[] possibleDigits)
+        public static IEnumerable<Combination> GetPossibleCombinations(KillerRule.Cage cage, int[] possibleDigits)
         {
             var count = cage.Indexes.Length;
             if (count == 0) throw new Exception("Cage has no indexes");
@@ -38,7 +44,7 @@ namespace SudokuLib.Helpers
 
             foreach (var findPossibleCombination in FindPossibleCombinations(new List<int>(), possibleDigits, count, sum))
             {
-                yield return findPossibleCombination;
+                yield return Combination.Of(findPossibleCombination);
             }
         }
 

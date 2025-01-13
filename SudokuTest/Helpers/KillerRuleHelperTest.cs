@@ -84,6 +84,16 @@ namespace SudokuLibTest.Helpers
             Assert.That(possibleDigits, Is.EqualTo(expectedDigits));
         }
 
+        [Test]
+        public void Test_GetPossibleNumbers3()
+        {
+            var cage = new KillerRule.Cage(0, new[] { 1, 2, 3, 4, 5 });
+            var possibleDigits = KillerRuleHelper.GetPossibleDigits(cage);
+
+            var expectedDigits = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            Assert.That(possibleDigits, Is.EqualTo(expectedDigits));
+        }
+
         private static void ValidateCage(KillerRule.Cage cage, int expected)
         {
             Console.WriteLine($"cage:{cage}");

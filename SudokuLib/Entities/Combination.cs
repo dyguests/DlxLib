@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace SudokuLib.Entities
 {
     /// <summary>
@@ -27,6 +29,17 @@ namespace SudokuLib.Entities
         private Combination(int[] array)
         {
             Array = array;
+        }
+
+
+        public int[] GetPossibleDigits()
+        {
+            if (this == Unique || this == NoRestrictions)
+            {
+                return Enumerable.Range(1, 9).ToArray();
+            }
+
+            return Array;
         }
     }
 }

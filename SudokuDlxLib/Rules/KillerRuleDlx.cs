@@ -38,7 +38,7 @@ namespace SudokuDlxLib.Rules
             // 所有cage中的所有位置
             var positionsInCages = cages.SelectMany(cage => cage.Indexes).OrderBy(i => i);
             // 每个cage中的第一个位置的集合
-            var firstPositionsInCages = cages.Select(cage => cage.Indexes.First()).OrderBy(i => i);
+            var firstPositionsInCages = cages.Select(cage => cage.Indexes.First()).OrderBy(i => i).ToArray();
 
             var rowArray = rows.ToArray();
 
@@ -68,7 +68,10 @@ namespace SudokuDlxLib.Rules
 
             var cage2PossibleDigits = cage2Combinations.ToDictionary(
                 pair => pair.Key,
-                pair => pair.Value.SelectMany(combination => combination).Distinct().OrderBy(digit => digit).ToArray()
+                pair => pair.Value.Select(combination => combination.GetPossibleDigits())
+                    .SelectMany(combination => combination).Distinct()
+                    .OrderBy(digit => digit)
+                    .ToArray()
             );
 
             var expandRows = rowArray.SelectMany((row, index) =>
@@ -98,26 +101,30 @@ namespace SudokuDlxLib.Rules
                         yield break;
                     }
 
-                    // 若当前position是cage中的第一个位置，则需要将除cage中其它位置全标1
-                    if (firstPositionsInCages.Contains(position))
+                    // 若当前position是cage中的第一个位置，且cage.sum>0，则需要将除cage中其它位置全标1
+                    // 因为sum>0 要用 DLX的完全覆盖，sum=0 时只不需要完全覆盖（只需要不冲突）
+                    if (firstPositionsInCages.Contains(position) && cages[cageIndex].Sum > 0)
                     {
                         cage2Combinations.TryGetValue(cages[cageIndex], out var combinations);
                         if (combinations == null) throw new Exception("combinations is null，不应到达的分支");
                         foreach (var combination in combinations)
                         {
-                            if (Array.IndexOf(combination, digit) < 0) continue;
+                            var combinationPossibleDigits = combination.GetPossibleDigits();
+                            if (Array.IndexOf(combinationPossibleDigits, digit) < 0) continue;
                             var expandingRow = Enumerable.Repeat(1, 9).ToArray();
-                            foreach (var aDigit in combination)
+                            foreach (var aDigit in combinationPossibleDigits)
                             {
                                 expandingRow[aDigit - 1] = 0;
                             }
+
                             expandingRow[digit - 1] = 1;
                             yield return expandingRow;
                         }
+
                         yield break;
                     }
 
-                    // 对于cage中的非第一个位置，只需要标1就行
+                    // 对于cage中的非第一个位置，或sum=0，只需要标1就行
                     {
                         var expandingRow = new int[9];
                         expandingRow[digit - 1] = 1;
@@ -145,7 +152,21 @@ namespace SudokuDlxLib.Rules
                         return array;
                     });
             });
-            var expandColumnPredicate = columnPredicate.Concat(Enumerable.Repeat(ColumnPredicate.KeyPrimaryColumn, 9 * cages.Length)).ToArray();
+            var expandColumnPredicate = columnPredicate.Concat(
+                // Enumerable.Repeat(ColumnPredicate.KeyPrimaryColumn, 9 * cages.Length)
+                cages.Select(cage =>
+                {
+                    // sum>0 要用 DLX的完全覆盖，sum=0 时只不需要完全覆盖（只需要不冲突）
+                    if (cage.Sum > 0)
+                    {
+                        return Enumerable.Repeat(ColumnPredicate.KeyPrimaryColumn, 9);
+                    }
+                    else
+                    {
+                        return Enumerable.Repeat(ColumnPredicate.KeySecondaryColumn, 9);
+                    }
+                }).SelectMany(ints => ints)
+            ).ToArray();
             return (expandRows, expandColumnPredicate);
         }
 
