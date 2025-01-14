@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using NUnit.Framework;
 using SudokuDlxLib;
 using SudokuLib;
@@ -8,7 +9,10 @@ namespace SudokuDlxLibTest
 {
     public class SudokuDlxUtilTest
     {
-        [SetUp] public void Setup() { }
+        [SetUp]
+        public void Setup()
+        {
+        }
 
         [Test]
         public void TestPuzzleWithSolution()
@@ -91,10 +95,34 @@ Killer 0=0+1+2";
             Console.WriteLine($"sketch:\n{sketch}");
             Console.WriteLine($"puzzle:\n{puzzle.ToDisplay()}");
             var dlx = SudokuDlxUtil.ToDlx(puzzle);
-            // dlx.Display();
+            dlx.Display();
             foreach (var dlxSolution in dlx.Solve())
             {
                 Console.WriteLine("dlx Solution:" + string.Join(",", dlxSolution.RowIndexes));
+
+                if (false)
+                {
+                    Console.WriteLine("dlx Solution rows:");
+                    foreach (var row in dlx.ReadonlyMatrix.MatrixToRows().Where((row, index) => Array.IndexOf(dlxSolution.RowIndexes, index) >= 0))
+                    {
+                        Console.WriteLine(string.Join(",", row));
+                    }
+
+                    var mergeRow = dlx.ReadonlyMatrix.MatrixToRows()
+                        .Where((row, index) => Array.IndexOf(dlxSolution.RowIndexes, index) >= 0)
+                        .Aggregate((a, b) =>
+                        {
+                            var result = new int[a.Length];
+                            for (var i = 0; i < a.Length; i++)
+                            {
+                                result[i] = a[i] + b[i];
+                            }
+
+                            return result;
+                        });
+                    Console.WriteLine($"mergeRow:\n{string.Join(",", mergeRow)}");
+                }
+
                 Console.WriteLine($"dlx deep:{dlxSolution.Deep} step:{dlxSolution.Step}");
                 var solution = SudokuDlxUtil.ToSolution(puzzle, dlx.ReadonlyMatrix, dlxSolution.RowIndexes);
                 puzzle.SetSolution(solution);
