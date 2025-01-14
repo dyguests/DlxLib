@@ -83,7 +83,7 @@ Killer 20=0+1+2;9=3+4";
         public void TestKillCage0Sum()
         {
             const string sketch = @".................................................................................
-Killer 0=0+1+2";
+Killer 0=0+1";
             TestPuzzle(sketch);
 
             Assert.Pass();
@@ -104,6 +104,86 @@ Killer 45=10+11+12+19+20+21+28+29+30";
         {
             const string sketch = @".................................................................................
 Killer 0=10+11+12+19+20+21+28+29+30";
+            TestPuzzle(sketch);
+
+            Assert.Pass();
+        }
+
+        [Test]
+        public void TestKillCage0Sum02()
+        {
+            const string sketch = @".................................................................................
+Killer 0=0+1";
+            TestPuzzle(sketch);
+
+            Assert.Pass();
+        }
+
+        [Test]
+        public void TestKillCage0Sum03()
+        {
+            const string sketch = @".................................................................................
+Killer 0=0+1+2";
+            TestPuzzle(sketch);
+
+            Assert.Pass();
+        }
+
+        [Test]
+        public void TestKillCage0Sum04()
+        {
+            const string sketch = @".................................................................................
+Killer 0=0+1+2+3";
+            TestPuzzle(sketch);
+
+            Assert.Pass();
+        }
+
+        [Test]
+        public void TestKillCage0Sum07()
+        {
+            const string sketch = @".................................................................................
+Killer 0=0+1+2+3+4+5+6";
+            TestPuzzle(sketch);
+
+            Assert.Pass();
+        }
+
+        [Test]
+        public void TestKillCage0Sum08()
+        {
+            const string sketch = @".................................................................................
+Killer 0=0+1+2+3+4+5+6+7";
+            TestPuzzle(sketch);
+
+            Assert.Pass();
+        }
+
+        [Test]
+        public void TestKillCage0Sum09()
+        {
+            const string sketch = @".................................................................................
+Killer 0=0+1+2+3+4+5+6+7+8";
+            TestPuzzle(sketch);
+
+            Assert.Pass();
+        }
+
+        [Test]
+        public void TestKillCage0Sum092()
+        {
+            const string sketch = @".................................................................................
+Killer 0=9+10+11+18+19+20+27+28+29";
+            TestPuzzle(sketch);
+
+            Assert.Pass();
+        }
+
+        [Test]
+        public void TestKillCage0Sum093()
+        {
+            const string sketch = @".................................................................................
+Killer 0=10+11+12+19+20+21+28+29+30";// todo 这个，就是没解？
             TestPuzzle(sketch);
 
             Assert.Pass();

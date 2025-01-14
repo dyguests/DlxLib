@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using DlxLib;
 using ExactCoverTest;
 using NUnit.Framework;
@@ -225,12 +226,40 @@ namespace DlxLibTest
         {
             // 确切覆盖问题矩阵
             var columnPredicate = new[]
-                { 0, 0 };
+                { 0, 0, 0, 1, 1, 1, };
             var matrix = new[,]
             {
-                { 1, 0, },
-                { 0, 1, },
-                { 0, 1, },
+                { 1, 0, 0, 1, 0, 0, },
+                { 1, 0, 0, 0, 1, 0, },
+                { 1, 0, 0, 0, 0, 1, },
+                { 0, 1, 0, 1, 0, 0, },
+                { 0, 1, 0, 0, 1, 0, },
+                { 0, 1, 0, 0, 0, 1, },
+                { 0, 0, 1, 1, 0, 0, },
+                { 0, 0, 1, 0, 1, 0, },
+                { 0, 0, 1, 0, 0, 1, },
+            };
+
+            Validate(matrix, columnPredicate);
+        }
+
+        [Test]
+        public void TestSecondaryColumn2()
+        {
+            // 确切覆盖问题矩阵
+            var columnPredicate = new[]
+                { 0, 0, 1, 1, 1, };
+            var matrix = new[,]
+            {
+                { 1, 0, 1, 0, 0, },
+                { 1, 0, 0, 1, 0, },
+                { 1, 0, 0, 0, 1, },
+                { 0, 1, 1, 0, 0, },
+                { 0, 1, 0, 1, 0, },
+                { 0, 1, 0, 0, 1, },
+                // { 0, 0, 1, 1, 0, 0, },
+                // { 0, 0, 1, 0, 1, 0, },
+                // { 0, 0, 1, 0, 0, 1, },
             };
 
             Validate(matrix, columnPredicate);
@@ -251,7 +280,7 @@ namespace DlxLibTest
 
             foreach (var solution in dlx.Solve())
             {
-                Console.WriteLine($"Solution:{string.Join(",", solution.RowIndexes)} deep:{solution.Deep}");
+                Console.WriteLine($"Solution:{string.Join(",", solution.RowIndexes.OrderBy(i => i))} deep:{solution.Deep}");
             }
 
             Console.WriteLine("-------- end --------");
