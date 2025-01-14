@@ -91,12 +91,12 @@ namespace SudokuDlxLib.Rules
                         yield break;
                     }
 
-                    var possibleDigitsInCage = cage2PossibleDigits.TryGetValue(cages[cageIndex], out var possibleDigits);
-                    if (!possibleDigitsInCage) throw new Exception("possibleDigitsInCage is null，不应到达的分支");
+                    var hasPossibleDigits = cage2PossibleDigits.TryGetValue(cages[cageIndex], out var possibleDigits);
+                    if (!hasPossibleDigits) throw new Exception("possibleDigitsInCage is null，不应到达的分支");
                     if (possibleDigits == null) throw new Exception("possibleDigits is null，不应到达的分支");
 
                     // 若当前digit不在所在的cage的可能排列中，则直接返回0个约束
-                    if (Array.IndexOf(possibleDigits, digit) < 0)
+                    if (!possibleDigits.Contains(digit))
                     {
                         yield break;
                     }

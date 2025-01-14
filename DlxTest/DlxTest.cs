@@ -7,7 +7,10 @@ namespace DlxLibTest
 {
     public class DlxTest
     {
-        [SetUp] public void Setup() { }
+        [SetUp]
+        public void Setup()
+        {
+        }
 
         [Test]
         public void TestEmpty()
@@ -215,6 +218,22 @@ namespace DlxLibTest
             };
 
             Validate(matrix, new[] { 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, });
+        }
+
+        [Test]
+        public void TestSecondaryColumn()
+        {
+            // 确切覆盖问题矩阵
+            var columnPredicate = new[]
+                { 0, 0 };
+            var matrix = new[,]
+            {
+                { 1, 0, },
+                { 0, 1, },
+                { 0, 1, },
+            };
+
+            Validate(matrix, columnPredicate);
         }
 
         private static void Validate(int[,] matrix, int[]? columnPredicate = null)
