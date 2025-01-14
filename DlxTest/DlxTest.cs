@@ -265,6 +265,54 @@ namespace DlxLibTest
             Validate(matrix, columnPredicate);
         }
 
+        [Test]
+        public void TestSecondaryColumn3()
+        {
+            // 确切覆盖问题矩阵
+            var columnPredicate = new[]
+                { 0, 0, 0, 1, 1, 1, };
+            var matrix = new[,]
+            {
+                { 1, 1, 0, 1, 0, 0, },
+                { 1, 1, 0, 0, 1, 0, },
+                { 1, 1, 0, 0, 0, 1, },
+                { 0, 1, 1, 1, 0, 0, },
+                { 0, 1, 1, 0, 1, 0, },
+                { 0, 1, 1, 0, 0, 1, },
+            };
+
+            Validate(matrix, columnPredicate);
+        }
+
+        [Test]
+        public void TestSecondaryColumn4()
+        {
+            // 确切覆盖问题矩阵
+            var columnPredicate = new[]
+                { 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, };
+            var matrix = new[,]
+            {
+                { 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, },
+                { 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, },
+                { 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, },
+                { 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, },
+                { 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, },
+                { 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, },
+                { 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, },
+                { 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, },
+                { 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, },
+                { 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, },
+                { 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, },
+                { 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, },
+                { 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, },
+                { 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, },
+                { 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, },
+                { 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, },
+            };
+
+            Validate(matrix, columnPredicate);
+        }
+
         private static void Validate(int[,] matrix, int[]? columnPredicate = null)
         {
             Console.WriteLine("-------- begin --------");
@@ -280,7 +328,8 @@ namespace DlxLibTest
 
             foreach (var solution in dlx.Solve())
             {
-                Console.WriteLine($"Solution:{string.Join(",", solution.RowIndexes.OrderBy(i => i))} deep:{solution.Deep}");
+                var rowIndexes = solution.RowIndexes.OrderBy(i => i);
+                Console.WriteLine($"Solution:{string.Join(",", rowIndexes)} deep:{solution.Deep}");
             }
 
             Console.WriteLine("-------- end --------");
