@@ -39,6 +39,14 @@ namespace SudokuLib.Helpers
             if (possibleDigits.Length < count) yield break;
 
             var sum = cage.Sum;
+
+            // 若和为0，则只要不重复即可
+            if (sum == 0)
+            {
+                yield return Combination.Unique;
+                yield break;
+            }
+
             if (possibleDigits.Take(count).Sum() > sum) yield break;
             if (possibleDigits.TakeLast(count).Sum() < sum) yield break;
 
