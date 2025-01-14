@@ -89,13 +89,33 @@ Killer 0=0+1+2";
             Assert.Pass();
         }
 
+        [Test]
+        public void TestKillCage0Sum2()
+        {
+            const string sketch = @".................................................................................
+Killer 45=10+11+12+19+20+21+28+29+30";
+            TestPuzzle(sketch);
+
+            Assert.Pass();
+        }
+
+        [Test]
+        public void TestKillCage0Sum3()
+        {
+            const string sketch = @".................................................................................
+Killer 0=10+11+12+19+20+21+28+29+30";
+            TestPuzzle(sketch);
+
+            Assert.Pass();
+        }
+
         private static void TestPuzzle(string sketch)
         {
             var puzzle = PuzzleSketcher.FromSketch(sketch);
             Console.WriteLine($"sketch:\n{sketch}");
             Console.WriteLine($"puzzle:\n{puzzle.ToDisplay()}");
             var dlx = SudokuDlxUtil.ToDlx(puzzle);
-            dlx.Display();
+            // dlx.Display();
             foreach (var dlxSolution in dlx.Solve())
             {
                 Console.WriteLine("dlx Solution:" + string.Join(",", dlxSolution.RowIndexes));
