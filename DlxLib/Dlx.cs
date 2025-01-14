@@ -49,7 +49,7 @@ namespace DlxLib
             var header = BuildSparseMatrix(_matrix, _columnPredicate);
             var o = new Stack<Node>();
 
-            return Search(header, o, _instrumentations, 0, new int[] { 0 });
+            return Search(header, o, _instrumentations, 0, new[] { 0 });
         }
 
         /// <summary>
