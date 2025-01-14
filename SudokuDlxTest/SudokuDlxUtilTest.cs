@@ -75,6 +75,16 @@ Killer 20=0+1+2;9=3+4";
             Assert.Pass();
         }
 
+        [Test]
+        public void TestKillCage0Sum()
+        {
+            const string sketch = @".................................................................................
+Killer 0=0+1+2";
+            TestPuzzle(sketch);
+
+            Assert.Pass();
+        }
+
         private static void TestPuzzle(string sketch)
         {
             var puzzle = PuzzleSketcher.FromSketch(sketch);
