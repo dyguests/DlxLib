@@ -7,9 +7,9 @@ namespace DlxLib.Instrumentations
     {
         private int numberOfSolutions;
 
-        public override void NotifySolutionIncrease()
+        public override void OnSolutionFound()
         {
-            base.NotifySolutionIncrease();
+            base.OnSolutionFound();
             numberOfSolutions++;
             if (numberOfSolutions >= 2)
             {

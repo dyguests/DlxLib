@@ -101,36 +101,42 @@ namespace DlxLib
         /// <summary>
         /// Our nondeterministic algorithm to find all exact covers can now be cast in the following explicit, deterministic form as a recursive procedure search(k), which is invoked initially with k = 0
         /// </summary>
-        /// <param name="h"></param>
-        /// <param name="o"></param>
+        /// <param name="header"></param>
+        /// <param name="stack"></param>
         /// <param name="instrumentations"></param>
         /// <param name="deep">递归层次</param>
         /// <param name="step">计算次数 new int[1]</param>
         /// <returns></returns>
         private static IEnumerable<Solution> Search(
-            Column h,
-            Stack<Node> o,
+            Column header,
+            Stack<Node> stack,
             Instrumentation[] instrumentations,
             int deep,
             int[] step
         )
         {
-            if (instrumentations?.Any(instrumentation => instrumentation.IsCancelled()) == true)
+            foreach (var instrumentation in instrumentations)
+            {
+                instrumentation.OnSearchStart(stack);
+            }
+
+            if (instrumentations.Any(instrumentation => instrumentation.IsCancelled()))
             {
                 yield break;
             }
 
+
             // If R[h] = h, print the current solution (see below) and return.
-            if (h.R == h)
+            if (header.R == header)
             {
                 foreach (var instrumentation in instrumentations)
                 {
-                    instrumentation.NotifySolutionIncrease();
+                    instrumentation.OnSolutionFound();
                 }
 
                 yield return new Solution
                 {
-                    RowIndexes = o.Select(node => node.Row).ToArray(),
+                    RowIndexes = stack.Select(node => node.Row).ToArray(),
                     Deep = deep,
                     Step = step[0],
                 };
@@ -138,7 +144,7 @@ namespace DlxLib
             }
 
             // Otherwise choose a column object c (see below).
-            var c = ChooseColumnC(h);
+            var c = ChooseColumnC(header);
 
             try
             {
@@ -154,7 +160,7 @@ namespace DlxLib
                     }
 
                     // set Ok ← r;
-                    o.Push(r);
+                    stack.Push(r);
 
                     // for each j ← R[r], RR[r], . . . , while j = r,
                     for (var j = r.R; j != r; j = j.R)
@@ -165,14 +171,14 @@ namespace DlxLib
 
                     // search(k + 1);
                     step[0]++;
-                    var solutions = Search(h, o, instrumentations, deep + 1, step);
+                    var solutions = Search(header, stack, instrumentations, deep + 1, step);
                     foreach (var solution in solutions)
                     {
                         yield return solution;
                     }
 
                     // set r ← Ok and c ← C[r];
-                    o.Pop();
+                    stack.Pop();
 
                     // for each j ← L[r], L[L[r]], . . . , while j = r,
                     for (var j = r.L; j != r; j = j.L)
