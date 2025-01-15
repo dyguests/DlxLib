@@ -60,11 +60,11 @@ namespace DlxLib
         /// <returns>list header</returns>
         private static Column BuildSparseMatrix(int[,] matrix, IColumnPredicate columnPredicate)
         {
-            var h = new Column(-1);
+            var header = new Column(-1);
             var listHeaders = new Dictionary<int, Column>();
             for (var row = 0; row < matrix.GetLength(0); row++)
             {
-                // var c = h;
+                // var column = header;
                 Node r = null;
                 for (var col = 0; col < matrix.GetLength(1); col++)
                 {
@@ -73,7 +73,7 @@ namespace DlxLib
                         var listHeader = new Column(col);
                         if (columnPredicate.IsPrimaryColumn(col))
                         {
-                            h.AppendToRow(listHeader);
+                            header.AppendToRow(listHeader);
                         }
 
                         if (columnPredicate.IsPrimaryColumn(col) || columnPredicate.IsSecondaryColumn(col))
@@ -84,18 +84,18 @@ namespace DlxLib
 
                     if (columnPredicate.IsPrimaryColumn(col) || columnPredicate.IsSecondaryColumn(col))
                     {
-                        var c = listHeaders[col];
+                        var column = listHeaders[col];
                         if (matrix[row, col] == 1)
                         {
-                            c.AppendToCol(new Node(c, row));
-                            r?.AppendToRow(c.U);
-                            r = c.U;
+                            column.AppendToCol(new Node(column, row));
+                            r?.AppendToRow(column.U);
+                            r = column.U;
                         }
                     }
                 }
             }
 
-            return h;
+            return header;
         }
 
         /// <summary>
