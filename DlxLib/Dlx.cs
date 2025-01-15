@@ -65,7 +65,7 @@ namespace DlxLib
             for (var row = 0; row < matrix.GetLength(0); row++)
             {
                 // var column = header;
-                Node r = null;
+                Node preview = null;
                 for (var col = 0; col < matrix.GetLength(1); col++)
                 {
                     if (row == 0)
@@ -88,8 +88,8 @@ namespace DlxLib
                         if (matrix[row, col] == 1)
                         {
                             column.AppendToCol(new Node(column, row));
-                            r?.AppendToRow(column.U);
-                            r = column.U;
+                            preview?.AppendToRow(column.U);
+                            preview = column.U;
                         }
                     }
                 }
