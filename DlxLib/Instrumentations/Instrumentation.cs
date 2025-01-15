@@ -5,8 +5,9 @@ namespace DlxLib.Instrumentations
 {
     public interface IInstrumentation
     {
-        void OnSearchStart(Stack<Node> stack);
         void OnSolutionFound();
+
+        void OnSearchStart(Stack<Node> stack);
     }
 
     /// <summary>
@@ -18,8 +19,8 @@ namespace DlxLib.Instrumentations
     {
         #region IInstrumentation
 
-        public virtual void OnSearchStart(Stack<Node> stack) { }
         public virtual void OnSolutionFound() { }
+        public virtual void OnSearchStart(Stack<Node> stack) { }
 
         #endregion
 
@@ -30,7 +31,7 @@ namespace DlxLib.Instrumentations
             isCancelled = true;
         }
 
-        public bool IsCancelled()
+        public bool ShouldInterrupt()
         {
             return isCancelled;
         }
