@@ -313,6 +313,29 @@ namespace DlxLibTest
             Validate(matrix, columnPredicate);
         }
 
+
+        [Test]
+        public void TestSecondaryColumn5()
+        {
+            // 确切覆盖问题矩阵
+            var columnPredicate = new[]
+                { 0, 0, 0, 1, 1, 1, };
+            var matrix = new[,]
+            {
+                { 1, 0, 0, 1, 0, 0, },
+                { 0, 1, 0, 1, 0, 0, },
+                { 0, 0, 1, 1, 0, 0, },
+                { 1, 0, 0, 0, 1, 0, },
+                { 0, 1, 0, 0, 1, 0, },
+                { 0, 0, 1, 0, 1, 0, },
+                { 1, 0, 0, 0, 0, 1, },
+                { 0, 1, 0, 0, 0, 1, },
+                { 0, 0, 1, 0, 0, 1, },
+            };
+
+            Validate(matrix, columnPredicate);
+        }
+
         private static void Validate(int[,] matrix, int[]? columnPredicate = null)
         {
             Console.WriteLine("-------- begin --------");
