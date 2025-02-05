@@ -155,7 +155,7 @@ namespace DlxLib
                 // For each r ← D[c], D[D[c]], . . . , while r = c,
                 for (var r = c.D; r != c; r = r.D)
                 {
-                    if (instrumentations?.Any(instrumentation => instrumentation.ShouldInterrupt()) == true)
+                    if (instrumentations.Any(instrumentation => instrumentation.ShouldInterrupt()))
                     {
                         yield break;
                     }

@@ -8,6 +8,7 @@ namespace DlxLib.Instrumentations
         void OnSolutionFound();
 
         void OnSearchStart(Stack<Node> stack);
+        bool ShouldInterrupt();
     }
 
     /// <summary>
@@ -31,7 +32,7 @@ namespace DlxLib.Instrumentations
             isCancelled = true;
         }
 
-        public bool ShouldInterrupt()
+        public virtual bool ShouldInterrupt()
         {
             return isCancelled;
         }
