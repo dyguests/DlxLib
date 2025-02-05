@@ -1,11 +1,12 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 
 namespace SudokuLib.Rules
 {
     /// <summary>
     /// 对比点约束
+    ///
+    /// 主要用来约束两个相邻的格子之间的关系。
     /// </summary>
     public class KropkiRule : Rule
     {
@@ -59,6 +60,9 @@ namespace SudokuLib.Rules
             _items = items;
         }
 
+        /// <summary>
+        /// 点约束
+        /// </summary>
         public abstract class Kropki : Rule { }
 
         /// <summary>
@@ -68,14 +72,46 @@ namespace SudokuLib.Rules
         {
             public static Consecutive Instance { get; } = new Consecutive();
 
+            /// <summary>
+            /// 12c 表示 12 和它右边的格子是连续的
+            /// </summary>
+            private const string Right = "c";
+
+            /// <summary>
+            /// 12C 表示 12 和它上边的格子是连续的
+            /// </summary>
+            private const string Up = "C";
+
+            public int Index { get; protected set; }
+
+            /// <summary>
+            /// 0: Right
+            /// 1: Up
+            /// 2: Left
+            /// 3: Bottom
+            /// </summary>
+            public int Direction { get; protected set; }
+
             public override IRule? FromSketch(string sketch)
             {
-                throw new NotImplementedException();
+                if (sketch == null) return null;
+
+                int direction;
+                if (sketch.EndsWith(Right)) direction = 0;
+                else if (sketch.EndsWith(Up)) direction = 1;
+                else return null;
+
+                if (!int.TryParse(sketch[..^1], out var index)) return null;
+                return new Consecutive
+                {
+                    Index = index,
+                    Direction = direction
+                };
             }
 
             public override string ToSketch()
             {
-                throw new NotImplementedException();
+                return $"{Index}{(Direction == 0 ? Right : Up)}";
             }
         }
 
@@ -86,14 +122,39 @@ namespace SudokuLib.Rules
         {
             public static Ratio Instance { get; } = new Ratio();
 
+            private const string Right = "r";
+            private const string Up = "R";
+
+            public int Index { get; protected set; }
+
+            /// <summary>
+            /// 0: Right
+            /// 1: Up
+            /// 2: Left
+            /// 3: Bottom
+            /// </summary>
+            public int Direction { get; protected set; }
+
             public override IRule? FromSketch(string sketch)
             {
-                throw new NotImplementedException();
+                if (sketch == null) return null;
+
+                int direction;
+                if (sketch.EndsWith(Right)) direction = 0;
+                else if (sketch.EndsWith(Up)) direction = 1;
+                else return null;
+
+                if (!int.TryParse(sketch[..^1], out var index)) return null;
+                return new Ratio
+                {
+                    Index = index,
+                    Direction = direction
+                };
             }
 
             public override string ToSketch()
             {
-                throw new NotImplementedException();
+                return $"{Index}{(Direction == 0 ? Right : Up)}";
             }
         }
 
