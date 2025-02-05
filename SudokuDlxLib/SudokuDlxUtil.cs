@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using DlxLib;
+using DlxLib.ColumnPredicates;
+using DlxLib.Instrumentations;
 using SudokuDlxLib.Rules;
 using SudokuLib;
 
