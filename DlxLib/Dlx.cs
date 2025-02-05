@@ -70,8 +70,8 @@ namespace DlxLib
                 {
                     if (row == 0)
                     {
-                        var listHeader = new Column(col);
-                        if (columnPredicate.IsPrimaryColumn(col))
+                        var listHeader = new Column(col, columnPredicate.IsPrimaryColumn(col));
+                        if (columnPredicate.IsPrimaryColumn(col) || columnPredicate.IsSecondaryColumn(col))
                         {
                             header.AppendToRow(listHeader);
                         }
@@ -127,7 +127,8 @@ namespace DlxLib
 
 
             // If R[h] = h, print the current solution (see below) and return.
-            if (header.R == header)
+            // if (header.R == header)
+            if (header.IsUniquePrimaryColumn())
             {
                 foreach (var instrumentation in instrumentations)
                 {
