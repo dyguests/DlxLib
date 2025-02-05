@@ -20,7 +20,9 @@ namespace SudokuLib.Rules
             var kropkis = contentSketch.Split(KropkiSeparator)
                 .Select(item => item.Trim())
                 .SkipWhile(string.IsNullOrEmpty)
-                .Select(aSketch => Consecutive.Instance.FromSketch(aSketch) ?? Ratio.Instance.FromSketch(aSketch))
+                .Select(aSketch => Consecutive.Instance.FromSketch(aSketch) ??
+                                   Ratio.Instance.FromSketch(aSketch)
+                )
                 .Where(item => item != null)
                 .Select(rule => rule as Kropki)
                 .Select(rule => rule!)
@@ -155,6 +157,53 @@ namespace SudokuLib.Rules
             public override string ToSketch()
             {
                 return $"{Index}{(Direction == 0 ? Right : Up)}";
+            }
+        }
+
+        /// <summary>
+        /// 大于约束：表示相邻格子的数字是大于关系
+        /// </summary>
+        public class Greater : Kropki
+        {
+            public static Greater Instance { get; } = new Greater();
+
+            private const string Right = ">";
+            private const string Up = "^";
+            private const string Left = "<";
+            private const string Down = "v";
+
+            public int Index { get; protected set; }
+
+            /// <summary>
+            /// 0: Right
+            /// 1: Up
+            /// 2: Left
+            /// 3: Bottom
+            /// </summary>
+            public int Direction { get; protected set; }
+
+            public override IRule? FromSketch(string sketch)
+            {
+                if (sketch == null) return null;
+
+                int direction;
+                if (sketch.EndsWith(Right)) direction = 0;
+                else if (sketch.EndsWith(Up)) direction = 1;
+                else if (sketch.EndsWith(Left)) direction = 2;
+                else if (sketch.EndsWith(Down)) direction = 3;
+                else return null;
+
+                if (!int.TryParse(sketch[..^1], out var index)) return null;
+                return new Greater
+                {
+                    Index = index,
+                    Direction = direction
+                };
+            }
+
+            public override string ToSketch()
+            {
+                return $"{Index}{(Direction switch { 0 => Right, 1 => Up, 2 => Left, _ => Down })}";
             }
         }
 
