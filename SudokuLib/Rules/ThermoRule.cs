@@ -3,6 +3,9 @@ using System.Text;
 
 namespace SudokuLib.Rules
 {
+    /// <summary>
+    /// 温度计规则
+    /// </summary>
     public class ThermoRule : Rule
     {
         #region Rule
