@@ -10,6 +10,11 @@ namespace SudokuLib
         int[] Solution { get; }
         IRule[] Rules { get; }
 
+        /// <summary>
+        /// Gets the dimensions of the puzzle grid where Size[0] is width and Size[1] is height
+        /// </summary>
+        int[] Size { get; }
+
         void SetSolution(int[] solution);
         void SetRules(IRule[] rules);
     }
@@ -21,6 +26,7 @@ namespace SudokuLib
         public int[] Digits { get; }
         public int[] Solution { get; }
         public IRule[] Rules { get; private set; } = null!;
+        public int[] Size { get; private set; }
 
         public void SetSolution(int[] solution)
         {
@@ -39,15 +45,41 @@ namespace SudokuLib
 
         #endregion
 
-        public Puzzle(int[] digits, params IRule[] rules)
+        public Puzzle(int[] digits, params IRule[] rules) : this(digits, (int)Math.Sqrt(digits.Length), rules)
         {
             if (digits == null || digits.Length == 0)
             {
                 throw new ArgumentException("Digits must be initialized", nameof(digits));
             }
+        }
+
+        public Puzzle(int[] digits, int size, params IRule[] rules) 
+            : this(digits, new[] { size, size }, rules)
+        {
+            if (size <= 0)
+            {
+                throw new ArgumentException("Size must be positive", nameof(size));
+            }
+        }
+
+        public Puzzle(int[] digits, int[] size, params IRule[] rules)
+        {
+            if (size == null || size.Length != 2)
+            {
+                throw new ArgumentException("Size must be an array of length 2", nameof(size));
+            }
+            if (size[0] <= 0 || size[1] <= 0)
+            {
+                throw new ArgumentException("Size dimensions must be positive", nameof(size));
+            }
+            if (digits == null || digits.Length != size[0] * size[1])
+            {
+                throw new ArgumentException($"Digits must be initialized and have length of {size[0] * size[1]}", nameof(digits));
+            }
 
             Digits = digits;
             Solution = new int[digits.Length];
+            Size = size;
             SetRules(rules);
         }
     }
