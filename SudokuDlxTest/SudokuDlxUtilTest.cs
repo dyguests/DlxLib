@@ -10,9 +10,7 @@ namespace SudokuDlxLibTest
     public class SudokuDlxUtilTest
     {
         [SetUp]
-        public void Setup()
-        {
-        }
+        public void Setup() { }
 
         [Test]
         public void TestPuzzleWithSolution()
@@ -183,7 +181,16 @@ Killer 0=9+10+11+18+19+20+27+28+29";
         public void TestKillCage0Sum093()
         {
             const string sketch = @".................................................................................
-Killer 0=10+11+12+19+20+21+28+29+30";// todo 这个，就是没解？
+Killer 0=10+11+12+19+20+21+28+29+30"; // todo 这个，就是没解？
+            TestPuzzle(sketch);
+
+            Assert.Pass();
+        }
+
+        [Test]
+        public void Test2x2()
+        {
+            const string sketch = @"....";
             TestPuzzle(sketch);
 
             Assert.Pass();
@@ -226,7 +233,7 @@ Killer 0=10+11+12+19+20+21+28+29+30";// todo 这个，就是没解？
                 Console.WriteLine($"dlx deep:{dlxSolution.Deep} step:{dlxSolution.Step}");
                 var solution = SudokuDlxUtil.ToSolution(puzzle, dlx.ReadonlyMatrix, dlxSolution.RowIndexes);
                 puzzle.SetSolution(solution);
-                Console.WriteLine($"sudoku Solution:\n{solution.DigitsToDisplay()}");
+                Console.WriteLine($"sudoku Solution:\n{solution.DigitsToDisplay(puzzle.Size)}");
             }
 
             var sketch2 = PuzzleSketcher.ToSketch(puzzle, useMask: false);

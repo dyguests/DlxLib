@@ -76,6 +76,7 @@
       &lt;TestId&gt;NUnit3x::D17F343C-66F4-47F1-8CE8-A4CDAEA78BAB::net8.0::SudokuDlxLibTest.SudokuDlxUtilTest.TestKillCage0Sum&lt;/TestId&gt;
       &lt;TestId&gt;NUnit3x::D17F343C-66F4-47F1-8CE8-A4CDAEA78BAB::net8.0::SudokuDlxLibTest.SudokuDlxUtilTest.TestKillCage0Sum093&lt;/TestId&gt;
       &lt;TestId&gt;NUnit3x::D17F343C-66F4-47F1-8CE8-A4CDAEA78BAB::net8.0::SudokuDlxLibTest.SudokuDlxUtilTest.TestKillCage0Sum092&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::D17F343C-66F4-47F1-8CE8-A4CDAEA78BAB::net8.0::SudokuDlxLibTest.SudokuDlxUtilTest.Test2x2&lt;/TestId&gt;
     &lt;/TestAncestor&gt;
     &lt;Project Location="\Users\dygu\RiderProjects\DlxLib\SudokuDlxTest" Presentation="&amp;lt;SudokuDlxTest&amp;gt;" /&gt;
     &lt;ProjectFile&gt;D2A341E1-33EC-4BF8-861D-6B6A447DB35F/f:SudokuGeneratorTest.cs&lt;/ProjectFile&gt;

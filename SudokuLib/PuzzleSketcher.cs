@@ -20,12 +20,15 @@ namespace SudokuLib
             KillerRule.Default,
         };
 
+        /// <summary>
+        /// 注sketch不一定是9x9
+        /// </summary>
+        /// <param name="sketch"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public static IPuzzle FromSketch(string sketch)
         {
             var lines = sketch.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None).Let(strings => new Queue<string>(strings));
-
-            var digits = new int[9 * 9];
-            var solution = new int[9 * 9];
 
             var digitsSketch = lines.Let(queue =>
             {
@@ -40,6 +43,12 @@ namespace SudokuLib
                 // 如果队列中全是空，返回 null
                 return null;
             }) ?? throw new Exception("sketch is empty");
+
+            var length = digitsSketch.Length;
+
+            var digits = new int[length];
+            var solution = new int[length];
+
             for (var i = 0; i < digitsSketch.Length; i++)
             {
                 var c = digitsSketch[i];
