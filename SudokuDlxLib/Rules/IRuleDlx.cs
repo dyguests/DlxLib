@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SudokuDlxLib.Utils;
 using SudokuLib;
 
 namespace SudokuDlxLib.Rules
@@ -72,7 +73,7 @@ namespace SudokuDlxLib.Rules
             else
             {
                 // todo 这里想办法加过滤算法
-                row[possibleDigitsIndex] &= 0b111_111_111;
+                row[possibleDigitsIndex] &= puzzle.GeneratePossibleDigits();
             }
 
             foreach (var possibleDigit in row[possibleDigitsIndex].PossibleDigitsFromBinaryToEnumerable(expandRowType != ExpandRowType.Sequence)) yield return possibleDigit;

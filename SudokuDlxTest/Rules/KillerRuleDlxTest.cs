@@ -2,6 +2,7 @@
 using System.Linq;
 using NUnit.Framework;
 using SudokuDlxLib.Rules;
+using SudokuDlxLib.Utils;
 using SudokuLib;
 using SudokuLib.Rules;
 
@@ -81,9 +82,9 @@ namespace SudokuDlxLibTest.Rules
             var puzzle = new Puzzle(new int[81], killerRule);
             var rows = new[]
             {
-                new[] { 1, 0, 0, 0, 0b111_111_111, },
-                new[] { 0, 1, 0, 1, 0b111_111_111, },
-                new[] { 0, 0, 1, 2, 0b111_111_111, },
+                new[] { 1, 0, 0, 0, puzzle.GeneratePossibleDigits(), },
+                new[] { 0, 1, 0, 1, puzzle.GeneratePossibleDigits(), },
+                new[] { 0, 0, 1, 2, puzzle.GeneratePossibleDigits(), },
             };
             var columnPredicate = new[] { 0, 0, 0, 81, 9, };
             var (newRows, newColumnPredicate) = new KillerRuleDlx().ExpandRows(puzzle, rows, columnPredicate);
