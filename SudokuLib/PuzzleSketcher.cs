@@ -69,7 +69,7 @@ namespace SudokuLib
                     RuleSketchers.Select(rs => rs.FromSketch(line))
                         .FirstOrDefault(result => result != null)
                 )
-                .Where(rule => rule != null)
+                .OfType<IRule>()
                 .ToArray();
 
             var puzzle = new Puzzle(digits, rules);

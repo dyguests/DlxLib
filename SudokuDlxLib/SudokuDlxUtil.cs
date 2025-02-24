@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using DlxLib;
-using DlxLib.ColumnPredicates;
-using DlxLib.Instrumentations;
 using SudokuDlxLib.Rules;
+using SudokuDlxLib.Utils;
 using SudokuLib;
 
 namespace SudokuDlxLib
@@ -45,7 +44,13 @@ namespace SudokuDlxLib
             columnPredicate = columnPredicate.Append(ColumnPredicateEx.KeyPosition).ToArray();
 
             // 添加 possible 提示列
-            rows = rows.Select(row => row.Append(0b111_111_111).ToArray());
+            var width = puzzle.Size[0];
+            if (width != puzzle.Size[1])
+            {
+                throw new ArgumentException("暂时仅支持正方形");
+            }
+
+            rows = rows.Select(row => row.Append(puzzle.GeneratePossibleDigits()).ToArray());
             columnPredicate = columnPredicate.Append(ColumnPredicateEx.KeyPossibleColumn).ToArray();
 
             // todo 后续先对 possible 进行一次过滤
