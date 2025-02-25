@@ -23,5 +23,17 @@ namespace SudokuDlxLib.Utils
 
             return digits;
         }
+
+        public static int GetCandidateCount(this IPuzzle puzzle)
+        {
+            var size = puzzle.Size;
+            var width = size[0];
+            if (width != size[1])
+            {
+                throw new Exception("暂时仅支持正方形");
+            }
+
+            return width;
+        }
     }
 }
