@@ -170,7 +170,7 @@ namespace SudokuDlxLib.Rules
             return (expandRows, expandColumnPredicate);
         }
 
-        public override bool FillSolution(List<int[]> rows, int[] solution, IPuzzle puzzle)
+        public override bool FillSolution(int[] columnPredicate, List<int[]> rows, int[] solution, IPuzzle puzzle)
         {
             throw new NotImplementedException();
         }

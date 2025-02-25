@@ -85,7 +85,7 @@ namespace SudokuDlxLib
             var resultRows = rowIndexes.Select(rowIndex => rows[rowIndex]).ToList();
             foreach (var rule in puzzle.Rules)
             {
-                if (RuleDlxMapper.GetDlx(rule).FillSolution(resultRows, solution, puzzle)) break;
+                if (RuleDlxMapper.GetDlx(rule).FillSolution(columnPredicate, resultRows, solution, puzzle)) break;
             }
 
             return solution;

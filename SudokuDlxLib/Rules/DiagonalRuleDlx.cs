@@ -47,7 +47,7 @@ namespace SudokuDlxLib.Rules
             return (expandRows, expandColumnPredicate);
         }
 
-        public override bool FillSolution(List<int[]> rows, int[] solution, IPuzzle puzzle)
+        public override bool FillSolution(int[] columnPredicate, List<int[]> rows, int[] solution, IPuzzle puzzle)
         {
             // todo 后期可能有用，比如如果没有标准数独规则时。
             throw new NotImplementedException();

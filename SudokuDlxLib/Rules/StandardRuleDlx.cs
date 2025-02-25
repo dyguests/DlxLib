@@ -83,12 +83,13 @@ namespace SudokuDlxLib.Rules
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="columnPredicate"></param>
         /// <param name="rows">dlx的解</param>
         /// <param name="solution">处理用的结果，用于填充puzzle.Solution</param>
         /// <param name="puzzle"></param>
         /// <returns></returns>
         /// <exception cref="NullReferenceException"></exception>
-        public override bool FillSolution(List<int[]> rows, int[] solution, IPuzzle puzzle)
+        public override bool FillSolution(int[] columnPredicate, List<int[]> rows, int[] solution, IPuzzle puzzle)
         {
             var isAllFilled = true;
             for (var position = 0; position < solution.Length; position++)
