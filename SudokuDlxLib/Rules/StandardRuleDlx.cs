@@ -105,7 +105,7 @@ namespace SudokuDlxLib.Rules
                     continue;
                 }
 
-                var indexInRule = index - startIndex;
+                var indexInRule = index - startIndex; // todo get Digit
                 solution[position] = indexInRule % 9 + 1;
             }
 

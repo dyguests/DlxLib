@@ -15,7 +15,7 @@ namespace SudokuGeneratorLib
             var result = dlx.Solve().Take(1).FirstOrDefault().RowIndexes;
             if (result == null) return null;
             // Console.WriteLine("dlx Solution:" + string.Join(",", result));
-            var solution = SudokuDlxUtil.ToSolution(puzzle, dlx.ReadonlyMatrix, result);
+            var solution = SudokuDlxUtil.ToSolution(puzzle, dlx, result);
             Array.Copy(solution, puzzle.Digits, solution.Length);
             puzzle.SetSolution(solution);
             // Console.WriteLine($"puzzle:\n{puzzle.ToDisplay()}");

@@ -240,7 +240,7 @@ Killer 0=10+11+12+19+20+21+28+29+30"; // todo 这个，就是没解？
                 }
 
                 Console.WriteLine($"dlx deep:{dlxSolution.Deep} step:{dlxSolution.Step}");
-                var solution = SudokuDlxUtil.ToSolution(puzzle, dlx.ReadonlyMatrix, dlxSolution.RowIndexes);
+                var solution = SudokuDlxUtil.ToSolution(puzzle, dlx, dlxSolution.RowIndexes);
                 puzzle.SetSolution(solution);
                 Console.WriteLine($"sudoku Solution:\n{solution.DigitsToDisplay(puzzle.Size)}");
             }

@@ -76,10 +76,12 @@ namespace SudokuDlxLib
 
         #region ToSolution
 
-        public static int[] ToSolution(IPuzzle puzzle, int[,] matrix, int[] rowIndexes)
+        public static int[] ToSolution(IPuzzle puzzle, Dlx dlx, int[] rowIndexes)
         {
+            var columnPredicate = dlx.ColumnPredicate;
+            var rows = dlx.ReadonlyMatrix.MatrixToRows().ToList();
+
             var solution = (int[])puzzle.Digits.Clone();
-            var rows = matrix.MatrixToRows().ToList();
             var resultRows = rowIndexes.Select(rowIndex => rows[rowIndex]).ToList();
             foreach (var rule in puzzle.Rules)
             {
