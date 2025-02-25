@@ -6,6 +6,7 @@ namespace DlxLib.ColumnPredicates
     public interface IColumnPredicate
     {
         string? Name { get; }
+        int[] GetColumnPredicate(int length);
 
         bool IsPrimaryColumn(int column);
         bool IsSecondaryColumn(int column);
@@ -15,11 +16,12 @@ namespace DlxLib.ColumnPredicates
     {
         public const int KeyPrimaryColumn = 0;
         public const int KeySecondaryColumn = 1;
-        // private const int KeyHintColumn = 2;
+        public const int KeyHintColumn = 2;
 
         #region IColumnPredicate
 
         public virtual string? Name => null;
+        public abstract int[] GetColumnPredicate(int length);
         public abstract bool IsPrimaryColumn(int column);
         public abstract bool IsSecondaryColumn(int column);
 

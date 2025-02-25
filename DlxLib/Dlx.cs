@@ -15,6 +15,7 @@ namespace DlxLib
         private readonly int[,] _matrix;
         public int[,] ReadonlyMatrix => (int[,])_matrix.Clone();
         private readonly IColumnPredicate _columnPredicate;
+        public int[] ColumnPredicate => _columnPredicate.GetColumnPredicate(ReadonlyMatrix.GetLength(1));
         private readonly Instrumentation[] _instrumentations;
 
         public Dlx(int[,] matrix) : this(matrix, matrix.GetLength(0)) { }
