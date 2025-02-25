@@ -196,6 +196,15 @@ Killer 0=10+11+12+19+20+21+28+29+30"; // todo 这个，就是没解？
             Assert.Pass();
         }
 
+        [Test]
+        public void Test4x4()
+        {
+            const string sketch = @"................";
+            TestPuzzle(sketch);
+
+            Assert.Pass();
+        }
+
         private static void TestPuzzle(string sketch)
         {
             var puzzle = PuzzleSketcher.FromSketch(sketch);
