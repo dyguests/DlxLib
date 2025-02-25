@@ -21,11 +21,11 @@ namespace SudokuDlxLib.Rules
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="rows">精确匹配（dlx） 后的结果</param>
         /// <param name="solution">要填充的solution</param>
-        /// <param name="rows">rows 精确匹配（dlx） 后的结果就是 rowIndexes</param>
         /// <param name="puzzle"></param>
         /// <returns>是否填充完毕</returns>
-        bool FillSolution(int[] solution, List<int[]> rows, IPuzzle puzzle);
+        bool FillSolution(List<int[]> rows, int[] solution, IPuzzle puzzle);
     }
 
     public abstract class RuleDlx : IRuleDlx
@@ -34,7 +34,7 @@ namespace SudokuDlxLib.Rules
 
         public abstract (IEnumerable<int[]>, int[]) ExpandRows(IPuzzle puzzle, IEnumerable<int[]> rows, int[] columnPredicate, ExpandRowType expandRowType = ExpandRowType.Sequence);
 
-        public abstract bool FillSolution(int[] solution, List<int[]> rows, IPuzzle puzzle);
+        public abstract bool FillSolution(List<int[]> rows, int[] solution, IPuzzle puzzle);
 
         #endregion
 

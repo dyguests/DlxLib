@@ -80,14 +80,22 @@ namespace SudokuDlxLib.Rules
             return (expandRows, expandColumnPredicate);
         }
 
-        public override bool FillSolution(int[] solution, List<int[]> rows, IPuzzle puzzle)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rows">dlx的解</param>
+        /// <param name="solution">处理用的结果，用于填充puzzle.Solution</param>
+        /// <param name="puzzle"></param>
+        /// <returns></returns>
+        /// <exception cref="NullReferenceException"></exception>
+        public override bool FillSolution(List<int[]> rows, int[] solution, IPuzzle puzzle)
         {
             var isAllFilled = true;
             for (var position = 0; position < solution.Length; position++)
             {
                 var digit = solution[position];
                 if (digit != 0) continue;
-                var row = rows.FirstOrDefault(row => row[position] == 1) ?? throw new NullReferenceException("rows 未包含 row[position] == 1");
+                var row = rows.FirstOrDefault(row => row[position] == 1) ?? throw new NullReferenceException("rows 未包含 row[position] == 1"); // todo 改成 GetPosition
                 var startIndex = _ruleRowStart;
                 var endIndex = startIndex + puzzle.Digits.Length;
                 var index = Array.FindIndex(row, startIndex, endIndex - startIndex, value => value == 1);
